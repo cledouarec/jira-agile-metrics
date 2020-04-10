@@ -10,7 +10,7 @@ import zipfile
 import jinja2
 
 from flask import Flask, render_template, request
-from jira import JIRA
+from jira import JIRA, JIRAError
 
 from ..config import config_to_options, CALCULATORS, ConfigError
 from ..querymanager import QueryManager
@@ -120,7 +120,7 @@ def get_jira_client(connection):
 
     try:
         return JIRA(jira_options, basic_auth=(username, password), get_server_info=jira_server_version_check)
-    except Exception as e:
+    except JIRAError as e:
         if e.status_code == 401:
             raise ConfigError("JIRA authentication failed. Check URL and credentials, and ensure the account is not locked.") from None
         else:
