@@ -427,11 +427,11 @@ Output:
 
 
 def test_config_to_options_extends():
+    try:
+        with tempfile.NamedTemporaryFile(delete=False) as fp:
 
-    with tempfile.NamedTemporaryFile() as fp:
-
-        # Base file
-        fp.write(b"""\
+            # Base file
+            fp.write(b"""\
 Connection:
     Domain: https://foo.com
 
@@ -455,11 +455,11 @@ Output:
     Done column: Done
 """)
 
-        fp.seek(0)
+            fp.seek(0)
 
-        # Extend the file
+            # Extend the file
 
-        options = config_to_options("""
+            options = config_to_options("""
 Extends: %s
 
 Connection:
@@ -479,28 +479,30 @@ Output:
 
     Cycle time data: cycletime.csv
 """ % fp.name, cwd=os.path.abspath(fp.name))
+    finally:
+        os.remove(fp.name)
 
-        # overridden
-        assert options['connection']['domain'] == 'https://bar.com'
-        
-        # from extended base
-        assert options['settings']['backlog_column'] == 'Backlog'
-        assert options['settings']['committed_column'] == 'Committed'
-        assert options['settings']['final_column'] == 'Test'
-        assert options['settings']['done_column'] == 'Done'
+    # overridden
+    assert options['connection']['domain'] == 'https://bar.com'
 
-        # from extending file
-        assert options['settings']['cycle_time_data'] == ['cycletime.csv']
-        
-        # overridden
-        assert options['settings']['quantiles'] == [0.5, 0.7]
+    # from extended base
+    assert options['settings']['backlog_column'] == 'Backlog'
+    assert options['settings']['committed_column'] == 'Committed'
+    assert options['settings']['final_column'] == 'Test'
+    assert options['settings']['done_column'] == 'Done'
 
-        # merged
-        assert options['settings']['attributes'] == {
-            'Release': 'Release number',
-            'Priority': 'Severity',
-            'Team': 'Assigned team'
-        }
+    # from extending file
+    assert options['settings']['cycle_time_data'] == ['cycletime.csv']
+
+    # overridden
+    assert options['settings']['quantiles'] == [0.5, 0.7]
+
+    # merged
+    assert options['settings']['attributes'] == {
+        'Release': 'Release number',
+        'Priority': 'Severity',
+        'Team': 'Assigned team'
+    }
 
 def test_config_to_options_extends_blocked_if_no_explicit_working_directory():
 
