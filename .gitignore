@@ -88,6 +88,9 @@ ENV/
 .flake8
 .pytest_cache/
 
+# PyCharm
+.idea
+
 # Mac files
 **/.DS_Store
 
