@@ -578,4 +578,4 @@ Workflow:
 """)
 
     assert options['connection']['domain'] == 'https://foo.com'
-    assert options['connection']['jira_server_version_check'] == False
+    assert not options['connection']['jira_server_version_check']
