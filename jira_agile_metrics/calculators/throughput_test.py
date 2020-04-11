@@ -52,7 +52,11 @@ def test_calculate_throughput(query_manager, settings, results):
 
     data = calculator.run()
 
-    assert data.to_dict("records") == [{"count": 2}, {"count": 2}, {"count": 2}]
+    assert data.to_dict("records") == [
+        {"count": 2},
+        {"count": 2},
+        {"count": 2},
+    ]
 
 
 def test_calculate_throughput_with_wider_window(

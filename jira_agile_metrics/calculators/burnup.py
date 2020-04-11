@@ -48,7 +48,9 @@ class BurnupCalculator(Calculator):
 
             # Re-check after slicing for window
             if len(chart_data.index) == 0:
-                logger.warning("Unable to draw burnup chart with no data items")
+                logger.warning(
+                    "Unable to draw burnup chart with no data items"
+                )
                 return
 
         fig, ax = plt.subplots()

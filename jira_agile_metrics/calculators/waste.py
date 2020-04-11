@@ -34,7 +34,9 @@ class WasteCalculator(Calculator):
         for idx, cycle_step in enumerate(self.settings["cycle"]):
             for status in cycle_step["statuses"]:
                 cycle_lookup[status.lower()] = dict(
-                    index=idx, name=cycle_step["name"], type=cycle_step["type"],
+                    index=idx,
+                    name=cycle_step["name"],
+                    type=cycle_step["type"],
                 )
 
         columns = ["key", "last_status", "resolution", "withdrawn_date"]

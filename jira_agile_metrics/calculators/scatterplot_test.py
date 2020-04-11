@@ -79,7 +79,9 @@ def test_calculate_scatterplot(query_manager, settings, results):
 
     data = calculator.run()
 
-    assert data[["key", "completed_date", "cycle_time"]].to_dict("records") == [
+    assert data[["key", "completed_date", "cycle_time"]].to_dict(
+        "records"
+    ) == [
         {
             "key": "A-13",
             "completed_date": Timestamp("2018-01-07 00:00:00"),

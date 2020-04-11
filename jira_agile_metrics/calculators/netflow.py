@@ -41,7 +41,9 @@ class NetFlowChartCalculator(Calculator):
             .fillna(net_flow_data[start_column])
         )
         net_flow_data["departures"] = (
-            net_flow_data[done_column].diff().fillna(net_flow_data[done_column])
+            net_flow_data[done_column]
+            .diff()
+            .fillna(net_flow_data[done_column])
         )
         net_flow_data["net_flow"] = (
             net_flow_data["arrivals"] - net_flow_data["departures"]
@@ -77,7 +79,8 @@ class NetFlowChartCalculator(Calculator):
             net_flow_data = net_flow_data[-window:]
 
         net_flow_data["net_flow"].plot.bar(
-            ax=ax, color=net_flow_data["positive"].map({True: "r", False: "b"}),
+            ax=ax,
+            color=net_flow_data["positive"].map({True: "r", False: "b"}),
         )
 
         labels = [d.strftime("%d/%m/%Y") for d in net_flow_data.index]

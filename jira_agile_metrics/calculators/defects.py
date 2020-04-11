@@ -86,7 +86,9 @@ class DefectsCalculator(Calculator):
         for issue in self.query_manager.find_issues(query, expand=None):
             series["key"]["data"].append(issue.key)
             series["priority"]["data"].append(
-                self.query_manager.resolve_field_value(issue, priority_field_id)
+                self.query_manager.resolve_field_value(
+                    issue, priority_field_id
+                )
                 if priority_field
                 else None
             )

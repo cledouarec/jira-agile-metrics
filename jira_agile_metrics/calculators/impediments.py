@@ -159,7 +159,9 @@ class ImpedimentsCalculator(Calculator):
 
     def write_impediments_days_chart(self, chart_data, output_file):
         if len(chart_data.index) == 0:
-            logger.warning("Cannot draw impediments days chart with zero items")
+            logger.warning(
+                "Cannot draw impediments days chart with zero items"
+            )
             return
 
         window = self.settings["impediments_window"]

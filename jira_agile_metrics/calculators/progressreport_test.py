@@ -1661,7 +1661,8 @@ def test_with_large_dataset(fields, settings, results):
             customfield_205=epic.key,
             changes=[
                 Change(
-                    "%s 00:00:00" % c["date"], [("status", c["from"], c["to"],)]
+                    "%s 00:00:00" % c["date"],
+                    [("status", c["from"], c["to"],)],
                 )
                 for c in changes[1:]
             ],
@@ -1815,7 +1816,8 @@ def test_with_large_dataset_and_outcome_as_tickets(fields, settings, results):
             customfield_205=epic.key,
             changes=[
                 Change(
-                    "%s 00:00:00" % c["date"], [("status", c["from"], c["to"],)]
+                    "%s 00:00:00" % c["date"],
+                    [("status", c["from"], c["to"],)],
                 )
                 for c in changes[1:]
             ],
@@ -1972,7 +1974,8 @@ def test_with_large_dataset_and_outcome_as_tickets_no_forecast(
             customfield_205=epic.key,
             changes=[
                 Change(
-                    "%s 00:00:00" % c["date"], [("status", c["from"], c["to"],)]
+                    "%s 00:00:00" % c["date"],
+                    [("status", c["from"], c["to"],)],
                 )
                 for c in changes[1:]
             ],
@@ -2129,7 +2132,8 @@ def test_with_large_dataset_and_outcome_as_tickets_mixed_forecast(
             customfield_205=epic.key,
             changes=[
                 Change(
-                    "%s 00:00:00" % c["date"], [("status", c["from"], c["to"],)]
+                    "%s 00:00:00" % c["date"],
+                    [("status", c["from"], c["to"],)],
                 )
                 for c in changes[1:]
             ],
@@ -2252,7 +2256,8 @@ def test_with_large_dataset_minimal(fields, settings, results):
             customfield_205=epic.key,
             changes=[
                 Change(
-                    "%s 00:00:00" % c["date"], [("status", c["from"], c["to"],)]
+                    "%s 00:00:00" % c["date"],
+                    [("status", c["from"], c["to"],)],
                 )
                 for c in changes[1:]
             ],
@@ -2371,7 +2376,8 @@ def test_with_large_dataset_minimal_no_forecast(fields, settings, results):
             customfield_205=epic.key,
             changes=[
                 Change(
-                    "%s 00:00:00" % c["date"], [("status", c["from"], c["to"],)]
+                    "%s 00:00:00" % c["date"],
+                    [("status", c["from"], c["to"],)],
                 )
                 for c in changes[1:]
             ],
@@ -2504,7 +2510,8 @@ def test_with_large_dataset_teams_no_outcomes(fields, settings, results):
             customfield_205=epic.key,
             changes=[
                 Change(
-                    "%s 00:00:00" % c["date"], [("status", c["from"], c["to"],)]
+                    "%s 00:00:00" % c["date"],
+                    [("status", c["from"], c["to"],)],
                 )
                 for c in changes[1:]
             ],
@@ -2637,7 +2644,8 @@ def test_with_large_dataset_no_teams(fields, settings, results):
             customfield_205=epic.key,
             changes=[
                 Change(
-                    "%s 00:00:00" % c["date"], [("status", c["from"], c["to"],)]
+                    "%s 00:00:00" % c["date"],
+                    [("status", c["from"], c["to"],)],
                 )
                 for c in changes[1:]
             ],
@@ -2775,7 +2783,8 @@ def test_with_large_dataset_dynamic_teams(fields, settings, results):
             customfield_205=epic.key,
             changes=[
                 Change(
-                    "%s 00:00:00" % c["date"], [("status", c["from"], c["to"],)]
+                    "%s 00:00:00" % c["date"],
+                    [("status", c["from"], c["to"],)],
                 )
                 for c in changes[1:]
             ],
@@ -2800,7 +2809,9 @@ def test_with_large_dataset_dynamic_teams(fields, settings, results):
         calculator.write()
 
 
-def test_with_large_dataset_static_and_dynamic_teams(fields, settings, results):
+def test_with_large_dataset_static_and_dynamic_teams(
+    fields, settings, results
+):
 
     today = date.today()
 
@@ -2923,7 +2934,8 @@ def test_with_large_dataset_static_and_dynamic_teams(fields, settings, results):
             customfield_205=epic.key,
             changes=[
                 Change(
-                    "%s 00:00:00" % c["date"], [("status", c["from"], c["to"],)]
+                    "%s 00:00:00" % c["date"],
+                    [("status", c["from"], c["to"],)],
                 )
                 for c in changes[1:]
             ],

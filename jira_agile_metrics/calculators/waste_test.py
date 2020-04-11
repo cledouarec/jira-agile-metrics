@@ -53,7 +53,9 @@ def jira(fields):
                     Change(
                         "2018-01-04 02:02:02", [("status", "Next", "Build",)]
                     ),
-                    Change("2018-01-05 02:02:02", [("status", "Build", "QA",)]),
+                    Change(
+                        "2018-01-05 02:02:02", [("status", "Build", "QA",)]
+                    ),
                     Change("2018-01-06 02:02:02", [("status", "QA", "Done",)]),
                 ],
             ),
@@ -89,7 +91,9 @@ def jira(fields):
                     Change(
                         "2018-01-04 02:02:02", [("status", "Next", "Build",)]
                     ),
-                    Change("2018-01-05 02:02:02", [("status", "Build", "QA",)]),
+                    Change(
+                        "2018-01-05 02:02:02", [("status", "Build", "QA",)]
+                    ),
                     Change("2018-01-06 02:02:02", [("status", "QA", "Done",)]),
                     Change(
                         "2018-01-08 02:02:02", [("status", "Done", "Done",)]
@@ -125,7 +129,9 @@ def jira(fields):
                     Change(
                         "2018-01-04 02:02:02", [("status", "Next", "Build",)]
                     ),
-                    Change("2018-01-05 02:02:02", [("status", "Build", "QA",)]),
+                    Change(
+                        "2018-01-05 02:02:02", [("status", "Build", "QA",)]
+                    ),
                     Change("2018-01-06 02:02:02", [("status", "QA", "Done",)]),
                 ],
             ),

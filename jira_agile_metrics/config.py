@@ -141,7 +141,9 @@ def to_progress_report_outcomes_list(value):
             "name": val[expand_key("name")]
             if expand_key("name") in val
             else None,
-            "key": val[expand_key("key")] if expand_key("key") in val else None,
+            "key": val[expand_key("key")]
+            if expand_key("key") in val
+            else None,
             "deadline": force_date("deadline", val[expand_key("deadline")])
             if expand_key("deadline") in val
             else None,
@@ -313,10 +315,14 @@ def config_to_options(data, cwd=None, extended=False):
             options["connection"]["domain"] = config["connection"]["domain"]
 
         if "username" in config["connection"]:
-            options["connection"]["username"] = config["connection"]["username"]
+            options["connection"]["username"] = config["connection"][
+                "username"
+            ]
 
         if "password" in config["connection"]:
-            options["connection"]["password"] = config["connection"]["password"]
+            options["connection"]["password"] = config["connection"][
+                "password"
+            ]
 
         if "http proxy" in config["connection"]:
             options["connection"]["http_proxy"] = config["connection"][
@@ -329,9 +335,9 @@ def config_to_options(data, cwd=None, extended=False):
             ]
 
         if "jira client options" in config["connection"]:
-            options["connection"]["jira_client_options"] = config["connection"][
-                "jira client options"
-            ]
+            options["connection"]["jira_client_options"] = config[
+                "connection"
+            ]["jira client options"]
 
         if "jira server version check" in config["connection"]:
             options["connection"]["jira_server_version_check"] = config[

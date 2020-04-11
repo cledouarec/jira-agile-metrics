@@ -416,7 +416,10 @@ class ProgressReportCalculator(Calculator):
                         outcome.key: {
                             "cfd": plot_cfd(
                                 cycle_data=pd.concat(
-                                    [e.story_cycle_times for e in outcome.epics]
+                                    [
+                                        e.story_cycle_times
+                                        for e in outcome.epics
+                                    ]
                                 ),
                                 cycle_names=cycle_names,
                                 backlog_column=backlog_column,
@@ -660,12 +663,16 @@ def find_epics(
             if issue.fields.resolutiondate
             else None,
             min_stories=int_or_none(
-                query_manager.resolve_field_value(issue, epic_min_stories_field)
+                query_manager.resolve_field_value(
+                    issue, epic_min_stories_field
+                )
             )
             if epic_min_stories_field
             else None,
             max_stories=int_or_none(
-                query_manager.resolve_field_value(issue, epic_max_stories_field)
+                query_manager.resolve_field_value(
+                    issue, epic_max_stories_field
+                )
             )
             if epic_max_stories_field
             else None,
@@ -751,7 +758,9 @@ def forecast_to_complete(
 
     # apply WIP limit to list of epics not yet completed
     def filter_active_epics(trial_values):
-        return [t for t in trial_values if t["value"] < t["target"]][: team.wip]
+        return [t for t in trial_values if t["value"] < t["target"]][
+            : team.wip
+        ]
 
     for trial in range(trials):
 
@@ -981,7 +990,9 @@ def plot_throughput(cycle_data, frequency="1W"):
             fontsize="x-small",
         )
 
-    ax.plot(throughput_data.index, throughput_data["fitted"], "--", linewidth=2)
+    ax.plot(
+        throughput_data.index, throughput_data["fitted"], "--", linewidth=2
+    )
 
     set_chart_style()
 

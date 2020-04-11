@@ -259,7 +259,9 @@ def calculate_cycle_times(
                         impediment_flag = snapshot.to_string
                         impediment_start = snapshot.date.date()
                         impediment_start_status = last_status
-                    elif snapshot.to_string is None or snapshot.to_string == "":
+                    elif (
+                        snapshot.to_string is None or snapshot.to_string == ""
+                    ):
                         if impediment_start is None:
                             logger.warning(
                                 "Issue %s had impediment flag cleared before being set. This should not happen.",

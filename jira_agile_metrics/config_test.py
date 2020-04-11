@@ -430,7 +430,9 @@ Output:
     assert options["settings"]["cycle_time_data"] == ["cycletime.csv"]
     assert options["settings"]["ageing_wip_chart"] == "ageing-wip.png"
     assert options["settings"]["burnup_chart"] == "burnup.png"
-    assert options["settings"]["burnup_forecast_chart"] == "burnup-forecast.png"
+    assert (
+        options["settings"]["burnup_forecast_chart"] == "burnup-forecast.png"
+    )
     assert options["settings"]["cfd_chart"] == "cfd.png"
     assert options["settings"]["histogram_chart"] == "histogram.png"
     assert options["settings"]["histogram_data"] == ["histogram.csv"]

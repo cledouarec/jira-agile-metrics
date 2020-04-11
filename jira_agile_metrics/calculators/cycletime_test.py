@@ -46,7 +46,8 @@ def jira(custom_fields):
                 customfield_100=None,
                 changes=[
                     Change(
-                        "2018-01-02 10:01:01", [("Flagged", None, "Impediment")]
+                        "2018-01-02 10:01:01",
+                        [("Flagged", None, "Impediment")],
                     ),
                     Change(
                         "2018-01-03 01:00:00", [("Flagged", "Impediment", "")]
@@ -85,9 +86,12 @@ def jira(custom_fields):
                         "2018-01-04 01:01:01", [("status", "Next", "Build",)]
                     ),
                     Change(
-                        "2018-01-04 10:01:01", [("Flagged", None, "Impediment")]
+                        "2018-01-04 10:01:01",
+                        [("Flagged", None, "Impediment")],
                     ),  # should clear two days later when issue resolved
-                    Change("2018-01-05 01:01:01", [("status", "Build", "QA",)]),
+                    Change(
+                        "2018-01-05 01:01:01", [("status", "Build", "QA",)]
+                    ),
                     Change("2018-01-06 01:01:01", [("status", "QA", "Done",)]),
                 ],
             ),
