@@ -11,6 +11,7 @@ from .cycletime import CycleTimeCalculator
 
 logger = logging.getLogger(__name__)
 
+
 class AgeingWIPChartCalculator(Calculator):
     """Draw an ageing WIP chart
     """
@@ -27,7 +28,7 @@ class AgeingWIPChartCalculator(Calculator):
         start_column = self.settings['committed_column']
         end_column = self.settings['final_column']
         done_column = self.settings['done_column']
-        
+
         if start_column not in cycle_names:
             logger.error("Committed column %s does not exist", start_column)
             return None
@@ -71,7 +72,7 @@ class AgeingWIPChartCalculator(Calculator):
         ), axis=1)
 
         return ageing_wip_data
-    
+
     def write(self):
         output_file = self.settings['ageing_wip_chart']
         if not output_file:
@@ -85,7 +86,7 @@ class AgeingWIPChartCalculator(Calculator):
             return
 
         fig, ax = plt.subplots()
-        
+
         if self.settings['ageing_wip_chart_title']:
             ax.set_title(self.settings['ageing_wip_chart_title'])
 

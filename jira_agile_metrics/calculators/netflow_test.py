@@ -7,19 +7,22 @@ from .netflow import NetFlowChartCalculator
 
 from ..utils import extend_dict
 
+
 @pytest.fixture
 def settings(minimal_settings):
     return extend_dict(minimal_settings, {
         'net_flow_frequency': 'D'
     })
 
+
 @pytest.fixture
 def query_manager(minimal_query_manager):
     return minimal_query_manager
 
+
 @pytest.fixture
 def results(query_manager, settings, large_cycle_time_results):
-    
+
     # CFD data frame and net flow:
     #
     #              Backlog  Committed  Build  Test  Done
@@ -38,6 +41,7 @@ def results(query_manager, settings, large_cycle_time_results):
         CFDCalculator: CFDCalculator(query_manager, settings, large_cycle_time_results).run()
     })
 
+
 def test_empty(query_manager, settings, minimal_cycle_time_columns):
     results = {
         CFDCalculator: DataFrame([], columns=['Backlog', 'Committed', 'Build', 'Test', 'Done'], index=date_range(start=datetime.date(2018, 1, 1), periods=0, freq='D'))
@@ -55,6 +59,7 @@ def test_columns(query_manager, settings, results):
 
     data = calculator.run()
     assert list(data.columns) == ['Committed', 'Done', 'arrivals', 'departures', 'net_flow', 'positive']
+
 
 def test_calculate_net_flow(query_manager, settings, results):
     calculator = NetFlowChartCalculator(query_manager, settings, results)
@@ -84,6 +89,7 @@ def test_calculate_net_flow(query_manager, settings, results):
         {'arrivals': 0.0, 'departures': 2.0, 'net_flow': -2.0, 'positive': False},
         {'arrivals': 0.0, 'departures': 2.0, 'net_flow': -2.0, 'positive': False},
     ]
+
 
 def test_calculate_net_flow_different_columns(query_manager, settings, results):
 

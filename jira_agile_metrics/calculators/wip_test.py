@@ -7,18 +7,21 @@ from .wip import WIPChartCalculator
 
 from ..utils import extend_dict
 
+
 @pytest.fixture
 def settings(minimal_settings):
     return extend_dict(minimal_settings, {
     })
 
+
 @pytest.fixture
 def query_manager(minimal_query_manager):
     return minimal_query_manager
 
+
 @pytest.fixture
 def results(query_manager, settings, large_cycle_time_results):
-    
+
     # CFD data frame and WIP
     #
     #              Backlog  Committed  Build  Test  Done
@@ -37,6 +40,7 @@ def results(query_manager, settings, large_cycle_time_results):
         CFDCalculator: CFDCalculator(query_manager, settings, large_cycle_time_results).run()
     })
 
+
 def test_empty(query_manager, settings, minimal_cycle_time_columns):
     results = {
         CFDCalculator: DataFrame([], columns=['Backlog', 'Committed', 'Build', 'Test', 'Done'], index=date_range(start=datetime.date(2018, 1, 1), periods=0, freq='D'))
@@ -54,6 +58,7 @@ def test_columns(query_manager, settings, results):
 
     data = calculator.run()
     assert list(data.columns) == ['wip']
+
 
 def test_calculate_wip(query_manager, settings, results):
     calculator = WIPChartCalculator(query_manager, settings, results)
@@ -83,6 +88,7 @@ def test_calculate_wip(query_manager, settings, results):
         {'wip': 11.0},
         {'wip':  9.0},
     ]
+
 
 def test_calculate_wip_different_columns(query_manager, settings, results):
 

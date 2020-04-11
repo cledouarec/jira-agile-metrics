@@ -28,26 +28,28 @@ app.jinja_loader = jinja2.PackageLoader('jira_agile_metrics.webapp', 'templates'
 
 logger = logging.getLogger(__name__)
 
+
 @app.route("/")
 def index():
     return render_template('index.html', max_results=request.args.get('max_results', ""))
 
+
 @app.route("/run", methods=['POST'])
 def run():
     config = request.files['config']
-    
+
     data = ""
     has_error = False
     log_buffer = io.StringIO()
 
     with capture_log(log_buffer, logging.DEBUG, "%(levelname)s: %(message)s"):
-        
+
         # We swallow exceptions here because we want to show them in the output
         # log on the result page.
         try:
             options = config_to_options(config.read())
             override_options(options['connection'], request.form)
-        
+
             # We allow a `max_results` query string parameter for faster debugging
             if request.form.get('max_results'):
                 try:
@@ -69,6 +71,7 @@ def run():
         log=log_buffer.getvalue()
     )
 
+
 # Helpers
 
 @contextlib.contextmanager
@@ -77,7 +80,7 @@ def capture_log(buffer, level, formatter=None):
     threshold `level`, before returning logging to normal.
     """
     root_logger = logging.getLogger()
-    
+
     old_level = root_logger.getEffectiveLevel()
     root_logger.setLevel(level)
 
@@ -97,6 +100,7 @@ def capture_log(buffer, level, formatter=None):
     handler.flush()
     buffer.flush()
 
+
 def override_options(options, form):
     """Override options from the configuration files with form data where
     applicable.
@@ -104,6 +108,7 @@ def override_options(options, form):
     for key in options.keys():
         if key in form and form[key] != "":
             options[key] = form[key]
+
 
 def get_jira_client(connection):
     """Create a JIRA client with the given connection options
@@ -125,6 +130,7 @@ def get_jira_client(connection):
             raise ConfigError("JIRA authentication failed. Check URL and credentials, and ensure the account is not locked.") from None
         else:
             raise
+
 
 def get_archive(calculators, query_manager, settings):
     """Run all calculators and write outputs to a temporary directory.
@@ -151,5 +157,5 @@ def get_archive(calculators, query_manager, settings):
     finally:
         os.chdir(cwd)
         shutil.rmtree(temp_path)
-    
+
     return zip_data

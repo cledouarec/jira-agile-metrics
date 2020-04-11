@@ -9,17 +9,20 @@ from .config import (
     ConfigError
 )
 
+
 def test_force_list():
     assert force_list(None) == [None]
     assert force_list("foo") == ["foo"]
     assert force_list(("foo",)) == ["foo"]
     assert force_list(["foo"]) == ["foo"]
 
+
 def test_expand_key():
     assert expand_key("foo") == "foo"
     assert expand_key("foo_bar") == "foo bar"
     assert expand_key("FOO") == "foo"
     assert expand_key("FOO_bar") == "foo bar"
+
 
 def test_config_to_options_minimal():
 
@@ -42,7 +45,7 @@ Workflow:
     assert options['settings']['committed_column'] == 'In progress'
     assert options['settings']['final_column'] == 'In progress'
     assert options['settings']['done_column'] == 'Done'
-    
+
 
 def test_config_to_options_maximal():
 
@@ -94,12 +97,12 @@ Output:
 
     Cycle time data: cycletime.csv
     Percentiles data: percentiles.csv
-    
+
     Scatterplot window: 30
     Scatterplot data: scatterplot.csv
     Scatterplot chart: scatterplot.png
     Scatterplot chart title: Cycle time scatter plot
-    
+
     Histogram window: 30
     Histogram chart: histogram.png
     Histogram chart title: Cycle time histogram
@@ -110,7 +113,7 @@ Output:
     CFD chart title: Cumulative Flow Diagram
 
     Histogram data: histogram.csv
-    
+
     Throughput frequency: 1D
     Throughput window: 3
     Throughput data: throughput.csv
@@ -178,7 +181,7 @@ Output:
     Defects by type chart title: Defects by type
     Defects by environment chart: defects-by-environment.png
     Defects by environment chart title: Defects by environment
-    
+
     Debt query: issueType = "Tech debt"
     Debt window: 3
     Debt priority field: Priority
@@ -236,7 +239,7 @@ Output:
         'https_proxy': 'https://proxy2.local',
         'jira_server_version_check': True
     }
-   
+
     assert options['settings'] == {
         'cycle': [
             {'name': 'Backlog', 'statuses': ['Backlog'], 'type': 'backlog'},
@@ -256,7 +259,7 @@ Output:
         'queries': [{'jql': '(filter=123)', 'value': 'Team 1'},
                     {'jql': '(filter=124)', 'value': 'Team 2'}],
         'query_attribute': 'Team',
-                
+
         'backlog_column': 'Backlog',
         'committed_column': 'Committed',
         'final_column': 'Test',
@@ -265,14 +268,14 @@ Output:
         'quantiles': [0.1, 0.2],
 
         'cycle_time_data': ['cycletime.csv'],
-        
+
         'ageing_wip_chart': 'ageing-wip.png',
         'ageing_wip_chart_title': 'Ageing WIP',
-        
+
         'burnup_window': 30,
         'burnup_chart': 'burnup.png',
         'burnup_chart_title': 'Burn-up',
-        
+
         'burnup_forecast_window': 30,
         'burnup_forecast_chart': 'burnup-forecast.png',
         'burnup_forecast_chart_deadline': datetime.date(2018, 6, 1),
@@ -282,35 +285,35 @@ Output:
         'burnup_forecast_chart_throughput_window_end': datetime.date(2018, 3, 1),
         'burnup_forecast_chart_title': 'Burn-up forecast',
         'burnup_forecast_chart_trials': 50,
-        
+
         'cfd_window': 30,
         'cfd_chart': 'cfd.png',
         'cfd_chart_title': 'Cumulative Flow Diagram',
         'cfd_data': ['cfd.csv'],
-        
+
         'histogram_window': 30,
         'histogram_chart': 'histogram.png',
         'histogram_chart_title': 'Cycle time histogram',
         'histogram_data': ['histogram.csv'],
-        
+
         'net_flow_frequency': '5D',
         'net_flow_window': 3,
         'net_flow_chart': 'net-flow.png',
         'net_flow_chart_title': 'Net flow',
-        
+
         'percentiles_data': ['percentiles.csv'],
-        
+
         'scatterplot_window': 30,
         'scatterplot_chart': 'scatterplot.png',
         'scatterplot_chart_title': 'Cycle time scatter plot',
         'scatterplot_data': ['scatterplot.csv'],
-        
+
         'throughput_frequency': '1D',
         'throughput_window': 3,
         'throughput_chart': 'throughput.png',
         'throughput_chart_title': 'Throughput trend',
         'throughput_data': ['throughput.csv'],
-        
+
         'wip_frequency': '3D',
         'wip_window': 3,
         'wip_chart': 'wip.png',
@@ -342,7 +345,7 @@ Output:
         'defects_by_type_chart_title': 'Defects by type',
         'defects_by_environment_chart': 'defects-by-environment.png',
         'defects_by_environment_chart_title': 'Defects by environment',
-        
+
         'debt_query': 'issueType = "Tech debt"',
         'debt_window': 3,
         'debt_priority_field': 'Priority',
@@ -378,6 +381,7 @@ Output:
         'progress_report_outcome_deadline_field': 'Due date',
         'progress_report_outcome_query': 'project = ABC AND type = Outcome AND resolution IS EMPTY',
     }
+
 
 def test_config_to_options_strips_directories():
 
@@ -504,6 +508,7 @@ Output:
         'Team': 'Assigned team'
     }
 
+
 def test_config_to_options_extends_blocked_if_no_explicit_working_directory():
 
     with tempfile.NamedTemporaryFile() as fp:
@@ -556,6 +561,7 @@ Output:
         else:
             assert False
 
+
 def test_config_to_options_jira_server_bypass():
 
     options = config_to_options("""\
@@ -573,4 +579,3 @@ Workflow:
 
     assert options['connection']['domain'] == 'https://foo.com'
     assert options['connection']['jira_server_version_check'] == False
-

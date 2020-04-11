@@ -8,6 +8,7 @@ from .config import ConfigError
 
 logger = logging.getLogger(__name__)
 
+
 class IssueSnapshot(object):
     """A snapshot of the key fields of an issue at a point in its change history
     """
@@ -32,6 +33,7 @@ class IssueSnapshot(object):
         return "<IssueSnapshot change=%s key=%s date=%s from=%s to=%s>" % (
             self.change, self.key, self.date.isoformat(), self.from_string, self.to_string,
         )
+
 
 class QueryManager(object):
     """Manage and execute queries

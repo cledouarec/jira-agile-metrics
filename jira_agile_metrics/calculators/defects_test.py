@@ -12,6 +12,7 @@ from ..utils import extend_dict
 from ..querymanager import QueryManager
 from .defects import DefectsCalculator
 
+
 @pytest.fixture
 def fields(minimal_fields):
     return minimal_fields + [
@@ -19,6 +20,7 @@ def fields(minimal_fields):
         {'id': 'customfield_001',  'name': 'Environment'},
         {'id': 'customfield_002',  'name': 'Defect type'},
     ]
+
 
 @pytest.fixture
 def settings(minimal_settings):
@@ -39,6 +41,7 @@ def settings(minimal_settings):
         'defects_by_environment_chart': 'defects-by-environment.png',
         'defects_by_environment_chart_title': 'Defects by environment',
     })
+
 
 @pytest.fixture
 def jira(fields):
@@ -117,6 +120,7 @@ def jira(fields):
         ),
     ])
 
+
 def test_no_query(jira, settings):
     query_manager = QueryManager(jira, settings)
     results = {}
@@ -128,6 +132,7 @@ def test_no_query(jira, settings):
     data = calculator.run()
     assert data is None
 
+
 def test_columns(jira, settings):
     query_manager = QueryManager(jira, settings)
     results = {}
@@ -136,6 +141,7 @@ def test_columns(jira, settings):
     data = calculator.run()
 
     assert list(data.columns) == ['key', 'priority', 'type', 'environment', 'created', 'resolved']
+
 
 def test_empty(fields, settings):
     jira = JIRA(fields=fields, issues=[])
@@ -185,6 +191,7 @@ def test_no_priority_field(jira, settings):
         {'key': 'D-6', 'created': Timestamp('2018-03-06 01:01:01'), 'resolved': NaT,                              'priority': None, 'environment': 'UAT',  'type': 'Data'},
     ]
 
+
 def test_no_type_field(jira, settings):
     settings = extend_dict(settings, {
         'defects_type_field': None
@@ -204,6 +211,7 @@ def test_no_type_field(jira, settings):
         {'key': 'D-5', 'created': Timestamp('2018-02-05 01:01:01'), 'resolved': Timestamp('2018-02-20 02:02:02'), 'priority': 'High',   'environment': 'SIT',  'type': None},
         {'key': 'D-6', 'created': Timestamp('2018-03-06 01:01:01'), 'resolved': NaT,                              'priority': 'Medium', 'environment': 'UAT',  'type': None},
     ]
+
 
 def test_no_environment_field(jira, settings):
     settings = extend_dict(settings, {

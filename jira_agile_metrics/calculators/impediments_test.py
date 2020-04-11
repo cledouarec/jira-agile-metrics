@@ -9,12 +9,15 @@ from ..utils import extend_dict
 
 from ..conftest import _issues
 
+
 def _ts(datestring, timestring="00:00:00", freq=None):
     return Timestamp('%s %s' % (datestring, timestring,), freq=freq)
+
 
 @pytest.fixture
 def query_manager(minimal_query_manager):
     return minimal_query_manager
+
 
 @pytest.fixture
 def settings(minimal_settings):
@@ -26,9 +29,11 @@ def settings(minimal_settings):
         'impediments_status_days_chart': 'impediments-status-days.png',
     })
 
+
 @pytest.fixture
 def columns(minimal_cycle_time_columns):
     return minimal_cycle_time_columns
+
 
 @pytest.fixture
 def cycle_time_results(minimal_cycle_time_columns):
@@ -50,7 +55,8 @@ def cycle_time_results(minimal_cycle_time_columns):
             ]),
         ]), columns=minimal_cycle_time_columns)
     }
-    
+
+
 def test_only_runs_if_charts_set(query_manager, settings, cycle_time_results):
     test_settings = extend_dict(settings, {
         'impediments_data': None,
@@ -124,6 +130,7 @@ def test_only_runs_if_charts_set(query_manager, settings, cycle_time_results):
     data = calculator.run()
     assert data is not None
 
+
 def test_empty(query_manager, settings, columns):
     results = {
         CycleTimeCalculator: DataFrame([], columns=columns)
@@ -134,12 +141,14 @@ def test_empty(query_manager, settings, columns):
     data = calculator.run()
     assert len(data.index) == 0
 
+
 def test_columns(query_manager, settings, cycle_time_results):
     calculator = ImpedimentsCalculator(query_manager, settings, cycle_time_results)
 
     data = calculator.run()
 
     assert list(data.columns) == ['key', 'status', 'flag', 'start', 'end']
+
 
 def test_calculate_impediments(query_manager, settings, cycle_time_results):
     calculator = ImpedimentsCalculator(query_manager, settings, cycle_time_results)
@@ -151,6 +160,7 @@ def test_calculate_impediments(query_manager, settings, cycle_time_results):
         {'key': 'A-3', 'status': 'Build',     'flag': 'Impediment',     'start': _ts('2018-01-04'), 'end': _ts('2018-01-05')},
         {'key': 'A-4', 'status': 'Committed', 'flag': 'Awaiting input', 'start': _ts('2018-01-05'), 'end': NaT},
     ]
+
 
 def test_different_backlog_column(query_manager, settings, cycle_time_results):
     settings = extend_dict(settings, {
@@ -164,6 +174,7 @@ def test_different_backlog_column(query_manager, settings, cycle_time_results):
         {'key': 'A-2', 'status': 'Backlog', 'flag': 'Impediment', 'start': _ts('2018-01-05'), 'end': _ts('2018-01-07')},
         {'key': 'A-3', 'status': 'Build',   'flag': 'Impediment', 'start': _ts('2018-01-04'), 'end': _ts('2018-01-05')},
     ]
+
 
 def test_different_done_column(query_manager, settings, cycle_time_results):
     settings = extend_dict(settings, {

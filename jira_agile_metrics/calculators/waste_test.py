@@ -13,9 +13,11 @@ from ..utils import extend_dict
 from ..querymanager import QueryManager
 from .waste import WasteCalculator
 
+
 @pytest.fixture
 def fields(minimal_fields):
     return minimal_fields + []
+
 
 @pytest.fixture
 def settings(minimal_settings):
@@ -26,6 +28,7 @@ def settings(minimal_settings):
         'waste_chart': 'waste.png',
         'waste_chart_title': 'Waste',
     })
+
 
 @pytest.fixture
 def jira(fields):
@@ -121,6 +124,7 @@ def jira(fields):
         ),
     ])
 
+
 def test_no_query(jira, settings):
     query_manager = QueryManager(jira, settings)
     results = {}
@@ -132,6 +136,7 @@ def test_no_query(jira, settings):
     data = calculator.run()
     assert data is None
 
+
 def test_columns(jira, settings):
     query_manager = QueryManager(jira, settings)
     results = {}
@@ -140,6 +145,7 @@ def test_columns(jira, settings):
     data = calculator.run()
 
     assert list(data.columns) == ['key', 'last_status', 'resolution', 'withdrawn_date']
+
 
 def test_empty(fields, settings):
     jira = JIRA(fields=fields, issues=[])
@@ -150,6 +156,7 @@ def test_empty(fields, settings):
     data = calculator.run()
 
     assert len(data.index) == 0
+
 
 def test_query(jira, settings):
     query_manager = QueryManager(jira, settings)
@@ -164,6 +171,7 @@ def test_query(jira, settings):
         {'key': 'A-6', 'last_status': 'foobar',    'resolution': 'Withdrawn', 'withdrawn_date': Timestamp('2018-01-06 02:02:02')},
         {'key': 'A-7', 'last_status': None,        'resolution': 'Withdrawn', 'withdrawn_date': Timestamp('2018-01-06 02:02:02')},
     ]
+
 
 def test_different_backlog_column(jira, settings):
     settings = extend_dict(settings, {
@@ -182,6 +190,7 @@ def test_different_backlog_column(jira, settings):
         {'key': 'A-6', 'last_status': 'foobar',    'resolution': 'Withdrawn', 'withdrawn_date': Timestamp('2018-01-06 02:02:02')},
         {'key': 'A-7', 'last_status': None,        'resolution': 'Withdrawn', 'withdrawn_date': Timestamp('2018-01-06 02:02:02')},
     ]
+
 
 def test_different_done_column(jira, settings):
     settings = extend_dict(settings, {

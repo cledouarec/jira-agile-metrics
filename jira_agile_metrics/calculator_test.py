@@ -3,23 +3,24 @@ from .calculator import (
     run_calculators
 )
 
+
 def test_run_calculator():
-    
+
     written = []
 
     class Enabled(Calculator):
 
         def run(self):
             return "Enabled"
-        
+
         def write(self):
             written.append("Enabled")
-    
+
     class Disabled(Calculator):
 
         def run(self):
             return "Disabled"
-        
+
         def write(self):
             pass
 
@@ -27,10 +28,10 @@ def test_run_calculator():
 
         def run(self):
             return self.get_result(Enabled) + " " + self.settings['foo']
-        
+
         def write(self):
             written.append(self.get_result())
-    
+
     calculators = [Enabled, Disabled, GetPreviousResult]
     query_manager = object()
     settings = {'foo': 'bar'}

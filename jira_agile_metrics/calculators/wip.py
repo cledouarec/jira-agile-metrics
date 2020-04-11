@@ -9,6 +9,7 @@ from .cfd import CFDCalculator
 
 logger = logging.getLogger(__name__)
 
+
 class WIPChartCalculator(Calculator):
     """Draw a weekly WIP chart
     """
@@ -26,9 +27,9 @@ class WIPChartCalculator(Calculator):
         if done_column not in cycle_names:
             logger.error("Done column %s does not exist", done_column)
             return None
-        
+
         return pd.DataFrame({'wip': cfd_data[start_column] - cfd_data[done_column]}, index=cfd_data.index)
-    
+
     def write(self):
         output_file = self.settings['wip_chart']
         if not output_file:
@@ -42,7 +43,7 @@ class WIPChartCalculator(Calculator):
             return
 
         fig, ax = plt.subplots()
-        
+
         if self.settings['wip_chart_title']:
             ax.set_title(self.settings['wip_chart_title'])
 

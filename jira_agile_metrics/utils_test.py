@@ -12,8 +12,10 @@ from .utils import (
     to_bin
 )
 
+
 def test_extend_dict():
     assert extend_dict({'one': 1}, {'two': 2}) == {'one': 1, 'two': 2}
+
 
 def test_get_extension():
     assert get_extension("foo.csv") == ".csv"
@@ -21,6 +23,7 @@ def test_get_extension():
     assert get_extension("\\path\\to\\foo.csv") == ".csv"
     assert get_extension("foo") == ""
     assert get_extension("foo.CSV") == ".csv"
+
 
 def test_to_json_string():
     assert to_json_string(1) == "1"
@@ -30,9 +33,11 @@ def test_to_json_string():
     assert to_json_string(pd.NaT) == ""
     assert to_json_string(pd.Timestamp(2018, 2, 1)) == "2018-02-01"
 
+
 def test_to_days_since_epoch():
     assert to_days_since_epoch(datetime.date(1970, 1, 1)) == 0
     assert to_days_since_epoch(datetime.date(1970, 1, 15)) == 14
+
 
 def test_breakdown_by_month():
 
@@ -47,7 +52,7 @@ def test_breakdown_by_month():
 
     breakdown = breakdown_by_month(df, 'start', 'end', 'key', 'priority', ['low', 'med', 'high'])
     assert list(breakdown.columns) == ['med', 'high']
-    
+
     assert list(breakdown.index) == [
         pd.Timestamp(2018, 1, 1),
         pd.Timestamp(2018, 2, 1),
@@ -58,6 +63,7 @@ def test_breakdown_by_month():
         {'high': 3, 'med': 1},
         {'high': 2, 'med': 2},
     ]
+
 
 def test_breakdown_by_month_open_ended():
 
@@ -75,7 +81,7 @@ def test_breakdown_by_month_open_ended():
 
     # Note: We will get columns until the current month; assume this test is
     # run from June onwards ;)
-    
+
     assert list(breakdown.index)[:5] == [
         pd.Timestamp(2018, 1, 1),
         pd.Timestamp(2018, 2, 1),
@@ -91,6 +97,7 @@ def test_breakdown_by_month_open_ended():
         {'high': 0, 'med': 1},
     ]
 
+
 def test_breakdown_by_month_no_column_spec():
 
     df = pd.DataFrame([
@@ -104,7 +111,7 @@ def test_breakdown_by_month_no_column_spec():
 
     breakdown = breakdown_by_month(df, 'start', 'end', 'key', 'priority')
     assert list(breakdown.columns) == ['high', 'med']  # alphabetical
-    
+
     assert list(breakdown.index) == [
         pd.Timestamp(2018, 1, 1),
         pd.Timestamp(2018, 2, 1),
@@ -115,6 +122,7 @@ def test_breakdown_by_month_no_column_spec():
         {'high': 3, 'med': 1},
         {'high': 2, 'med': 2},
     ]
+
 
 def test_breakdown_by_month_none_values():
 
@@ -129,13 +137,14 @@ def test_breakdown_by_month_none_values():
 
     breakdown = breakdown_by_month(df, 'start', 'end', 'key', 'priority')
     assert list(breakdown.columns) == [None]
-    
+
     assert list(breakdown.index) == [
         pd.Timestamp(2018, 1, 1),
         pd.Timestamp(2018, 2, 1),
         pd.Timestamp(2018, 3, 1),
     ]
     assert breakdown.to_dict('records') == [{None: 3}, {None: 4}, {None: 4}]
+
 
 def test_breakdown_by_month_sum_days():
 
@@ -150,7 +159,7 @@ def test_breakdown_by_month_sum_days():
 
     breakdown = breakdown_by_month_sum_days(df, 'start', 'end', 'priority', ['low', 'med', 'high'])
     assert list(breakdown.columns) == ['med', 'high']
-    
+
     assert list(breakdown.index) == [
         pd.Timestamp(2018, 1, 1),
         pd.Timestamp(2018, 2, 1),
@@ -162,6 +171,7 @@ def test_breakdown_by_month_sum_days():
         {'high': 70.0, 'med': 28.0},
         {'high': 40.0, 'med': 35.0}
     ]
+
 
 def test_breakdown_by_month_sum_days_no_column_spec():
 
@@ -176,7 +186,7 @@ def test_breakdown_by_month_sum_days_no_column_spec():
 
     breakdown = breakdown_by_month_sum_days(df, 'start', 'end', 'priority')
     assert list(breakdown.columns) == ['high', 'med']  # alphabetical
-    
+
     assert list(breakdown.index) == [
         pd.Timestamp(2018, 1, 1),
         pd.Timestamp(2018, 2, 1),
@@ -188,6 +198,7 @@ def test_breakdown_by_month_sum_days_no_column_spec():
         {'high': 70.0, 'med': 28.0},
         {'high': 40.0, 'med': 35.0}
     ]
+
 
 def test_breakdown_by_month_sum_day_open_ended():
 
@@ -205,7 +216,7 @@ def test_breakdown_by_month_sum_day_open_ended():
 
     # Note: We will get columns until the current month; assume this test is
     # run from June onwards ;)
-    
+
     assert list(breakdown.index)[:5] == [
         pd.Timestamp(2018, 1, 1),
         pd.Timestamp(2018, 2, 1),
@@ -221,6 +232,7 @@ def test_breakdown_by_month_sum_day_open_ended():
         {'high': 0,    'med': 31.0},
     ]
 
+
 def test_breakdown_by_month_sum_days_none_values():
 
     df = pd.DataFrame([
@@ -234,7 +246,7 @@ def test_breakdown_by_month_sum_days_none_values():
 
     breakdown = breakdown_by_month_sum_days(df, 'start', 'end', 'priority')
     assert list(breakdown.columns) == [None, 'med']
-    
+
     assert list(breakdown.index) == [
         pd.Timestamp(2018, 1, 1),
         pd.Timestamp(2018, 2, 1),
@@ -247,6 +259,7 @@ def test_breakdown_by_month_sum_days_none_values():
         {None: 40.0, 'med': 35.0}
     ]
 
+
 def test_to_bin():
 
     assert to_bin(0, [10, 20, 30]) == (0, 10)
@@ -257,5 +270,5 @@ def test_to_bin():
     assert to_bin(20, [10, 20, 30]) == (10, 20)
 
     assert to_bin(30, [10, 20, 30]) == (20, 30)
-    
+
     assert to_bin(31, [10, 20, 30]) == (30, None)

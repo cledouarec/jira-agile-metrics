@@ -7,23 +7,28 @@ from .ageingwip import AgeingWIPChartCalculator
 
 from ..utils import extend_dict
 
+
 @pytest.fixture
 def settings(minimal_settings):
     return extend_dict(minimal_settings, {
         'ageing_wip_chart': 'ageingwip.png'  # without a file to write the calculator will stop
     })
 
+
 @pytest.fixture
 def query_manager(minimal_query_manager):
     return minimal_query_manager
+
 
 @pytest.fixture
 def results(large_cycle_time_results):
     return extend_dict(large_cycle_time_results, {})
 
+
 @pytest.fixture
 def today():
     return datetime.date(2018, 1, 10)
+
 
 def test_empty(query_manager, settings, minimal_cycle_time_columns, today):
     results = {
@@ -60,6 +65,7 @@ def test_columns(query_manager, settings, results, today):
         'Test'
     ]
 
+
 def test_calculate_ageing_wip(query_manager, settings, results, today):
     calculator = AgeingWIPChartCalculator(query_manager, settings, results)
 
@@ -76,6 +82,7 @@ def test_calculate_ageing_wip(query_manager, settings, results, today):
         {'key': 'A-11', 'status': 'Test', 'age': 8.0},
         {'key': 'A-12', 'status': 'Test', 'age': 8.0},
     ]
+
 
 def test_calculate_ageing_wip_with_different_columns(query_manager, settings, results, today):
     settings.update({

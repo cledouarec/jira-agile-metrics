@@ -8,6 +8,7 @@ from .cfd import CFDCalculator
 
 logger = logging.getLogger(__name__)
 
+
 class NetFlowChartCalculator(Calculator):
     """Draw a net flow chart
     """
@@ -28,7 +29,7 @@ class NetFlowChartCalculator(Calculator):
 
         frequency = self.settings['net_flow_frequency']
         logger.debug("Calculating net flow at frequency %s", frequency)
-        
+
         net_flow_data = cfd_data[[start_column, done_column]].resample(frequency, label='left').max()
         net_flow_data['arrivals'] = net_flow_data[start_column].diff().fillna(net_flow_data[start_column])
         net_flow_data['departures'] = net_flow_data[done_column].diff().fillna(net_flow_data[done_column])
@@ -36,7 +37,7 @@ class NetFlowChartCalculator(Calculator):
         net_flow_data['positive'] = net_flow_data['net_flow'] >= 0
 
         return net_flow_data
-    
+
     def write(self):
         output_file = self.settings['net_flow_chart']
         if not output_file:
@@ -50,7 +51,7 @@ class NetFlowChartCalculator(Calculator):
             return
 
         fig, ax = plt.subplots()
-        
+
         if self.settings['net_flow_chart_title']:
             ax.set_title(self.settings['net_flow_chart_title'])
 

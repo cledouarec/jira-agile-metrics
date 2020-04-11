@@ -2,6 +2,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 class Calculator(object):
     """Base class for calculators.
     """
@@ -34,6 +35,7 @@ class Calculator(object):
         """Write any output files to the filesystem in the given
         target directory.
         """
+
 
 def run_calculators(calculators, query_manager, settings):
     """Run all calculators passed in, in the order listed.

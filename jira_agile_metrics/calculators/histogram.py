@@ -11,6 +11,7 @@ from .cycletime import CycleTimeCalculator
 
 logger = logging.getLogger(__name__)
 
+
 class HistogramCalculator(Calculator):
     """Build histogram data for the cycle times in `cycle_data`. Returns
     a dictionary with keys `bin_values` and `bin_edges` of numpy arrays

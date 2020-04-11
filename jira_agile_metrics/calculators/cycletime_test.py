@@ -12,6 +12,7 @@ from ..conftest import (
 from ..querymanager import QueryManager
 from .cycletime import CycleTimeCalculator
 
+
 @pytest.fixture
 def jira(custom_fields):
     return JIRA(fields=custom_fields, issues=[
@@ -88,9 +89,11 @@ def jira(custom_fields):
         ),
     ])
 
+
 @pytest.fixture
 def settings(custom_settings):
     return custom_settings
+
 
 def test_columns(jira, settings):
     query_manager = QueryManager(jira, settings)
@@ -110,18 +113,19 @@ def test_columns(jira, settings):
         'Estimate',
         'Release',
         'Team',
-        
+
         'cycle_time',
         'completed_timestamp',
         'blocked_days',
         'impediments',
-        
+
         'Backlog',
         'Committed',
         'Build',
         'Test',
         'Done'
     ]
+
 
 def test_empty(custom_fields, settings):
     jira = JIRA(fields=custom_fields, issues=[])
@@ -132,6 +136,7 @@ def test_empty(custom_fields, settings):
     data = calculator.run()
 
     assert len(data.index) == 0
+
 
 def test_movement(jira, settings):
     query_manager = QueryManager(jira, settings)
@@ -221,7 +226,7 @@ def test_movement(jira, settings):
         'Estimate': 30,
         'Release': 'None',
         'Team': 'Team 1',
-        
+
         'completed_timestamp': NaT,
         'cycle_time': NaT,
         'blocked_days': 3,

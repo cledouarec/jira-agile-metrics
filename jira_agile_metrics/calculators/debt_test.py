@@ -13,11 +13,13 @@ from ..utils import extend_dict
 from ..querymanager import QueryManager
 from .debt import DebtCalculator
 
+
 @pytest.fixture
 def fields(minimal_fields):
     return minimal_fields + [
         {'id': 'priority',  'name': 'Priority'},
     ]
+
 
 @pytest.fixture
 def settings(minimal_settings):
@@ -32,6 +34,7 @@ def settings(minimal_settings):
         'debt_age_chart_title': 'Debt age',
         'debt_age_chart_bins': [10, 20, 30]
     })
+
 
 @pytest.fixture
 def jira(fields):
@@ -98,6 +101,7 @@ def jira(fields):
         ),
     ])
 
+
 def test_no_query(jira, settings):
     query_manager = QueryManager(jira, settings)
     results = {}
@@ -109,6 +113,7 @@ def test_no_query(jira, settings):
     data = calculator.run()
     assert data is None
 
+
 def test_columns(jira, settings):
     query_manager = QueryManager(jira, settings)
     results = {}
@@ -117,6 +122,7 @@ def test_columns(jira, settings):
     data = calculator.run()
 
     assert list(data.columns) == ['key', 'priority', 'created', 'resolved', 'age']
+
 
 def test_empty(fields, settings):
     jira = JIRA(fields=fields, issues=[])

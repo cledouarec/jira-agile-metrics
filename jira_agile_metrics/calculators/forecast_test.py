@@ -10,6 +10,7 @@ from .forecast import BurnupForecastCalculator
 
 from ..utils import extend_dict
 
+
 @pytest.fixture
 def settings(minimal_settings):
     return extend_dict(minimal_settings, {
@@ -23,9 +24,11 @@ def settings(minimal_settings):
         'burnup_forecast_chart': 'forecast.png'  # without a file, calculator stops
     })
 
+
 @pytest.fixture
 def query_manager(minimal_query_manager):
     return minimal_query_manager
+
 
 @pytest.fixture
 def results(query_manager, settings, large_cycle_time_results):
@@ -33,6 +36,7 @@ def results(query_manager, settings, large_cycle_time_results):
     results.update({CFDCalculator: CFDCalculator(query_manager, settings, results).run()})
     results.update({BurnupCalculator: BurnupCalculator(query_manager, settings, results).run()})
     return results
+
 
 def test_empty(query_manager, settings, minimal_cycle_time_columns):
     results = {
@@ -44,6 +48,7 @@ def test_empty(query_manager, settings, minimal_cycle_time_columns):
 
     data = calculator.run()
     assert data is None
+
 
 def test_columns(query_manager, settings, results):
     calculator = BurnupForecastCalculator(query_manager, settings, results)
@@ -62,6 +67,7 @@ def test_columns(query_manager, settings, results):
         'Trial 9'
     ]
 
+
 def test_calculate_forecast(query_manager, settings, results):
     calculator = BurnupForecastCalculator(query_manager, settings, results)
 
@@ -72,7 +78,7 @@ def test_calculate_forecast(query_manager, settings, results):
     assert len(data.index) > 0
     assert list(data.index)[0] == Timestamp('2018-01-09 00:00:00', freq='D')
     assert list(data.index)[1] == Timestamp('2018-01-10 00:00:00', freq='D')
-    
+
     for i in range(10):
         trial_values = data['Trial %d' % i]
 
@@ -88,6 +94,7 @@ def test_calculate_forecast(query_manager, settings, results):
 
         # we reach the target value
         assert trial_values[-1] == 30
+
 
 def test_calculate_forecast_settings(query_manager, settings, results):
 
@@ -115,7 +122,7 @@ def test_calculate_forecast_settings(query_manager, settings, results):
     assert len(data.index) > 0
     assert list(data.index)[0] == Timestamp('2018-01-09 00:00:00', freq='D')
     assert list(data.index)[1] == Timestamp('2018-01-10 00:00:00', freq='D')
-    
+
     for i in range(10):
         trial_values = data['Trial %d' % i]
 

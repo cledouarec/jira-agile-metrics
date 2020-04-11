@@ -5,15 +5,18 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
+
 class StatusTypes:
     backlog = 'backlog'
     accepted = 'accepted'
     complete = 'complete'
 
+
 def extend_dict(d, e):
     r = d.copy()
     r.update(e)
     return r
+
 
 def to_json_string(value):
     if isinstance(value, pd.Timestamp):
@@ -26,19 +29,24 @@ def to_json_string(value):
     except TypeError:
         return value
 
+
 def get_extension(filename):
     return os.path.splitext(filename)[1].lower()
+
 
 def to_days_since_epoch(d):
     return (d - datetime.date(1970, 1, 1)).days
 
+
 def set_chart_context(context):
     sns.set_context(context)
+
 
 def set_chart_style(style="whitegrid", despine=True):
     sns.set_style(style)
     if despine:
         sns.despine()
+
 
 def breakdown_by_month(df, start_column, end_column, key_column, value_column, output_columns=None, aggfunc='count'):
     """If `df` is a DataFrame of items that are valid/active between the
@@ -76,6 +84,7 @@ def breakdown_by_month(df, start_column, end_column, key_column, value_column, o
 
     return breakdown
 
+
 def breakdown_by_month_sum_days(df, start_column, end_column, value_column, output_columns=None, aggfunc='sum'):
     """If `df` is a DataFrame of items that are valid/active between the
     timestamps stored in `start_column` and `end_column`, and where each has a
@@ -111,6 +120,7 @@ def breakdown_by_month_sum_days(df, start_column, end_column, value_column, outp
         breakdown = breakdown[[s for s in output_columns if s in breakdown.columns]]
 
     return breakdown
+
 
 def to_bin(value, edges):
     """Pass a list of numbers in `edges` and return which of them `value` falls

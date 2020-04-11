@@ -10,6 +10,7 @@ from .cycletime import CycleTimeCalculator
 
 logger = logging.getLogger(__name__)
 
+
 class ThroughputCalculator(Calculator):
     """Build a data frame with columns `completed_timestamp` of the
     given frequency, and `count`, where count is the number of items
@@ -18,22 +19,22 @@ class ThroughputCalculator(Calculator):
 
     def run(self):
         cycle_data = self.get_result(CycleTimeCalculator)
-        
+
         frequency = self.settings['throughput_frequency']
         window = self.settings['throughput_window']
-        
+
         logger.debug("Calculating throughput at frequency %s", frequency)
 
         return calculate_throughput(cycle_data, frequency, window)
-    
+
     def write(self):
         data = self.get_result()
-        
+
         if self.settings['throughput_data']:
             self.write_file(data, self.settings['throughput_data'])
         else:
             logger.debug("No output file specified for throughput data")
-        
+
         if self.settings['throughput_chart']:
             self.write_chart(data, self.settings['throughput_chart'])
         else:
@@ -51,14 +52,14 @@ class ThroughputCalculator(Calculator):
                 data.to_excel(output_file, 'Throughput', header=True)
             else:
                 data.to_csv(output_file, header=True)
-    
+
     def write_chart(self, data, output_file):
         chart_data = data.copy()
 
         if len(chart_data.index) == 0:
             logger.warning("Cannot draw throughput chart with no completed items")
             return
-        
+
         fig, ax = plt.subplots()
 
         if self.settings['throughput_chart_title']:
@@ -73,7 +74,6 @@ class ThroughputCalculator(Calculator):
         chart_data['fitted'] = fit.predict(chart_data)
 
         # Plot
-
         ax.set_xlabel("Period starting")
         ax.set_ylabel("Number of items")
 
@@ -103,6 +103,7 @@ class ThroughputCalculator(Calculator):
         fig.savefig(output_file, bbox_inches='tight', dpi=300)
         plt.close(fig)
 
+
 def calculate_throughput(cycle_data, frequency, window=None):
     if len(cycle_data.index) == 0:
         return pd.DataFrame([], columns=['count'], index=[])
@@ -111,15 +112,15 @@ def calculate_throughput(cycle_data, frequency, window=None):
         .rename(columns={'key': 'count'}) \
         .groupby('completed_timestamp').count() \
         .resample(frequency).sum()
-    
+
     # make sure we have 0 for periods with no throughput, and force to window if set
     window_start = throughput.index.min()
     window_end = throughput.index.max()
-    
+
     if window:
         window_start = window_end - (pd.tseries.frequencies.to_offset(frequency) * (window - 1))
 
     if window_start is pd.NaT or window_end is pd.NaT:
         return pd.DataFrame([], columns=['count'], index=[])
-    
+
     return throughput.reindex(index=pd.date_range(start=window_start, end=window_end, freq=frequency)).fillna(0)

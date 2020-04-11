@@ -6,17 +6,21 @@ from .cfd import CFDCalculator
 
 from ..utils import extend_dict
 
+
 @pytest.fixture
 def query_manager(minimal_query_manager):
     return minimal_query_manager
+
 
 @pytest.fixture
 def settings(minimal_settings):
     return extend_dict(minimal_settings, {})
 
+
 @pytest.fixture
 def columns(minimal_cycle_time_columns):
     return minimal_cycle_time_columns
+
 
 def test_empty(query_manager, settings, columns):
     results = {
@@ -27,6 +31,7 @@ def test_empty(query_manager, settings, columns):
 
     data = calculator.run()
     assert len(data.index) == 0
+
 
 def test_columns(query_manager, settings, minimal_cycle_time_results):
     calculator = CFDCalculator(query_manager, settings, minimal_cycle_time_results)
@@ -40,6 +45,7 @@ def test_columns(query_manager, settings, minimal_cycle_time_results):
         'Test',
         'Done'
     ]
+
 
 def test_calculate_cfd(query_manager, settings, minimal_cycle_time_results):
     calculator = CFDCalculator(query_manager, settings, minimal_cycle_time_results)

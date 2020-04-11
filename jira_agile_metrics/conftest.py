@@ -9,6 +9,7 @@ from .calculators.cfd import CFDCalculator
 
 # Fake a portion of the JIRA API
 
+
 class FauxFieldValue(object):
     """A complex field value, with a name and a typed value
     """
@@ -16,11 +17,13 @@ class FauxFieldValue(object):
         self.name = name
         self.value = value
 
+
 class FauxFields(object):
     """Container for `issue.fields`
     """
     def __init__(self, fields):
         self.__dict__.update(fields)
+
 
 class FauxChangeItem(object):
     """An item in a changelog change
@@ -30,6 +33,7 @@ class FauxChangeItem(object):
         self.from_ = self.fromString = fromString
         self.to = self.toString = toString
 
+
 class FauxChange(object):
     """A change in a changelog. Contains a list of change items.
     """
@@ -37,11 +41,13 @@ class FauxChange(object):
         self.created = created
         self.items = [FauxChangeItem(*i) for i in items]
 
+
 class FauxChangelog(object):
     """A changelog. Contains a list of changes in `histories`.
     """
     def __init__(self, changes):
         self.histories = changes
+
 
 class FauxIssue(object):
     """An issue, with a key, change log, and set of fields
@@ -50,6 +56,7 @@ class FauxIssue(object):
         self.key = key
         self.fields = FauxFields(fields)
         self.changelog = FauxChangelog(changes)
+
 
 class FauxJIRA(object):
     """JIRA interface. Initialised with a set of issues, which will be returned
@@ -67,6 +74,7 @@ class FauxJIRA(object):
 
     def search_issues(self, jql, *args, **kwargs):
         return self._issues if self._filter is None else [i for i in self._issues if self._filter(i, jql)]
+
 
 # Fixtures
 
@@ -91,7 +99,7 @@ def minimal_settings():
         ],
         'query_attribute': None,
         'queries': [{'jql': '(filter=123)', 'value': None}],
-        
+
         'backlog_column': 'Backlog',
         'committed_column': 'Committed',
         'final_column': 'Test',
@@ -114,6 +122,7 @@ def custom_settings(minimal_settings):
         },
     })
 
+
 # Fields + corresponding columns
 
 @pytest.fixture
@@ -129,6 +138,7 @@ def minimal_fields():
         {'id': 'customfield_100', 'name': 'Flagged'},
     ]
 
+
 @pytest.fixture
 def custom_fields(minimal_fields):
     """A `fields` list with the three custom fields used by `custom_settings`
@@ -138,6 +148,7 @@ def custom_fields(minimal_fields):
         {'id': 'customfield_002',  'name': 'Size'},
         {'id': 'customfield_003',  'name': 'Releases'},
     ]
+
 
 @pytest.fixture
 def minimal_cycle_time_columns():
@@ -149,6 +160,7 @@ def minimal_cycle_time_columns():
         'cycle_time', 'completed_timestamp', 'blocked_days', 'impediments',
         'Backlog', 'Committed', 'Build', 'Test', 'Done'
     ]
+
 
 @pytest.fixture
 def custom_cycle_time_columns(minimal_fields):
@@ -162,6 +174,7 @@ def custom_cycle_time_columns(minimal_fields):
         'Backlog', 'Committed', 'Build', 'Test', 'Done'
     ]
 
+
 @pytest.fixture
 def cfd_columns():
     """A columns list for the results of the CFDCalculator.
@@ -174,6 +187,7 @@ def cfd_columns():
         'Done'
     ]
 
+
 # Query manager
 
 @pytest.fixture
@@ -182,6 +196,7 @@ def minimal_query_manager(minimal_fields, minimal_settings):
     """
     jira = FauxJIRA(fields=minimal_fields, issues=[])
     return QueryManager(jira, minimal_settings)
+
 
 @pytest.fixture
 def custom_query_manager(custom_fields, custom_settings):
@@ -218,8 +233,10 @@ def _issues(issues):
         'Done': i['Done']
     } for idx, i in enumerate(issues)]
 
+
 def _ts(datestring, timestring="00:00:00", freq=None):
     return Timestamp('%s %s' % (datestring, timestring,), freq=freq)
+
 
 @pytest.fixture
 def minimal_cycle_time_results(minimal_cycle_time_columns):
@@ -233,6 +250,7 @@ def minimal_cycle_time_results(minimal_cycle_time_columns):
             dict(Backlog=_ts('2018-01-04'), Committed=_ts('2018-01-04'), Build=NaT,               Test=NaT,               Done=NaT),
         ]), columns=minimal_cycle_time_columns)
     }
+
 
 @pytest.fixture
 def large_cycle_time_results(minimal_cycle_time_columns):
@@ -269,6 +287,7 @@ def large_cycle_time_results(minimal_cycle_time_columns):
             dict(Backlog=_ts('2018-01-01'), Committed=_ts('2018-01-05'), Build=_ts('2018-01-06'), Test=_ts('2018-01-08'), Done=_ts('2018-01-09')),
         ]), columns=minimal_cycle_time_columns)
     }
+
 
 @pytest.fixture
 def minimal_cfd_results(minimal_cycle_time_results, cfd_columns):

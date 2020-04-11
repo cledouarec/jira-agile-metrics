@@ -6,18 +6,22 @@ from .burnup import BurnupCalculator
 
 from ..utils import extend_dict
 
+
 @pytest.fixture
 def settings(minimal_settings):
     return extend_dict(minimal_settings, {
     })
 
+
 @pytest.fixture
 def query_manager(minimal_query_manager):
     return minimal_query_manager
 
+
 @pytest.fixture
 def results(minimal_cfd_results):
     return extend_dict(minimal_cfd_results, {})
+
 
 def test_empty(query_manager, settings, cfd_columns):
     results = {
@@ -29,6 +33,7 @@ def test_empty(query_manager, settings, cfd_columns):
     data = calculator.run()
     assert len(data.index) == 0
 
+
 def test_columns(query_manager, settings, results):
     calculator = BurnupCalculator(query_manager, settings, results)
 
@@ -38,6 +43,7 @@ def test_columns(query_manager, settings, results):
         'Backlog',
         'Done'
     ]
+
 
 def test_calculate_burnup(query_manager, settings, results):
     calculator = BurnupCalculator(query_manager, settings, results)
@@ -61,6 +67,7 @@ def test_calculate_burnup(query_manager, settings, results):
         {'Backlog': 4.0, 'Done': 0.0},
         {'Backlog': 4.0, 'Done': 1.0},
     ]
+
 
 def test_calculate_burnup_with_different_columns(query_manager, settings, results):
     settings.update({

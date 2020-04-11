@@ -11,6 +11,7 @@ from .conftest import (
 from .querymanager import QueryManager, IssueSnapshot
 from .utils import extend_dict
 
+
 @pytest.fixture
 def jira(custom_fields):
     return JIRA(fields=custom_fields, issues=[
@@ -24,7 +25,7 @@ def jira(custom_fields):
             customfield_002=Value(None, 30),
             customfield_003=Value(None, ["R2", "R3", "R4"]),
             changes=[
-                # the changes are not in chrnological order, the first change is intentionally the third 
+                # the changes are not in chrnological order, the first change is intentionally the third
                 # status change. This is intended to test that we manage get the correct first status change as
                 # the transition from Backlog to Next
                 Change("2018-01-03 01:01:01", [("resolution", None, "Closed",), ("status", "Next", "Done",)]),
@@ -35,9 +36,11 @@ def jira(custom_fields):
         )
     ])
 
+
 @pytest.fixture
 def settings(custom_settings):
     return extend_dict(custom_settings, {})
+
 
 def test_search(jira, settings):
     qm = QueryManager(jira, settings)
@@ -50,6 +53,7 @@ def test_search(jira, settings):
     issues = qm.find_issues("(filter=123)")
     assert issues == jira._issues
 
+
 def test_resolve_attribute_value(jira, settings):
     qm = QueryManager(jira, settings)
     issues = qm.find_issues("(filter=123)")
@@ -58,6 +62,7 @@ def test_resolve_attribute_value(jira, settings):
     assert qm.resolve_attribute_value(issues[0], "Estimate") == 30
     assert qm.resolve_attribute_value(issues[0], "Release") == "R3"  # due to known_value
 
+
 def test_resolve_field_value(jira, settings):
     qm = QueryManager(jira, settings)
     issues = qm.find_issues("(filter=123)")
@@ -65,6 +70,7 @@ def test_resolve_field_value(jira, settings):
     assert qm.resolve_field_value(issues[0], "customfield_001") == "Team 1"
     assert qm.resolve_field_value(issues[0], "customfield_002") == 30
     assert qm.resolve_field_value(issues[0], "customfield_003") == "R3"  # due to known_value
+
 
 def test_iter_changes(jira, settings):
     qm = QueryManager(jira, settings)

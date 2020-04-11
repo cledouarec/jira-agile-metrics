@@ -10,6 +10,7 @@ from .cycletime import CycleTimeCalculator
 
 logger = logging.getLogger(__name__)
 
+
 class CFDCalculator(Calculator):
     """Create the data to build a cumulative flow diagram: a DataFrame,
     indexed by day, with columns containing cumulative counts for each
@@ -27,7 +28,7 @@ class CFDCalculator(Calculator):
         cycle_names = [s['name'] for s in self.settings['cycle']]
 
         return calculate_cfd_data(cycle_data, cycle_names)
-    
+
     def write(self):
         data = self.get_result()
 
@@ -35,7 +36,7 @@ class CFDCalculator(Calculator):
             self.write_file(data, self.settings['cfd_data'])
         else:
             logger.debug("No output file specified for CFD file")
-        
+
         if self.settings['cfd_chart']:
             self.write_chart(data, self.settings['cfd_chart'])
         else:
@@ -52,24 +53,24 @@ class CFDCalculator(Calculator):
                 data.to_excel(output_file, 'CFD')
             else:
                 data.to_csv(output_file)
-    
+
     def write_chart(self, data, output_file):
         if len(data.index) == 0:
             logger.warning("Cannot draw CFD with no data")
             return
-        
+
         window = self.settings['cfd_window']
         if window:
             start = data.index.max() - pd.Timedelta(window, 'D')
             data = data[start:]
-        
+
             # Re-check after slicing
             if len(data.index) == 0:
                 logger.warning("Cannot draw CFD with no data")
                 return
 
         fig, ax = plt.subplots()
-        
+
         if self.settings['cfd_chart_title']:
             ax.set_title(self.settings['cfd_chart_title'])
 
@@ -99,6 +100,7 @@ class CFDCalculator(Calculator):
         logger.info("Writing CFD chart to %s", output_file)
         fig.savefig(output_file, bbox_inches='tight', dpi=300)
         plt.close(fig)
+
 
 def calculate_cfd_data(cycle_data, cycle_names):
 

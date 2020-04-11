@@ -7,6 +7,7 @@ from .cycletime import CycleTimeCalculator
 
 logger = logging.getLogger(__name__)
 
+
 class PercentilesCalculator(Calculator):
     """Build percentiles for `cycle_time` in cycle data as a DataFrame
     """

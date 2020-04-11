@@ -10,6 +10,7 @@ from .cycletime import CycleTimeCalculator
 
 logger = logging.getLogger(__name__)
 
+
 class ScatterplotCalculator(Calculator):
     """Build scatterplot data for the cycle times: a data frame containing
     only those items in where values are set for `completed_timestamp` and
@@ -21,7 +22,7 @@ class ScatterplotCalculator(Calculator):
     def run(self):
         cycle_data = self.get_result(CycleTimeCalculator)
         return calculate_scatterplot_data(cycle_data)
-    
+
     def write(self):
         data = self.get_result()
 
@@ -29,7 +30,7 @@ class ScatterplotCalculator(Calculator):
             self.write_file(data, self.settings['scatterplot_data'])
         else:
             logger.debug("No output file specified for scatterplot data")
-        
+
         if self.settings['scatterplot_chart']:
             self.write_chart(data, self.settings['scatterplot_chart'])
         else:
@@ -48,12 +49,12 @@ class ScatterplotCalculator(Calculator):
                 file_data.to_excel(output_file, 'Scatter', index=False)
             else:
                 file_data.to_csv(output_file, index=False)
-        
+
     def write_chart(self, data, output_file):
         if len(data.index) < 2:
             logger.warning("Need at least 2 completed items to draw scatterplot")
             return
-            
+
         chart_data = pd.DataFrame({
             'completed_date': data['completed_date'].values.astype('datetime64[D]'),
             'cycle_time': data['cycle_time']
@@ -67,10 +68,10 @@ class ScatterplotCalculator(Calculator):
             if len(data.index) < 2:
                 logger.warning("Need at least 2 completed items to draw scatterplot")
                 return
-        
+
         quantiles = self.settings['quantiles']
         logger.debug("Showing forecast at quantiles %s", ', '.join(['%.2f' % (q * 100.0) for q in quantiles]))
-        
+
         fig, ax = plt.subplots()
         fig.autofmt_xdate()
 
@@ -100,6 +101,7 @@ class ScatterplotCalculator(Calculator):
         logger.info("Writing scatterplot chart to %s", output_file)
         fig.savefig(output_file, bbox_inches='tight', dpi=300)
         plt.close(fig)
+
 
 def calculate_scatterplot_data(cycle_data):
 

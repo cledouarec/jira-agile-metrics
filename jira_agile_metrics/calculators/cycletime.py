@@ -9,6 +9,7 @@ from ..utils import get_extension, to_json_string, StatusTypes
 
 logger = logging.getLogger(__name__)
 
+
 class CycleTimeCalculator(Calculator):
     """Basic cycle time data, fetched from JIRA.
 
@@ -52,7 +53,7 @@ class CycleTimeCalculator(Calculator):
 
     def write(self):
         output_files = self.settings['cycle_time_data']
-        
+
         if not output_files:
             logger.debug("No output file specified for cycle time data")
             return
@@ -78,6 +79,7 @@ class CycleTimeCalculator(Calculator):
                 cycle_data.to_excel(output_file, 'Cycle data', columns=columns, header=header, index=False)
             else:
                 cycle_data.to_csv(output_file, columns=columns, header=header, date_format='%Y-%m-%d', index=False)
+
 
 def calculate_cycle_times(
     query_manager,
@@ -169,7 +171,7 @@ def calculate_cycle_times(
                         logger.info("Issue %s transitioned to unknown JIRA status %s", issue.key, snapshot.to_string)
                         unmapped_statuses.add(snapshot.to_string)
                         continue
-                    
+
                     last_status = snapshot_cycle_step_name = snapshot_cycle_step['name']
 
                     # Keep the first time we entered a step
@@ -197,7 +199,7 @@ def calculate_cycle_times(
                         if impediment_start is None:
                             logger.warning("Issue %s had impediment flag cleared before being set. This should not happen.", issue.key)
                             continue
-                        
+
                         if impediment_start_status not in (backlog_column, done_column):
                             item['blocked_days'] += (snapshot.date.date() - impediment_start).days
                         item['impediments'].append({
@@ -211,7 +213,7 @@ def calculate_cycle_times(
                         impediment_flag = None
                         impediment_start = None
                         impediment_start_status = None
-            
+
             # If an impediment flag was set but never cleared: treat as resolved on the ticket
             # resolution date if the ticket was resolved, else as still open until today.
             if impediment_start is not None:
@@ -237,7 +239,7 @@ def calculate_cycle_times(
                 impediment_flag = None
                 impediment_start = None
                 impediment_start_status = None
-            
+
             # Wipe timestamps if items have moved backwards; calculate cycle time
 
             previous_timestamp = None

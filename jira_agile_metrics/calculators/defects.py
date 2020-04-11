@@ -9,6 +9,7 @@ from ..utils import breakdown_by_month, set_chart_style
 
 logger = logging.getLogger(__name__)
 
+
 class DefectsCalculator(Calculator):
     """Calculate defect concentration
 
@@ -39,7 +40,7 @@ class DefectsCalculator(Calculator):
         if not query:
             logger.debug("Not calculating defects chart data as no query specified")
             return None
-        
+
         # Get the fields
         priority_field = self.settings['defects_priority_field']
         priority_field_id = self.query_manager.field_name_to_id(priority_field) if priority_field else None
@@ -49,7 +50,7 @@ class DefectsCalculator(Calculator):
 
         environment_field = self.settings['defects_environment_field']
         environment_field_id = self.query_manager.field_name_to_id(environment_field) if environment_field else None
-        
+
         # Build data frame
         columns = ['key', 'priority', 'type', 'environment', 'created', 'resolved']
         series = {
@@ -83,33 +84,33 @@ class DefectsCalculator(Calculator):
         if len(chart_data.index) == 0:
             logger.warning("Cannot draw defect charts with zero items")
             return
-        
+
         if self.settings['defects_by_priority_chart']:
             self.write_defects_by_priority_chart(chart_data, self.settings['defects_by_priority_chart'])
-        
+
         if self.settings['defects_by_type_chart']:
             self.write_defects_by_type_chart(chart_data, self.settings['defects_by_type_chart'])
-        
+
         if self.settings['defects_by_environment_chart']:
             self.write_defects_by_environment_chart(chart_data, self.settings['defects_by_environment_chart'])
-        
+
     def write_defects_by_priority_chart(self, chart_data, output_file):
         window = self.settings['defects_window']
         priority_values = self.settings['defects_priority_values']
 
         breakdown = breakdown_by_month(chart_data, 'created', 'resolved', 'key', 'priority', priority_values)
-        
+
         if window:
             breakdown = breakdown[-window:]
-        
+
         if len(breakdown.index) == 0 or len(breakdown.columns) == 0:
             logger.warning("Cannot draw defects by priority chart with zero items")
             return
 
         fig, ax = plt.subplots()
-        
+
         breakdown.plot.bar(ax=ax, stacked=True)
-        
+
         if self.settings['defects_by_priority_chart_title']:
             ax.set_title(self.settings['defects_by_priority_chart_title'])
 
@@ -126,24 +127,24 @@ class DefectsCalculator(Calculator):
         logger.info("Writing defects by priority chart to %s", output_file)
         fig.savefig(output_file, bbox_inches='tight', dpi=300)
         plt.close(fig)
-    
+
     def write_defects_by_type_chart(self, chart_data, output_file):
         window = self.settings['defects_window']
         type_values = self.settings['defects_type_values']
 
         breakdown = breakdown_by_month(chart_data, 'created', 'resolved', 'key', 'type', type_values)
-        
+
         if window:
             breakdown = breakdown[-window:]
-        
+
         if len(breakdown.index) == 0 or len(breakdown.columns) == 0:
             logger.warning("Cannot draw defects by type chart with zero items")
             return
 
         fig, ax = plt.subplots()
-        
+
         breakdown.plot.bar(ax=ax, stacked=True)
-        
+
         if self.settings['defects_by_type_chart_title']:
             ax.set_title(self.settings['defects_by_type_chart_title'])
 
@@ -160,24 +161,24 @@ class DefectsCalculator(Calculator):
         logger.info("Writing defects by type chart to %s", output_file)
         fig.savefig(output_file, bbox_inches='tight', dpi=300)
         plt.close(fig)
-    
+
     def write_defects_by_environment_chart(self, chart_data, output_file):
         window = self.settings['defects_window']
         environment_values = self.settings['defects_environment_values']
 
         breakdown = breakdown_by_month(chart_data, 'created', 'resolved', 'key', 'environment', environment_values)
-        
+
         if window:
             breakdown = breakdown[-window:]
-        
+
         if len(breakdown.index) == 0 or len(breakdown.columns) == 0:
             logger.warning("Cannot draw defects by environment chart with zero items")
             return
 
         fig, ax = plt.subplots()
-        
+
         breakdown.plot.bar(ax=ax, stacked=True)
-        
+
         if self.settings['defects_by_environment_chart_title']:
             ax.set_title(self.settings['defects_by_environment_chart_title'])
 

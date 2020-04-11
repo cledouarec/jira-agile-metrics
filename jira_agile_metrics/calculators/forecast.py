@@ -13,6 +13,7 @@ from .burnup import BurnupCalculator
 
 logger = logging.getLogger(__name__)
 
+
 class BurnupForecastCalculator(Calculator):
     """Draw a burn-up chart with a forecast run to completion
     """
@@ -64,7 +65,7 @@ class BurnupForecastCalculator(Calculator):
         if throughput_data['count'].sum() <= 0:
             logger.warning("No throughput samples available, aborting forecast simulations")
             return None
-        
+
         return burnup_monte_carlo(
             start_value=start_value,
             target_value=target,
@@ -233,6 +234,7 @@ class BurnupForecastCalculator(Calculator):
         fig.savefig(output_file, bbox_inches='tight', dpi=300)
         plt.close(fig)
 
+
 def calculate_daily_throughput(cycle_data, done_column, window_start, window_end):
     return cycle_data[[done_column, 'key']] \
         .rename(columns={'key': 'count', done_column: 'completed_timestamp'}) \
@@ -240,6 +242,7 @@ def calculate_daily_throughput(cycle_data, done_column, window_start, window_end
         .resample("1D").sum() \
         .reindex(index=pd.date_range(start=window_start, end=window_end, freq='D')) \
         .fillna(0)
+
 
 def throughput_sampler(throughput_data, start_value, target):
     """Return a function that can efficiently draw samples from `throughput_data`
@@ -255,8 +258,9 @@ def throughput_sampler(throughput_data, start_value, target):
 
         sample_buffer['idx'] += 1
         return sample_buffer['buffer'].iloc[sample_buffer['idx'] - 1]
-    
+
     return get_throughput_sample
+
 
 def burnup_monte_carlo(
     start_value,
