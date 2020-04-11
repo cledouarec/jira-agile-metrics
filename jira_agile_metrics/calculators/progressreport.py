@@ -413,10 +413,10 @@ class ProgressReportCalculator(Calculator):
                         if q <= 0.9
                         else "success"
                     ),
-                    percent_complete=lambda epic: (
+                    percent_complete=lambda epic_: (
                         int(
                             round(
-                                ((epic.stories_done or 0) / epic.max_stories)
+                                ((epic_.stories_done or 0) / epic_.max_stories)
                                 * 100
                             )
                         )
@@ -574,9 +574,9 @@ class Forecast(object):
         self.deadline_quantile = deadline_quantile
 
 
-def throughput_range_sampler(min, max):
+def throughput_range_sampler(min_, max_):
     def get_throughput_range_sample():
-        return random.randint(min, max)
+        return random.randint(min_, max_)
 
     return get_throughput_range_sample
 
