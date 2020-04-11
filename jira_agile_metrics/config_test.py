@@ -229,7 +229,7 @@ Output:
           Epic query: project = ABS and type = Feature
     Progress report outcome deadline field: Due date
     Progress report outcome query: project = ABC AND type = Outcome AND resolution IS EMPTY
-"""
+"""  # noqa: E501
     )
 
     assert options["connection"] == {
@@ -344,15 +344,21 @@ Output:
         "debt_age_chart": "tech-debt-age.png",
         "debt_age_chart_title": "Technical debt age",
         "debt_age_chart_bins": [10, 20, 30],
-        "waste_query": "issueType = Story AND resolution IN (Withdrawn, Invalid)",
+        "waste_query": (
+            "issueType = Story AND resolution IN (Withdrawn, Invalid)"
+        ),
         "waste_window": 3,
         "waste_frequency": "2W-WED",
         "waste_chart": "waste.png",
         "waste_chart_title": "Waste",
         "progress_report": "progress.html",
         "progress_report_title": "Test progress report",
-        "progress_report_epic_query_template": "project = ABC AND type = Epic AND Outcome = {outcome}",
-        "progress_report_story_query_template": 'project = ABC AND type = Story AND "Epic link" = {epic}',
+        "progress_report_epic_query_template": (
+            "project = ABC AND type = Epic AND Outcome = {outcome}"
+        ),
+        "progress_report_story_query_template": (
+            'project = ABC AND type = Story AND "Epic link" = {epic}'
+        ),
         "progress_report_epic_deadline_field": "Due date",
         "progress_report_epic_min_stories_field": "Min stories",
         "progress_report_epic_max_stories_field": "Max stories",
@@ -370,7 +376,12 @@ Output:
                 "name": "Team two",
                 "max_throughput": None,
                 "min_throughput": None,
-                "throughput_samples": 'project = ABC AND type = Story AND team = "Team two" AND resolution = "Done"',
+                "throughput_samples": (
+                    "project = ABC AND "
+                    "type = Story AND "
+                    'team = "Team two" AND '
+                    'resolution = "Done"'
+                ),
                 "wip": 2,
                 "throughput_samples_window": 6,
             },
@@ -390,7 +401,9 @@ Output:
             },
         ],
         "progress_report_outcome_deadline_field": "Due date",
-        "progress_report_outcome_query": "project = ABC AND type = Outcome AND resolution IS EMPTY",
+        "progress_report_outcome_query": (
+            "project = ABC AND type = Outcome AND resolution IS EMPTY"
+        ),
     }
 
 

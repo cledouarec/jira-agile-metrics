@@ -13,7 +13,8 @@ def settings(minimal_settings):
     return extend_dict(
         minimal_settings,
         {
-            "ageing_wip_chart": "ageingwip.png"  # without a file to write the calculator will stop
+            # without a file to write the calculator will stop
+            "ageing_wip_chart": "ageingwip.png"
         },
     )
 

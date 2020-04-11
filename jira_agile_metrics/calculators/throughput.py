@@ -71,7 +71,8 @@ class ThroughputCalculator(Calculator):
         day_zero = chart_data.index[0]
         chart_data["day"] = (chart_data.index - day_zero).days
 
-        # Fit a linear regression (http://stackoverflow.com/questions/29960917/timeseries-fitted-values-from-trend-python)
+        # Fit a linear regression
+        # (http://stackoverflow.com/questions/29960917/timeseries-fitted-values-from-trend-python)  # noqa: E501
         fit = sm.ols(formula="count ~ day", data=chart_data).fit()
         chart_data["fitted"] = fit.predict(chart_data)
 
@@ -124,7 +125,8 @@ def calculate_throughput(cycle_data, frequency, window=None):
         .sum()
     )
 
-    # make sure we have 0 for periods with no throughput, and force to window if set
+    # make sure we have 0 for periods with no throughput,
+    # and force to window if set
     window_start = throughput.index.min()
     window_end = throughput.index.max()
 

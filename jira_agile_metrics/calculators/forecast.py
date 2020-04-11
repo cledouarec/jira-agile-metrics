@@ -25,10 +25,12 @@ class BurnupForecastCalculator(Calculator):
         if len(cycle_data.index) == 0:
             return None
 
-        # This calculation is expensive. Only run it if we intend to write a file.
+        # This calculation is expensive.
+        # Only run it if we intend to write a file.
         if not self.settings["burnup_forecast_chart"]:
             logger.debug(
-                "Not calculating burnup forecast chart data as no output file specified"
+                "Not calculating burnup forecast chart data as no output file "
+                "specified"
             )
             return None
 
@@ -44,7 +46,8 @@ class BurnupForecastCalculator(Calculator):
 
         if cycle_data[done_column].max() is pd.NaT:
             logger.warning(
-                "Unable to draw burnup forecast chart with zero completed items."
+                "Unable to draw burnup forecast chart with zero completed "
+                "items."
             )
             return None
 
@@ -95,7 +98,8 @@ class BurnupForecastCalculator(Calculator):
         # degenerate case - no steps, abort
         if throughput_data["count"].sum() <= 0:
             logger.warning(
-                "No throughput samples available, aborting forecast simulations"
+                "No throughput samples available, aborting forecast "
+                "simulations"
             )
             return None
 
@@ -352,7 +356,8 @@ def calculate_daily_throughput(
 
 
 def throughput_sampler(throughput_data, start_value, target):
-    """Return a function that can efficiently draw samples from `throughput_data`
+    """Return a function that can efficiently draw samples from
+    `throughput_data`
     """
     sample_buffer_size = int(
         2 * (target - start_value) / throughput_data["count"].mean()

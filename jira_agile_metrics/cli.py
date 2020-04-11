@@ -19,7 +19,9 @@ def configure_argument_parser():
     """
 
     parser = argparse.ArgumentParser(
-        description="Extract Agile metrics data from JIRA and produce data and charts."
+        description=(
+            "Extract Agile metrics data from JIRA and produce data and charts."
+        )
     )
 
     # Basic options
@@ -46,7 +48,10 @@ def configure_argument_parser():
     parser.add_argument(
         "--server",
         metavar="127.0.0.1:8080",
-        help="Run as a web server instead of a command line tool, on the given host and/or port. The remaining options do not apply.",
+        help=(
+            "Run as a web server instead of a command line tool, on the given "
+            "host and/or port. The remaining options do not apply."
+        ),
     )
 
     # Output directory
@@ -54,7 +59,10 @@ def configure_argument_parser():
         "--output-directory",
         "-o",
         metavar="metrics",
-        help="Write output files to this directory, rather than the current working directory.",
+        help=(
+            "Write output files to this directory, rather than the current "
+            "working directory."
+        ),
     )
 
     # Connection options
@@ -75,7 +83,10 @@ def configure_argument_parser():
         "--jira-server-version-check",
         type=bool,
         metavar="True",
-        help="If true it will fetch JIRA server version info first to determine if some API calls are available",
+        help=(
+            "If true it will fetch JIRA server version info first to "
+            "determine if some API calls are available"
+        ),
     )
 
     return parser
@@ -120,8 +131,8 @@ def run_command_line(parser, args):
         ),
     )
 
-    # Configuration and settings (command line arguments override config file options)
-
+    # Configuration and settings
+    # (command line arguments override config file options)
     logger.debug("Parsing options from %s", args.config)
     with open(args.config) as config:
         options = config_to_options(
@@ -141,7 +152,6 @@ def run_command_line(parser, args):
         os.chdir(args.output_directory)
 
     # Query JIRA and run calculators
-
     jira = get_jira_client(options["connection"])
 
     logger.info("Running calculators")

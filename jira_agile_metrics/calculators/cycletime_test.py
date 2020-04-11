@@ -50,8 +50,11 @@ def jira(custom_fields):
                         [("Flagged", None, "Impediment")],
                     ),
                     Change(
-                        "2018-01-03 01:00:00", [("Flagged", "Impediment", "")]
-                    ),  # blocked 1 day in the backlog (doesn't count towards blocked days)
+                        # blocked 1 day in the backlog
+                        # (doesn't count towards blocked days)
+                        "2018-01-03 01:00:00",
+                        [("Flagged", "Impediment", "")],
+                    ),
                     Change(
                         "2018-01-03 01:01:01", [("status", "Backlog", "Next",)]
                     ),
@@ -59,11 +62,15 @@ def jira(custom_fields):
                         "2018-01-04 10:01:01", [("Flagged", "", "Impediment")]
                     ),
                     Change(
-                        "2018-01-05 08:01:01", [("Flagged", "Impediment", "")]
-                    ),  # was blocked 1 day
+                        # was blocked 1 day
+                        "2018-01-05 08:01:01",
+                        [("Flagged", "Impediment", "")],
+                    ),
                     Change(
-                        "2018-01-08 10:01:01", [("Flagged", "", "Impediment")]
-                    ),  # stays blocked until today
+                        # stays blocked until today
+                        "2018-01-08 10:01:01",
+                        [("Flagged", "", "Impediment")],
+                    ),
                 ],
             ),
             Issue(

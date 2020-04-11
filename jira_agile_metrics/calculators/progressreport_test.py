@@ -85,8 +85,12 @@ def settings(custom_settings):
             "quantiles": [0.1, 0.3, 0.5],
             "progress_report": "progress.html",
             "progress_report_title": "Test progress report",
-            "progress_report_epic_query_template": "issuetype=epic AND Outcome={outcome}",
-            "progress_report_story_query_template": "issuetype=story AND Epic={epic}",
+            "progress_report_epic_query_template": (
+                "issuetype=epic AND Outcome={outcome}"
+            ),
+            "progress_report_story_query_template": (
+                "issuetype=story AND Epic={epic}"
+            ),
             "progress_report_epic_deadline_field": "Deadline",
             "progress_report_epic_min_stories_field": "Min stories",
             "progress_report_epic_max_stories_field": "Max stories",
@@ -104,7 +108,9 @@ def settings(custom_settings):
                     "name": "Team 2",
                     "min_throughput": None,
                     "max_throughput": None,
-                    "throughput_samples": "issuetype=feature AND resolution=Done",
+                    "throughput_samples": (
+                        "issuetype=feature AND resolution=Done"
+                    ),
                     "throughput_samples_window": 6,
                     "wip": 2,
                 },
@@ -120,7 +126,9 @@ def settings(custom_settings):
                     "key": None,
                     "name": "Outcome two",
                     "deadline": None,
-                    "epic_query": 'outcome="Outcome two" AND status=in-progress',
+                    "epic_query": (
+                        'outcome="Outcome two" AND status=in-progress'
+                    ),
                 },
             ],
             "progress_report_outcome_query": None,
@@ -275,9 +283,11 @@ def query_manager(fields, settings):
                             [("Flagged", None, "Impediment")],
                         ),
                         Change(
+                            # blocked 1 day in the backlog
+                            # (doesn't count towards blocked days)
                             "2018-01-03 01:00:00",
                             [("Flagged", "Impediment", "")],
-                        ),  # blocked 1 day in the backlog (doesn't count towards blocked days)
+                        ),
                         Change(
                             "2018-01-03 01:01:01",
                             [("status", "Backlog", "Next",)],
@@ -287,13 +297,15 @@ def query_manager(fields, settings):
                             [("Flagged", "", "Impediment")],
                         ),
                         Change(
+                            # was blocked 1 day
                             "2018-01-05 08:01:01",
                             [("Flagged", "Impediment", "")],
-                        ),  # was blocked 1 day
+                        ),
                         Change(
+                            # stays blocked until today
                             "2018-01-08 10:01:01",
                             [("Flagged", "", "Impediment")],
-                        ),  # stays blocked until today
+                        ),
                     ],
                 ),
                 Issue(
@@ -933,7 +945,6 @@ def test_calculate_team_throughput(query_manager, settings):
 def test_update_team_sampler(query_manager, settings):
 
     # min/max only
-
     t = Team(
         name="Team 1",
         wip=1,
@@ -956,7 +967,6 @@ def test_update_team_sampler(query_manager, settings):
     assert t.throughput_samples_cycle_times is None
 
     # query only - with completed stories
-
     t = Team(
         name="Team 1",
         wip=1,
@@ -979,7 +989,6 @@ def test_update_team_sampler(query_manager, settings):
     assert isinstance(t.throughput_samples_cycle_times, pd.DataFrame)
 
     # query only - no completed stories
-
     t = Team(
         name="Team 1",
         wip=1,
@@ -1002,7 +1011,6 @@ def test_update_team_sampler(query_manager, settings):
     assert isinstance(t.throughput_samples_cycle_times, pd.DataFrame)
 
     # query with no completed stories + min/max
-
     t = Team(
         name="Team 1",
         wip=1,
@@ -1025,7 +1033,6 @@ def test_update_team_sampler(query_manager, settings):
     assert isinstance(t.throughput_samples_cycle_times, pd.DataFrame)
 
     # query with completed stories + min/max
-
     t = Team(
         name="Team 1",
         wip=1,
@@ -1071,7 +1078,8 @@ def test_forecast_to_complete_wip_1():
             stories_raised=8,
             stories_in_backlog=5,
             stories_in_progress=0,
-            stories_done=5,  # 10-5  = 5 left; 2/wk from sampler => 3 weeks
+            # 10-5  = 5 left; 2/wk from sampler => 3 weeks
+            stories_done=5,
         ),
         Epic(
             key="E-2",
@@ -1087,7 +1095,8 @@ def test_forecast_to_complete_wip_1():
             stories_raised=10,
             stories_in_backlog=5,
             stories_in_progress=0,
-            stories_done=6,  # 10 - 6 = 4 left; 2/wk from sampler => 2 weeks
+            # 10 - 6 = 4 left; 2/wk from sampler => 2 weeks
+            stories_done=6,
         ),
         Epic(
             key="E-3",
@@ -1103,7 +1112,8 @@ def test_forecast_to_complete_wip_1():
             stories_raised=10,
             stories_in_backlog=5,
             stories_in_progress=0,
-            stories_done=6,  # 10 - 6 = 4 left; 2/wk from sampler => 2 weeks
+            # 10 - 6 = 4 left; 2/wk from sampler => 2 weeks
+            stories_done=6,
         ),
     ]
 
@@ -1162,7 +1172,8 @@ def test_forecast_to_complete_wip_2():
             stories_raised=8,
             stories_in_backlog=5,
             stories_in_progress=0,
-            stories_done=5,  # 10-5  = 5 left; 2/wk from sampler => 3 weeks
+            # 10-5  = 5 left; 2/wk from sampler => 3 weeks
+            stories_done=5,
         ),
         Epic(
             key="E-2",
@@ -1178,7 +1189,8 @@ def test_forecast_to_complete_wip_2():
             stories_raised=10,
             stories_in_backlog=5,
             stories_in_progress=0,
-            stories_done=6,  # 10 - 6 = 4 left; 2/wk from sampler => 2 weeks
+            # 10 - 6 = 4 left; 2/wk from sampler => 2 weeks
+            stories_done=6,
         ),
         Epic(
             key="E-3",
@@ -1194,7 +1206,8 @@ def test_forecast_to_complete_wip_2():
             stories_raised=10,
             stories_in_backlog=5,
             stories_in_progress=0,
-            stories_done=6,  # 10 - 6 = 4 left; 2/wk from sampler => 2 weeks, starting after E-2
+            # 10 - 6 = 4 left; 2/wk from sampler => 2 weeks, starting after E-2
+            stories_done=6,
         ),
     ]
 
@@ -1316,15 +1329,11 @@ def test_forecast_to_complete_with_randomness():
     assert epics[0].forecast.deadline_quantile is None
 
     assert [q[0] for q in epics[1].forecast.quantiles] == [0.5, 0.9]
-    assert (
-        epics[1].forecast.deadline_quantile > 0
-        and epics[1].forecast.deadline_quantile < 1
-    )
+    assert 0 < epics[1].forecast.deadline_quantile < 1
 
     assert [q[0] for q in epics[2].forecast.quantiles] == [0.5, 0.9]
-    assert (
-        epics[2].forecast.deadline_quantile == 1
-    )  # deadline is after worst case scenario
+    # deadline is after worst case scenario
+    assert epics[2].forecast.deadline_quantile == 1
 
 
 def test_calculator(query_manager, settings, results):
@@ -1395,7 +1404,9 @@ def test_calculator_no_outcomes(query_manager, settings, results):
     settings = extend_dict(
         settings,
         {
-            "progress_report_epic_query_template": 'issuetype=epic AND Outcome="O1',
+            "progress_report_epic_query_template": (
+                'issuetype=epic AND Outcome="O1'
+            ),
             "progress_report_outcomes": [],
         },
     )
@@ -1537,7 +1548,6 @@ def test_with_large_dataset(fields, settings, results):
     today = date.today()
 
     # build a large and partially randomised data set to forecast on
-
     field_lookup = {v["name"].lower(): v["id"] for v in fields}
 
     def compare_value(i, clause):
@@ -1693,7 +1703,6 @@ def test_with_large_dataset_and_outcome_as_tickets(fields, settings, results):
     today = date.today()
 
     # build a large and partially randomised data set to forecast on
-
     field_lookup = {v["name"].lower(): v["id"] for v in fields}
 
     def compare_value(i, clause):
@@ -1851,7 +1860,6 @@ def test_with_large_dataset_and_outcome_as_tickets_no_forecast(
     today = date.today()
 
     # build a large and partially randomised data set to forecast on
-
     field_lookup = {v["name"].lower(): v["id"] for v in fields}
 
     def compare_value(i, clause):
@@ -2009,7 +2017,6 @@ def test_with_large_dataset_and_outcome_as_tickets_mixed_forecast(
     today = date.today()
 
     # build a large and partially randomised data set to forecast on
-
     field_lookup = {v["name"].lower(): v["id"] for v in fields}
 
     def compare_value(i, clause):
@@ -2165,7 +2172,6 @@ def test_with_large_dataset_minimal(fields, settings, results):
     today = date.today()
 
     # build a large and partially randomised data set to forecast on
-
     field_lookup = {v["name"].lower(): v["id"] for v in fields}
 
     def compare_value(i, clause):
@@ -2185,7 +2191,9 @@ def test_with_large_dataset_minimal(fields, settings, results):
             "progress_report_title": "Acme Corp Websites",
             "progress_report": "progress-minimal.html",
             "progress_report_epic_query_template": "issuetype=epic",
-            "progress_report_story_query_template": "issuetype=story AND Epic={epic}",
+            "progress_report_story_query_template": (
+                "issuetype=story AND Epic={epic}"
+            ),
             "progress_report_epic_deadline_field": None,
             "progress_report_epic_min_stories_field": None,
             "progress_report_epic_max_stories_field": None,
@@ -2285,7 +2293,6 @@ def test_with_large_dataset_minimal_no_forecast(fields, settings, results):
     today = date.today()
 
     # build a large and partially randomised data set to forecast on
-
     field_lookup = {v["name"].lower(): v["id"] for v in fields}
 
     def compare_value(i, clause):
@@ -2305,7 +2312,9 @@ def test_with_large_dataset_minimal_no_forecast(fields, settings, results):
             "progress_report": "progress-minimal-no-forecast.html",
             "progress_report_title": "Acme Corp Websites",
             "progress_report_epic_query_template": "issuetype=epic",
-            "progress_report_story_query_template": "issuetype=story AND Epic={epic}",
+            "progress_report_story_query_template": (
+                "issuetype=story AND Epic={epic}"
+            ),
             "progress_report_epic_deadline_field": None,
             "progress_report_epic_min_stories_field": None,
             "progress_report_epic_max_stories_field": None,
@@ -2405,7 +2414,6 @@ def test_with_large_dataset_teams_no_outcomes(fields, settings, results):
     today = date.today()
 
     # build a large and partially randomised data set to forecast on
-
     field_lookup = {v["name"].lower(): v["id"] for v in fields}
 
     def compare_value(i, clause):
@@ -2541,7 +2549,6 @@ def test_with_large_dataset_no_teams(fields, settings, results):
     today = date.today()
 
     # build a large and partially randomised data set to forecast on
-
     field_lookup = {v["name"].lower(): v["id"] for v in fields}
 
     def compare_value(i, clause):
@@ -2677,7 +2684,6 @@ def test_with_large_dataset_dynamic_teams(fields, settings, results):
     today = date.today()
 
     # build a large and partially randomised data set to forecast on
-
     field_lookup = {v["name"].lower(): v["id"] for v in fields}
 
     def compare_value(i, clause):
@@ -2816,7 +2822,6 @@ def test_with_large_dataset_static_and_dynamic_teams(
     today = date.today()
 
     # build a large and partially randomised data set to forecast on
-
     field_lookup = {v["name"].lower(): v["id"] for v in fields}
 
     def compare_value(i, clause):

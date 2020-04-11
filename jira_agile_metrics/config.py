@@ -25,8 +25,10 @@ from .calculators.waste import WasteCalculator
 from .calculators.progressreport import ProgressReportCalculator
 
 CALCULATORS = (
-    CycleTimeCalculator,  # should come first -- others depend on results from this one
-    CFDCalculator,  # needs to come before burn-up charts, wip charts, and net flow charts
+    # CycleTime should come first -- others depend on results from this one
+    CycleTimeCalculator,
+    # CFD needs to come before burn-up charts, wip charts, and net flow charts
+    CFDCalculator,
     ScatterplotCalculator,
     HistogramCalculator,
     PercentilesCalculator,
@@ -50,7 +52,7 @@ class ConfigError(Exception):
     pass
 
 
-# From http://stackoverflow.com/questions/5121931/in-python-how-can-you-load-yaml-mappings-as-ordereddicts
+# From http://stackoverflow.com/questions/5121931/in-python-how-can-you-load-yaml-mappings-as-ordereddicts  # noqa: E501
 def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=odicti):
     class OrderedLoader(Loader):
         pass
@@ -308,9 +310,7 @@ def config_to_options(data, cwd=None, extended=False):
             )
 
     # Parse and validate Connection
-
     if "connection" in config:
-
         if "domain" in config["connection"]:
             options["connection"]["domain"] = config["connection"]["domain"]
 
@@ -346,7 +346,6 @@ def config_to_options(data, cwd=None, extended=False):
 
     # Parse and validate output options
     if "output" in config:
-
         if "quantiles" in config["output"]:
             try:
                 options["settings"]["quantiles"] = list(
@@ -354,8 +353,8 @@ def config_to_options(data, cwd=None, extended=False):
                 )
             except ValueError:
                 raise ConfigError(
-                    "Could not convert value `%s` for key `quantiles` to a list of decimals"
-                    % (config["output"]["quantiles"],)
+                    "Could not convert value `%s` for key `quantiles` to a "
+                    "list of decimals" % (config["output"]["quantiles"])
                 ) from None
 
         # int values
@@ -523,7 +522,6 @@ def config_to_options(data, cwd=None, extended=False):
             )
 
     # Parse Queries and/or a single Query
-
     if "queries" in config:
         options["settings"]["query_attribute"] = config["queries"].get(
             "attribute", None
@@ -540,11 +538,12 @@ def config_to_options(data, cwd=None, extended=False):
 
     if not extended and len(options["settings"]["queries"]) == 0:
         logger.warning(
-            "No `Query` value or `Queries` section found. Many calculators rely on one of these."
+            "No `Query` value or `Queries` section found. Many calculators"
+            "rely on one of these."
         )
 
-    # Parse Workflow. Assume first status is backlog and last status is complete.
-
+    # Parse Workflow.
+    # Assume first status is backlog and last status is complete.
     if "workflow" in config:
         if len(config["workflow"].keys()) < 3:
             raise ConfigError(
@@ -580,12 +579,12 @@ def config_to_options(data, cwd=None, extended=False):
                 -1
             ]["name"]
 
-    # Make sure we have workflow (but only if this file is not being extended by another)
+    # Make sure we have workflow
+    # (but only if this file is not being extended by another)
     if not extended and len(options["settings"]["cycle"]) == 0:
         raise ConfigError("`Workflow` section not found")
 
     # Parse attributes (fields) - merge from extended file if needed
-
     if "attributes" in config:
         options["settings"]["attributes"].update(dict(config["attributes"]))
 

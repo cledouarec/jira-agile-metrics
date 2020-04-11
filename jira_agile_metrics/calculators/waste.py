@@ -69,7 +69,8 @@ class WasteCalculator(Calculator):
                     last_status,
                 )
 
-            # Skip if last_status was the backlog or done column (not really withdrawn)
+            # Skip if last_status was the backlog or done column
+            # (not really withdrawn)
             if last_status in (backlog_column, done_column):
                 continue
 

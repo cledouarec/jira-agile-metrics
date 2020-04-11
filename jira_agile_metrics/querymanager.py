@@ -10,7 +10,8 @@ logger = logging.getLogger(__name__)
 
 
 class IssueSnapshot(object):
-    """A snapshot of the key fields of an issue at a point in its change history
+    """A snapshot of the key fields of an issue at a point in its change
+    history
     """
 
     def __init__(self, change, key, date, from_string, to_string):
@@ -61,7 +62,8 @@ class QueryManager(object):
 
         if len(self.jira_fields) == 0:
             raise ConfigError(
-                "No field data retrieved from JIRA. This likely means a problem with the JIRA API."
+                "No field data retrieved from JIRA. This likely means a"
+                "problem with the JIRA API."
             ) from None
 
         self.jira_fields_to_names = {
@@ -85,7 +87,8 @@ class QueryManager(object):
             )
         except StopIteration:
 
-            # XXX: we are having problems with this falsely claiming fields don't exist
+            # XXX: we are having problems with this falsely claiming fields
+            # don't exist
             logger.debug(
                 "Failed to look up %s in JIRA fields: %s",
                 name,
@@ -93,8 +96,8 @@ class QueryManager(object):
             )
 
             raise ConfigError(
-                "JIRA field with name `%s` does not exist (did you try to use the field id instead?)"
-                % name
+                "JIRA field with name `%s` does not exist "
+                "(did you try to use the field id instead?)" % name
             ) from None
 
     def resolve_attribute_value(self, issue, attribute_name):
@@ -119,9 +122,8 @@ class QueryManager(object):
                 field_id, "Unknown name"
             )
             logger.debug(
-                "Could not get field value for field {}. Probably this is a wrong workflow field mapping".format(
-                    field_name
-                )
+                "Could not get field value for field {}. Probably this is a"
+                "wrong workflow field mapping".format(field_name)
             )
             field_value = None
 

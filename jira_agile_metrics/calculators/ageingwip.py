@@ -70,7 +70,8 @@ class AgeingWIPChartCalculator(Calculator):
             how="any", inplace=True, subset=["status", "age"]
         )
 
-        # reorder columns so we get key, summary, status, age, and then all the cycle stages
+        # reorder columns so we get key, summary, status, age
+        # and then all the cycle stages
         ageing_wip_data = pd.concat(
             (
                 ageing_wip_data[["key", "summary", "status", "age"]],

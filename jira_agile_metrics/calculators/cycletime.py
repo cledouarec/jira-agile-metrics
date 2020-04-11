@@ -229,7 +229,8 @@ def calculate_cycle_times(
                     if item[snapshot_cycle_step_name] is None:
                         item[snapshot_cycle_step_name] = snapshot.date.date()
 
-                    # Wipe any subsequent dates, in case this was a move backwards
+                    # Wipe any subsequent dates,
+                    # in case this was a move backwards
                     found_cycle_name = False
                     for cycle_name in cycle_names:
                         if (
@@ -240,7 +241,9 @@ def calculate_cycle_times(
                             continue
                         elif found_cycle_name and item[cycle_name] is not None:
                             logger.info(
-                                "Issue %s moved backwards to %s [JIRA: %s -> %s], wiping data for subsequent step %s",
+                                "Issue %s moved backwards to %s "
+                                "[JIRA: %s -> %s], "
+                                "wiping data for subsequent step %s",
                                 issue.key,
                                 snapshot_cycle_step_name,
                                 snapshot.from_string,
@@ -264,7 +267,8 @@ def calculate_cycle_times(
                     ):
                         if impediment_start is None:
                             logger.warning(
-                                "Issue %s had impediment flag cleared before being set. This should not happen.",
+                                "Issue %s had impediment flag cleared before "
+                                "being set. This should not happen.",
                                 issue.key,
                             )
                             continue
@@ -290,8 +294,10 @@ def calculate_cycle_times(
                         impediment_start = None
                         impediment_start_status = None
 
-            # If an impediment flag was set but never cleared: treat as resolved on the ticket
-            # resolution date if the ticket was resolved, else as still open until today.
+            # If an impediment flag was set but never cleared :
+            # treat as resolved on the ticket
+            # resolution date if the ticket was resolved,
+            # else as still open until today.
             if impediment_start is not None:
                 if issue.fields.resolutiondate:
                     resolution_date = dateutil.parser.parse(
@@ -332,8 +338,8 @@ def calculate_cycle_times(
                 impediment_start = None
                 impediment_start_status = None
 
-            # Wipe timestamps if items have moved backwards; calculate cycle time
-
+            # Wipe timestamps if items have moved backwards ;
+            # calculate cycle time
             previous_timestamp = None
             accepted_timestamp = None
             completed_timestamp = None
@@ -366,8 +372,9 @@ def calculate_cycle_times(
                 series[k]["data"].append(v)
 
     if len(unmapped_statuses) > 0:
-        logger.warn(
-            "The following JIRA statuses were found, but not mapped to a workflow state, and have been ignored: %s",
+        logger.warning(
+            "The following JIRA statuses were found, "
+            "but not mapped to a workflow state, and have been ignored: %s",
             ", ".join(sorted(unmapped_statuses)),
         )
 

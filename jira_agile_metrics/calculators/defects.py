@@ -27,8 +27,8 @@ class DefectsCalculator(Calculator):
       in order (`defects_type_values`) and with title
       `defects_by_type_chart_title`.
     - `defects_by_environment_chart`: Grouped by environment
-      (`defects_environment_field`), optionally limited to a list of known values
-      in order (`defects_environment_values`) and with title
+      (`defects_environment_field`), optionally limited to a list of known
+      values in order (`defects_environment_values`) and with title
       `defects_by_environment_chart_title`.
     """
 

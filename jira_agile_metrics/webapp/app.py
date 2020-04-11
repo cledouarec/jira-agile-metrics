@@ -55,7 +55,8 @@ def run():
             options = config_to_options(config.read())
             override_options(options["connection"], request.form)
 
-            # We allow a `max_results` query string parameter for faster debugging
+            # We allow a `max_results` query string parameter for faster
+            # debugging
             if request.form.get("max_results"):
                 try:
                     options["settings"]["max_results"] = int(
@@ -143,7 +144,8 @@ def get_jira_client(connection):
     except JIRAError as e:
         if e.status_code == 401:
             raise ConfigError(
-                "JIRA authentication failed. Check URL and credentials, and ensure the account is not locked."
+                "JIRA authentication failed. Check URL and credentials, "
+                "and ensure the account is not locked."
             ) from None
         else:
             raise

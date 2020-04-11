@@ -74,7 +74,8 @@ class ProgressReportCalculator(Calculator):
                 )
             ):
                 logger.error(
-                    "`Progress report epic query template` is required unless all outcomes have `Epic query` set."
+                    "`Progress report epic query template` is required "
+                    "unless all outcomes have `Epic query` set."
                 )
                 return None
 
@@ -144,32 +145,38 @@ class ProgressReportCalculator(Calculator):
             if team["min_throughput"] or team["max_throughput"]:
                 if not (team["min_throughput"] and team["max_throughput"]):
                     logger.error(
-                        "If one of `Min throughput` or `Max throughput` is specified, both must be specified."
+                        "If one of `Min throughput` or `Max throughput` "
+                        "is specified, both must be specified."
                     )
                     return None
                 if team["min_throughput"] > team["max_throughput"]:
                     logger.error(
-                        "`Min throughput` must be less than or equal to `Max throughput`."
+                        "`Min throughput` must be less than or equal to "
+                        "`Max throughput`."
                     )
                     return None
                 if team["throughput_samples"]:
                     logger.error(
-                        "`Throughput samples` cannot be used if `Min/max throughput` is already specified."
+                        "`Throughput samples` cannot be used "
+                        "if `Min/max throughput` is already specified."
                     )
 
-                # Note: If neither min/max throughput or samples are specified, we turn off forecasting
+                # Note: If neither min/max throughput or samples are specified,
+                # we turn off forecasting
 
-        # If we aren't recording teams against epics, there can be either no teams
-        # at all, or a single, default team, but not multiple.
+        # If we aren't recording teams against epics,
+        # there can be either no teams at all, or a single, default team,
+        # but not multiple.
         if not epic_team_field and len(teams) > 1:
             logger.error(
-                "`Progress report epic team field` is required if there is more than one team under `Progress report teams`."
+                "`Progress report epic team field` is required "
+                "if there is more than one team under `Progress report teams`."
             )
             return None
 
-        # Find outcomes, either in the config file or by querying JIRA (or both).
+        # Find outcomes, either in the config file or by querying JIRA
+        # (or both).
         # If none set, we use a single epic query and don't group by outcomes
-
         outcomes = (
             [
                 Outcome(
@@ -268,7 +275,8 @@ class ProgressReportCalculator(Calculator):
 
         # Calculate epic progress for each outcome
         #  - Run `epic_query_template` to find relevant epics
-        #  - Run `story_query_template` to find stories, count by backlog, in progress, done
+        #  - Run `story_query_template` to find stories, count by backlog,
+        #        in progress, done
 
         for outcome in outcomes:
             for epic in find_epics(
@@ -289,7 +297,8 @@ class ProgressReportCalculator(Calculator):
 
                     if epic.team is None:
                         logger.info(
-                            "Cannot find team `%s` for epic `%s`. Dynamically adding a non-forecasted team."
+                            "Cannot find team `%s` for epic `%s`. "
+                            "Dynamically adding a non-forecasted team."
                             % (epic_team_name, epic.key,)
                         )
                         epic.team = Team(name=epic_team_name)
@@ -590,8 +599,9 @@ def update_team_sampler(
 
         if throughput is None:
             logger.error(
-                "No completed issues found by query `%s`. Unable to calculate throughput. Will use min/max throughput if set."
-                % team.throughput_samples
+                "No completed issues found by query `%s`. "
+                "Unable to calculate throughput. "
+                "Will use min/max throughput if set." % team.throughput_samples
             )
         else:
             team.sampler = throughput_sampler(
@@ -734,8 +744,8 @@ def update_story_counts(
             else None
         )
 
-    # if the actual number of stories exceeds min and/or max, adjust accordingly
-
+    # if the actual number of stories exceeds min and/or max,
+    # adjust accordingly
     if not epic.min_stories or epic.min_stories < epic.stories_raised:
         epic.min_stories = epic.stories_raised
 
@@ -786,8 +796,8 @@ def forecast_to_complete(
                 if ev["value"] < ev["target"]:
                     ev["weeks"] += 1
 
-            # draw a sample (throughput over a week) for the team and distribute
-            # it over the active epics
+            # draw a sample (throughput over a week) for the team and
+            # distribute it over the active epics
             sample = team.sampler()
             per_active_epic = int(sample / len(active_epics))
             remainder = sample % len(active_epics)
@@ -798,7 +808,8 @@ def forecast_to_complete(
             # reset in case some have finished
             active_epics = filter_active_epics(trial_values)
 
-            # apply remainder to a randomly picked epic if sample didn't evenly divide
+            # apply remainder to a randomly picked epic
+            # if sample didn't evenly divide
             if len(active_epics) > 0 and remainder > 0:
                 lucky_epic = random.randint(0, len(active_epics) - 1)
                 active_epics[lucky_epic]["value"] += remainder
@@ -829,7 +840,8 @@ def forecast_to_complete(
                     (epic.deadline.date() - now.date()).days / 7
                 )
 
-                # ...and what trial quantile does that correspond to (higher = more confident)
+                # ...and what trial quantile does that correspond to
+                # (higher = more confident)
                 deadline_quantile = (
                     scipy.stats.percentileofscore(
                         trials, weeks_to_deadline, kind="weak"

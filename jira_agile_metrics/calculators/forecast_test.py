@@ -23,7 +23,8 @@ def settings(minimal_settings):
             "burnup_forecast_chart_deadline": datetime.date(2018, 1, 30),
             "burnup_forecast_chart_deadline_confidence": 0.85,
             "quantiles": [0.1, 0.3, 0.5],
-            "burnup_forecast_chart": "forecast.png",  # without a file, calculator stops
+            # without a file, calculator stops
+            "burnup_forecast_chart": "forecast.png",
         },
     )
 
@@ -90,8 +91,9 @@ def test_calculate_forecast(query_manager, settings, results):
 
     data = calculator.run()
 
-    # because of the random nature of this, we don't know exactly how many records
-    # there will be, but will assume at least two
+    # because of the random nature of this,
+    # we don't know exactly how many records there will be,
+    # but will assume at least two
     assert len(data.index) > 0
     assert list(data.index)[0] == Timestamp("2018-01-09 00:00:00", freq="D")
     assert list(data.index)[1] == Timestamp("2018-01-10 00:00:00", freq="D")
@@ -106,7 +108,8 @@ def test_calculate_forecast(query_manager, settings, results):
         trial_diff = np.diff(trial_values)
         assert np.all(trial_diff >= 0)
 
-        # we start with the final value in the burnup, on the final day (2018-01-09)
+        # we start with the final value in the burnup,
+        # on the final day (2018-01-09)
         assert trial_values[0] == 6
 
         # we reach the target value
@@ -123,7 +126,8 @@ def test_calculate_forecast_settings(query_manager, settings, results):
                 2018, 1, 6
             ),
             "burnup_forecast_chart_throughput_window": 4,
-            "burnup_forecast_chart_target": None,  # use max of backlog column -- 15
+            # use max of backlog column -- 15
+            "burnup_forecast_chart_target": None,
             "burnup_forecast_chart_trials": 10,
             "burnup_forecast_chart_deadline": datetime.date(2018, 1, 30),
             "burnup_forecast_chart_deadline_confidence": 0.85,
@@ -146,8 +150,9 @@ def test_calculate_forecast_settings(query_manager, settings, results):
 
     data = calculator.run()
 
-    # because of the random nature of this, we don't know exactly how many records
-    # there will be, but will assume at least two
+    # because of the random nature of this,
+    # we don't know exactly how many records there will be,
+    # but will assume at least two
     assert len(data.index) > 0
     assert list(data.index)[0] == Timestamp("2018-01-09 00:00:00", freq="D")
     assert list(data.index)[1] == Timestamp("2018-01-10 00:00:00", freq="D")
@@ -162,7 +167,8 @@ def test_calculate_forecast_settings(query_manager, settings, results):
         trial_diff = np.diff(trial_values)
         assert np.all(trial_diff >= 0)
 
-        # we start with the final value in the burnup, on the final day (2018-01-09)
+        # we start with the final value in the burnup,
+        # on the final day (2018-01-09)
         assert trial_values[0] == 9
 
         # we reach the target value

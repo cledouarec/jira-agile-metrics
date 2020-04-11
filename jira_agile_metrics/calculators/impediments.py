@@ -17,18 +17,20 @@ logger = logging.getLogger(__name__)
 
 class ImpedimentsCalculator(Calculator):
     """Calculate impediments, charted by month and workflow status, either as
-    a count of tickets that were blocked in that month, or as a sum of the total
-    number of days of blockage for all tickets in that month.
+    a count of tickets that were blocked in that month, or as a sum of the
+    total number of days of blockage for all tickets in that month.
 
     Writes to `impediments_chart`, `impediments_days_chart`,
-    `impediments_tatus_chart`, and `impediments_status_days_chart`, respectively,
-    with corresponding titles. The number of months to output can be restricted
-    with `impediments_window`. Raw data can be written to `impediments_data`.
+    `impediments_tatus_chart`, and `impediments_status_days_chart`,
+    respectively, with corresponding titles. The number of months to output can
+    be restricted with `impediments_window`. Raw data can be written to
+    `impediments_data`.
     """
 
     def run(self):
 
-        # This calculation is expensive. Only run it if we are going to write something
+        # This calculation is expensive.
+        # Only run it if we are going to write something
         if not (
             self.settings["impediments_data"]
             or self.settings["impediments_chart"]
@@ -53,9 +55,9 @@ class ImpedimentsCalculator(Calculator):
 
         for row in cycle_data.itertuples():
             for idx, event in enumerate(row.impediments):
-                # Ignore things that were impeded whilst in the backlog and/or done column
-                # (these are mostly nonsensical, and don't really indicate blocked/wasted time)
-
+                # Ignore things that were impeded whilst in the backlog and/or
+                # done column (these are mostly nonsensical,
+                # and don't really indicate blocked/wasted time)
                 if event["status"] in (backlog_column, done_column):
                     continue
                 data.append(

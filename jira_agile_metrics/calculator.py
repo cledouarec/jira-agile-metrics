@@ -25,7 +25,6 @@ class Calculator(object):
         return self._results.get(calculator or self.__class__, default)
 
     # Lifecycle methods -- implement as appropriate
-
     def run(self):
         """Run the calculator and return its results.
         These will be automatically saved
@@ -58,7 +57,8 @@ def run_calculators(calculators, query_manager, settings):
             c.write()
         except Exception:
             logger.exception(
-                "Writing file for %s failed with a fatal error. Attempting to run subsequent writers regardless.",
+                "Writing file for %s failed with a fatal error. "
+                "Attempting to run subsequent writers regardless.",
                 c.__class__.__name__,
             )
         else:

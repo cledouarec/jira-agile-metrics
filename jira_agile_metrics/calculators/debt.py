@@ -18,8 +18,8 @@ class DebtCalculator(Calculator):
     chart in the file `debt_chart` with title `debt_chart_title`. The bars are
     the last 6 months (or another window set in `debt_window`), grouped by
     priority. The field giving the priority is set with `debt_chart_priority`.
-    To force the list of valid values and their order, provide a list of strings
-    in `debt_priority_values`.
+    To force the list of valid values and their order, provide a list of
+    strings in `debt_priority_values`.
 
     Also draw a stacked bar chart in the file `debt_age_chart`, with title
     `debt_age_chart_title`, grouping by item age.

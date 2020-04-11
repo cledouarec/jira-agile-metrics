@@ -62,7 +62,8 @@ def breakdown_by_month(
     is uniquely identified by `key_column` and has a categorical value in
     `value_column`, return a new DataFrame counting the number of items in
     each month broken down by each unique value in `value_column`. To restrict
-    (and order) the value columns, pass a list of valid values as `output_columns`.
+    (and order) the value columns, pass a list of valid values as
+    `output_columns`.
     """
 
     def build_df(t):
