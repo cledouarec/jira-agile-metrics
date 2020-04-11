@@ -4,7 +4,7 @@ import random
 import math
 import base64
 import datetime
-import dateutil
+import dateutil.parser
 
 import numpy as np
 import pandas as pd

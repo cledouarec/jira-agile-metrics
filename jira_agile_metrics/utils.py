@@ -3,6 +3,7 @@ import os.path
 
 import numpy as np
 import pandas as pd
+import pandas.tseries.offsets as offsets
 import seaborn as sns
 
 
@@ -137,7 +138,7 @@ def breakdown_by_month_sum_days(
                     len(
                         pd.date_range(
                             month_start,
-                            month_start + pd.tseries.offsets.MonthEnd(1),
+                            month_start + offsets.MonthEnd(1),
                             freq="D",
                         ).intersection(days_range)
                     )
@@ -170,6 +171,6 @@ def to_bin(value, edges):
     previous = 0
     for v in edges:
         if previous <= value <= v:
-            return (previous, v)
+            return previous, v
         previous = v
-    return (previous, None)
+    return previous, None

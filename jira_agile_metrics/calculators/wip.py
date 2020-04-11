@@ -1,6 +1,7 @@
 import logging
 import matplotlib.pyplot as plt
 import pandas as pd
+import pandas.tseries.frequencies as freq
 
 from ..calculator import Calculator
 from ..utils import set_chart_style
@@ -58,7 +59,7 @@ class WIPChartCalculator(Calculator):
         window = self.settings["wip_window"]
         if window:
             start = wip_data.index.max().normalize() - (
-                window * pd.tseries.frequencies.to_offset(frequency)
+                window * freq.to_offset(frequency)
             )
             wip_data = wip_data[start:]
 

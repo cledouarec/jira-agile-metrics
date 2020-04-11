@@ -1,5 +1,6 @@
 import logging
 import pandas as pd
+import pandas.tseries.frequencies as freq
 import matplotlib.pyplot as plt
 import statsmodels.formula.api as sm
 
@@ -131,9 +132,7 @@ def calculate_throughput(cycle_data, frequency, window=None):
     window_end = throughput.index.max()
 
     if window:
-        window_start = window_end - (
-            pd.tseries.frequencies.to_offset(frequency) * (window - 1)
-        )
+        window_start = window_end - (freq.to_offset(frequency) * (window - 1))
 
     if window_start is pd.NaT or window_end is pd.NaT:
         return pd.DataFrame([], columns=["count"], index=[])

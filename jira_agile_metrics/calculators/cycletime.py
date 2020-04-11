@@ -1,7 +1,7 @@
 import json
 import logging
 import datetime
-import dateutil
+import dateutil.parser
 import pandas as pd
 
 from ..calculator import Calculator

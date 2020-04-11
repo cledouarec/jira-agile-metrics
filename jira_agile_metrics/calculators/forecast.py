@@ -363,7 +363,7 @@ def throughput_sampler(throughput_data, start_value, target):
         2 * (target - start_value) / throughput_data["count"].mean()
     )
 
-    sample_buffer = dict(idx=0, buffer=None)
+    sample_buffer: dict = dict(idx=0, buffer=None)
 
     def get_throughput_sample():
         if sample_buffer["buffer"] is None or sample_buffer["idx"] >= len(

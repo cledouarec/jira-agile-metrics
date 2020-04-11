@@ -1,5 +1,5 @@
 import logging
-import dateutil
+import dateutil.parser
 import pandas as pd
 from matplotlib import pyplot as plt
 

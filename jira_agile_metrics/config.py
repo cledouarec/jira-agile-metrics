@@ -1,5 +1,6 @@
 import logging
 import yaml
+import yaml.resolver
 import datetime
 import os.path
 
