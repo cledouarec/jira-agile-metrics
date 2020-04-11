@@ -278,7 +278,7 @@ def test_calculate_impediments(query_manager, settings, cycle_time_results):
 
 
 def test_different_backlog_column(query_manager, settings, cycle_time_results):
-    settings = extend_dict(settings, {"backlog_column": "Committed",})
+    settings = extend_dict(settings, {"backlog_column": "Committed"})
     calculator = ImpedimentsCalculator(
         query_manager, settings, cycle_time_results
     )
@@ -304,7 +304,7 @@ def test_different_backlog_column(query_manager, settings, cycle_time_results):
 
 
 def test_different_done_column(query_manager, settings, cycle_time_results):
-    settings = extend_dict(settings, {"done_column": "Build",})
+    settings = extend_dict(settings, {"done_column": "Build"})
     calculator = ImpedimentsCalculator(
         query_manager, settings, cycle_time_results
     )

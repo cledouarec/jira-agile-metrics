@@ -523,13 +523,13 @@ def config_to_options(data, cwd=None, extended=False):
             "attribute", None
         )
         options["settings"]["queries"] = [
-            {"value": q.get("value", None), "jql": q.get("jql", None),}
+            {"value": q.get("value", None), "jql": q.get("jql", None)}
             for q in config["queries"]["criteria"]
         ]
 
     if "query" in config:
         options["settings"]["queries"] = [
-            {"value": None, "jql": config["query"],}
+            {"value": None, "jql": config["query"]}
         ]
 
     if not extended and len(options["settings"]["queries"]) == 0:

@@ -11,7 +11,7 @@ from ..utils import extend_dict
 def settings(minimal_settings):
     return extend_dict(
         minimal_settings,
-        {"throughput_frequency": "D", "throughput_window": None,},
+        {"throughput_frequency": "D", "throughput_window": None},
     )
 
 
@@ -60,7 +60,7 @@ def test_calculate_throughput_with_wider_window(
 ):
 
     settings = extend_dict(
-        settings, {"throughput_frequency": "D", "throughput_window": 5,}
+        settings, {"throughput_frequency": "D", "throughput_window": 5}
     )
 
     calculator = ThroughputCalculator(query_manager, settings, results)
@@ -81,7 +81,7 @@ def test_calculate_throughput_with_narrower_window(
 ):
 
     settings = extend_dict(
-        settings, {"throughput_frequency": "D", "throughput_window": 2,}
+        settings, {"throughput_frequency": "D", "throughput_window": 2}
     )
 
     calculator = ThroughputCalculator(query_manager, settings, results)

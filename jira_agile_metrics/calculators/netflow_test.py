@@ -133,9 +133,7 @@ def test_calculate_net_flow(query_manager, settings, results):
 
 def test_calculate_net_flow_different_columns(query_manager, settings, results):
 
-    settings.update(
-        {"committed_column": "Build", "done_column": "Test",}
-    )
+    settings.update({"committed_column": "Build", "done_column": "Test"})
 
     calculator = NetFlowChartCalculator(query_manager, settings, results)
 
