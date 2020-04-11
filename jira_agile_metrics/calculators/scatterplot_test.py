@@ -24,27 +24,29 @@ def results(large_cycle_time_results):
 
 def test_empty(query_manager, settings, minimal_cycle_time_columns):
     results = {
-        CycleTimeCalculator: DataFrame([], columns=minimal_cycle_time_columns, index=[])
+        CycleTimeCalculator: DataFrame(
+            [], columns=minimal_cycle_time_columns, index=[]
+        )
     }
 
     calculator = ScatterplotCalculator(query_manager, settings, results)
 
     data = calculator.run()
     assert list(data.columns) == [
-        'completed_date',
-        'cycle_time',
-        'blocked_days',
-        'key',
-        'url',
-        'issue_type',
-        'summary',
-        'status',
-        'resolution',
-        'Backlog',
-        'Committed',
-        'Build',
-        'Test',
-        'Done'
+        "completed_date",
+        "cycle_time",
+        "blocked_days",
+        "key",
+        "url",
+        "issue_type",
+        "summary",
+        "status",
+        "resolution",
+        "Backlog",
+        "Committed",
+        "Build",
+        "Test",
+        "Done",
     ]
     assert len(data.index) == 0
 
@@ -55,20 +57,20 @@ def test_columns(query_manager, settings, results):
     data = calculator.run()
 
     assert list(data.columns) == [
-        'completed_date',
-        'cycle_time',
-        'blocked_days',
-        'key',
-        'url',
-        'issue_type',
-        'summary',
-        'status',
-        'resolution',
-        'Backlog',
-        'Committed',
-        'Build',
-        'Test',
-        'Done'
+        "completed_date",
+        "cycle_time",
+        "blocked_days",
+        "key",
+        "url",
+        "issue_type",
+        "summary",
+        "status",
+        "resolution",
+        "Backlog",
+        "Committed",
+        "Build",
+        "Test",
+        "Done",
     ]
 
 
@@ -77,11 +79,35 @@ def test_calculate_scatterplot(query_manager, settings, results):
 
     data = calculator.run()
 
-    assert data[['key', 'completed_date', 'cycle_time']].to_dict('records') == [
-        {'key': 'A-13', 'completed_date': Timestamp('2018-01-07 00:00:00'), 'cycle_time': 5.0},
-        {'key': 'A-14', 'completed_date': Timestamp('2018-01-07 00:00:00'), 'cycle_time': 5.0},
-        {'key': 'A-15', 'completed_date': Timestamp('2018-01-08 00:00:00'), 'cycle_time': 5.0},
-        {'key': 'A-16', 'completed_date': Timestamp('2018-01-08 00:00:00'), 'cycle_time': 5.0},
-        {'key': 'A-17', 'completed_date': Timestamp('2018-01-09 00:00:00'), 'cycle_time': 5.0},
-        {'key': 'A-18', 'completed_date': Timestamp('2018-01-09 00:00:00'), 'cycle_time': 4.0},
+    assert data[["key", "completed_date", "cycle_time"]].to_dict("records") == [
+        {
+            "key": "A-13",
+            "completed_date": Timestamp("2018-01-07 00:00:00"),
+            "cycle_time": 5.0,
+        },
+        {
+            "key": "A-14",
+            "completed_date": Timestamp("2018-01-07 00:00:00"),
+            "cycle_time": 5.0,
+        },
+        {
+            "key": "A-15",
+            "completed_date": Timestamp("2018-01-08 00:00:00"),
+            "cycle_time": 5.0,
+        },
+        {
+            "key": "A-16",
+            "completed_date": Timestamp("2018-01-08 00:00:00"),
+            "cycle_time": 5.0,
+        },
+        {
+            "key": "A-17",
+            "completed_date": Timestamp("2018-01-09 00:00:00"),
+            "cycle_time": 5.0,
+        },
+        {
+            "key": "A-18",
+            "completed_date": Timestamp("2018-01-09 00:00:00"),
+            "cycle_time": 4.0,
+        },
     ]

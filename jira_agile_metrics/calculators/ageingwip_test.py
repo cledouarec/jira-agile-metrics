@@ -10,9 +10,12 @@ from ..utils import extend_dict
 
 @pytest.fixture
 def settings(minimal_settings):
-    return extend_dict(minimal_settings, {
-        'ageing_wip_chart': 'ageingwip.png'  # without a file to write the calculator will stop
-    })
+    return extend_dict(
+        minimal_settings,
+        {
+            "ageing_wip_chart": "ageingwip.png"  # without a file to write the calculator will stop
+        },
+    )
 
 
 @pytest.fixture
@@ -32,20 +35,22 @@ def today():
 
 def test_empty(query_manager, settings, minimal_cycle_time_columns, today):
     results = {
-        CycleTimeCalculator: DataFrame([], columns=minimal_cycle_time_columns, index=[])
+        CycleTimeCalculator: DataFrame(
+            [], columns=minimal_cycle_time_columns, index=[]
+        )
     }
 
     calculator = AgeingWIPChartCalculator(query_manager, settings, results)
 
     data = calculator.run(today)
     assert list(data.columns) == [
-        'key',
-        'summary',
-        'status',
-        'age',
-        'Committed',
-        'Build',
-        'Test'
+        "key",
+        "summary",
+        "status",
+        "age",
+        "Committed",
+        "Build",
+        "Test",
     ]
     assert len(data.index) == 0
 
@@ -56,13 +61,13 @@ def test_columns(query_manager, settings, results, today):
     data = calculator.run(today)
 
     assert list(data.columns) == [
-        'key',
-        'summary',
-        'status',
-        'age',
-        'Committed',
-        'Build',
-        'Test'
+        "key",
+        "summary",
+        "status",
+        "age",
+        "Committed",
+        "Build",
+        "Test",
     ]
 
 
@@ -71,35 +76,39 @@ def test_calculate_ageing_wip(query_manager, settings, results, today):
 
     data = calculator.run(today)
 
-    assert data[['key', 'status', 'age']].to_dict('records') == [
-        {'key': 'A-4', 'status': 'Committed', 'age': 8.0},
-        {'key': 'A-5', 'status': 'Committed', 'age': 7.0},
-        {'key': 'A-6', 'status': 'Committed', 'age': 7.0},
-        {'key': 'A-7', 'status': 'Build', 'age': 8.0},
-        {'key': 'A-8', 'status': 'Build', 'age': 8.0},
-        {'key': 'A-9', 'status': 'Build', 'age': 8.0},
-        {'key': 'A-10', 'status': 'Test', 'age': 8.0},
-        {'key': 'A-11', 'status': 'Test', 'age': 8.0},
-        {'key': 'A-12', 'status': 'Test', 'age': 8.0},
+    assert data[["key", "status", "age"]].to_dict("records") == [
+        {"key": "A-4", "status": "Committed", "age": 8.0},
+        {"key": "A-5", "status": "Committed", "age": 7.0},
+        {"key": "A-6", "status": "Committed", "age": 7.0},
+        {"key": "A-7", "status": "Build", "age": 8.0},
+        {"key": "A-8", "status": "Build", "age": 8.0},
+        {"key": "A-9", "status": "Build", "age": 8.0},
+        {"key": "A-10", "status": "Test", "age": 8.0},
+        {"key": "A-11", "status": "Test", "age": 8.0},
+        {"key": "A-12", "status": "Test", "age": 8.0},
     ]
 
 
-def test_calculate_ageing_wip_with_different_columns(query_manager, settings, results, today):
-    settings.update({
-        'committed_column': 'Committed',
-        'final_column': 'Build',
-        'done_column': 'Test',
-    })
+def test_calculate_ageing_wip_with_different_columns(
+    query_manager, settings, results, today
+):
+    settings.update(
+        {
+            "committed_column": "Committed",
+            "final_column": "Build",
+            "done_column": "Test",
+        }
+    )
 
     calculator = AgeingWIPChartCalculator(query_manager, settings, results)
 
     data = calculator.run(today)
 
-    assert data[['key', 'status', 'age']].to_dict('records') == [
-        {'key': 'A-4', 'status': 'Committed', 'age': 8.0},
-        {'key': 'A-5', 'status': 'Committed', 'age': 7.0},
-        {'key': 'A-6', 'status': 'Committed', 'age': 7.0},
-        {'key': 'A-7', 'status': 'Build', 'age': 8.0},
-        {'key': 'A-8', 'status': 'Build', 'age': 8.0},
-        {'key': 'A-9', 'status': 'Build', 'age': 8.0}
+    assert data[["key", "status", "age"]].to_dict("records") == [
+        {"key": "A-4", "status": "Committed", "age": 8.0},
+        {"key": "A-5", "status": "Committed", "age": 7.0},
+        {"key": "A-6", "status": "Committed", "age": 7.0},
+        {"key": "A-7", "status": "Build", "age": 8.0},
+        {"key": "A-8", "status": "Build", "age": 8.0},
+        {"key": "A-9", "status": "Build", "age": 8.0},
     ]

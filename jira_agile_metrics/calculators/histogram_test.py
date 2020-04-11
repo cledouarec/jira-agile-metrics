@@ -24,7 +24,9 @@ def results(large_cycle_time_results):
 
 def test_empty(query_manager, settings, minimal_cycle_time_columns):
     results = {
-        CycleTimeCalculator: DataFrame([], columns=minimal_cycle_time_columns, index=[])
+        CycleTimeCalculator: DataFrame(
+            [], columns=minimal_cycle_time_columns, index=[]
+        )
     }
 
     calculator = HistogramCalculator(query_manager, settings, results)
@@ -32,16 +34,16 @@ def test_empty(query_manager, settings, minimal_cycle_time_columns):
     data = calculator.run()
 
     assert list(data.index) == [
-        '0.0 to 1.0',
-        '1.0 to 2.0',
-        '2.0 to 3.0',
-        '3.0 to 4.0',
-        '4.0 to 5.0',
-        '5.0 to 6.0',
-        '6.0 to 7.0',
-        '7.0 to 8.0',
-        '8.0 to 9.0',
-        '9.0 to 10.0'
+        "0.0 to 1.0",
+        "1.0 to 2.0",
+        "2.0 to 3.0",
+        "3.0 to 4.0",
+        "4.0 to 5.0",
+        "5.0 to 6.0",
+        "6.0 to 7.0",
+        "7.0 to 8.0",
+        "8.0 to 9.0",
+        "9.0 to 10.0",
     ]
 
     assert list(data) == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -53,11 +55,11 @@ def test_calculate_histogram(query_manager, settings, results):
     data = calculator.run()
 
     assert list(data.index) == [
-        '0.0 to 1.0',
-        '1.0 to 2.0',
-        '2.0 to 3.0',
-        '3.0 to 4.0',
-        '4.0 to 5.0',
-        '5.0 to 6.0'
+        "0.0 to 1.0",
+        "1.0 to 2.0",
+        "2.0 to 3.0",
+        "3.0 to 4.0",
+        "4.0 to 5.0",
+        "5.0 to 6.0",
     ]
     assert list(data) == [0, 0, 0, 0, 1, 5]
