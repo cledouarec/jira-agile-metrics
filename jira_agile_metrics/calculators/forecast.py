@@ -375,7 +375,7 @@ def throughput_sampler(throughput_data, start_value, target):
             sample_buffer["idx"] = 0
 
         sample_buffer["idx"] += 1
-        return sample_buffer["buffer"].iloc[sample_buffer["idx"] - 1]
+        return sample_buffer["buffer"].iat[sample_buffer["idx"] - 1]
 
     return get_throughput_sample
 
