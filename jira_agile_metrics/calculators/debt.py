@@ -6,7 +6,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 from ..calculator import Calculator
-from ..utils import breakdown_by_month, set_chart_style, to_bin
+from ..utils import (
+    breakdown_by_month,
+    filter_by_columns,
+    set_chart_style,
+    to_bin,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -112,12 +117,10 @@ class DebtCalculator(Calculator):
         window = self.settings["debt_window"]
         priority_values = self.settings["debt_priority_values"]
 
-        breakdown = breakdown_by_month(
-            chart_data,
-            "created",
-            "resolved",
-            "key",
-            "priority",
+        breakdown = filter_by_columns(
+            breakdown_by_month(
+                chart_data, "created", "resolved", "key", "priority"
+            ),
             priority_values,
         )
 

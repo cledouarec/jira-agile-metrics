@@ -5,7 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 from ..calculator import Calculator
-from ..utils import breakdown_by_month, set_chart_style
+from ..utils import breakdown_by_month, filter_by_columns, set_chart_style
 
 logger = logging.getLogger(__name__)
 
@@ -147,12 +147,10 @@ class DefectsCalculator(Calculator):
         window = self.settings["defects_window"]
         priority_values = self.settings["defects_priority_values"]
 
-        breakdown = breakdown_by_month(
-            chart_data,
-            "created",
-            "resolved",
-            "key",
-            "priority",
+        breakdown = filter_by_columns(
+            breakdown_by_month(
+                chart_data, "created", "resolved", "key", "priority"
+            ),
             priority_values,
         )
 
@@ -190,8 +188,11 @@ class DefectsCalculator(Calculator):
         window = self.settings["defects_window"]
         type_values = self.settings["defects_type_values"]
 
-        breakdown = breakdown_by_month(
-            chart_data, "created", "resolved", "key", "type", type_values
+        breakdown = filter_by_columns(
+            breakdown_by_month(
+                chart_data, "created", "resolved", "key", "type"
+            ),
+            type_values,
         )
 
         if window:
@@ -226,12 +227,10 @@ class DefectsCalculator(Calculator):
         window = self.settings["defects_window"]
         environment_values = self.settings["defects_environment_values"]
 
-        breakdown = breakdown_by_month(
-            chart_data,
-            "created",
-            "resolved",
-            "key",
-            "environment",
+        breakdown = filter_by_columns(
+            breakdown_by_month(
+                chart_data, "created", "resolved", "key", "environment"
+            ),
             environment_values,
         )
 

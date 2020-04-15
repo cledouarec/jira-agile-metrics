@@ -7,6 +7,7 @@ from ..utils import (
     get_extension,
     breakdown_by_month,
     breakdown_by_month_sum_days,
+    filter_by_columns,
     set_chart_style,
 )
 
@@ -209,8 +210,9 @@ class ImpedimentsCalculator(Calculator):
         window = self.settings["impediments_window"]
         cycle_names = [s["name"] for s in self.settings["cycle"]]
 
-        breakdown = breakdown_by_month(
-            chart_data, "start", "end", "key", "status", cycle_names
+        breakdown = filter_by_columns(
+            breakdown_by_month(chart_data, "start", "end", "key", "status"),
+            cycle_names,
         )
 
         if window:

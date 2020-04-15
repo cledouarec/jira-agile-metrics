@@ -49,22 +49,23 @@ def set_chart_style(style="whitegrid", despine=True):
         sns.despine()
 
 
+def filter_by_columns(df, output_columns):
+    """To restrict (and order) the value columns, pass a list of valid values
+    as `output_columns`.
+    """
+    if output_columns:
+        return df[[s for s in output_columns if s in df.columns]]
+    return df
+
+
 def breakdown_by_month(
-    df,
-    start_column,
-    end_column,
-    key_column,
-    value_column,
-    output_columns=None,
-    aggfunc="count",
+    df, start_column, end_column, key_column, value_column, aggfunc="count"
 ):
     """If `df` is a DataFrame of items that are valid/active between the
     timestamps stored in `start_column` and `end_column`, and where each item
     is uniquely identified by `key_column` and has a categorical value in
     `value_column`, return a new DataFrame counting the number of items in
-    each month broken down by each unique value in `value_column`. To restrict
-    (and order) the value columns, pass a list of valid values as
-    `output_columns`.
+    each month broken down by each unique value in `value_column`.
     """
 
     def build_df(t):
@@ -85,34 +86,21 @@ def breakdown_by_month(
 
         return pd.DataFrame(index=index, data=[[key]], columns=[value])
 
-    breakdown = (
+    return (
         pd.concat([build_df(t) for t in df.itertuples()], sort=True)
         .resample("MS")
         .agg(aggfunc)
     )
 
-    if output_columns:
-        breakdown = breakdown[
-            [s for s in output_columns if s in breakdown.columns]
-        ]
-
-    return breakdown
-
 
 def breakdown_by_month_sum_days(
-    df,
-    start_column,
-    end_column,
-    value_column,
-    output_columns=None,
-    aggfunc="sum",
+    df, start_column, end_column, value_column, aggfunc="sum"
 ):
     """If `df` is a DataFrame of items that are valid/active between the
     timestamps stored in `start_column` and `end_column`, and where each has a
     categorical value in `value_column`, return a new DataFrame summing the
     overlapping days of items in each month broken down by each unique value in
-    `value_column`. To restrict (and order) the value columns, pass a list of
-    valid values as `output_columns`.
+    `value_column`.
     """
 
     def build_df(t):
@@ -148,18 +136,11 @@ def breakdown_by_month_sum_days(
             columns=[value],
         )
 
-    breakdown = (
+    return (
         pd.concat([build_df(t) for t in df.itertuples()], sort=True)
         .resample("MS")
         .agg(aggfunc)
     )
-
-    if output_columns:
-        breakdown = breakdown[
-            [s for s in output_columns if s in breakdown.columns]
-        ]
-
-    return breakdown
 
 
 def to_bin(value, edges):
