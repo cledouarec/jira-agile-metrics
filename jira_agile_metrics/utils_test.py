@@ -1,6 +1,7 @@
 import datetime
 import numpy as np
 import pandas as pd
+import pytest
 
 from .utils import (
     get_extension,
@@ -12,6 +13,51 @@ from .utils import (
     breakdown_by_month_sum_days,
     to_bin,
 )
+
+
+@pytest.fixture
+def issues():
+    return pd.DataFrame(
+        [
+            {
+                "key": "ABC-1",
+                "priority": "high",
+                "start": pd.Timestamp(2018, 1, 1),
+                "end": pd.Timestamp(2018, 3, 20),
+            },
+            {
+                "key": "ABC-2",
+                "priority": "med",
+                "start": pd.Timestamp(2018, 1, 2),
+                "end": pd.Timestamp(2018, 1, 20),
+            },
+            {
+                "key": "ABC-3",
+                "priority": "high",
+                "start": pd.Timestamp(2018, 2, 3),
+                "end": pd.Timestamp(2018, 3, 20),
+            },
+            {
+                "key": "ABC-4",
+                "priority": "med",
+                "start": pd.Timestamp(2018, 1, 4),
+                "end": pd.Timestamp(2018, 3, 20),
+            },
+            {
+                "key": "ABC-5",
+                "priority": "high",
+                "start": pd.Timestamp(2018, 2, 5),
+                "end": pd.Timestamp(2018, 2, 20),
+            },
+            {
+                "key": "ABC-6",
+                "priority": "med",
+                "start": pd.Timestamp(2018, 3, 6),
+                "end": pd.Timestamp(2018, 3, 20),
+            },
+        ],
+        columns=["key", "priority", "start", "end"],
+    )
 
 
 def test_extend_dict():
@@ -64,50 +110,8 @@ def test_filter_by_columns():
     ]
 
 
-def test_breakdown_by_month():
-    df = pd.DataFrame(
-        [
-            {
-                "key": "ABC-1",
-                "priority": "high",
-                "start": pd.Timestamp(2018, 1, 1),
-                "end": pd.Timestamp(2018, 3, 20),
-            },
-            {
-                "key": "ABC-2",
-                "priority": "med",
-                "start": pd.Timestamp(2018, 1, 2),
-                "end": pd.Timestamp(2018, 1, 20),
-            },
-            {
-                "key": "ABC-3",
-                "priority": "high",
-                "start": pd.Timestamp(2018, 2, 3),
-                "end": pd.Timestamp(2018, 3, 20),
-            },
-            {
-                "key": "ABC-4",
-                "priority": "med",
-                "start": pd.Timestamp(2018, 1, 4),
-                "end": pd.Timestamp(2018, 3, 20),
-            },
-            {
-                "key": "ABC-5",
-                "priority": "high",
-                "start": pd.Timestamp(2018, 2, 5),
-                "end": pd.Timestamp(2018, 2, 20),
-            },
-            {
-                "key": "ABC-6",
-                "priority": "med",
-                "start": pd.Timestamp(2018, 3, 6),
-                "end": pd.Timestamp(2018, 3, 20),
-            },
-        ],
-        columns=["key", "priority", "start", "end"],
-    )
-
-    breakdown = breakdown_by_month(df, "start", "end", "key", "priority")
+def test_breakdown_by_month(issues):
+    breakdown = breakdown_by_month(issues, "start", "end", "key", "priority")
     assert list(breakdown.columns) == ["high", "med"]  # alphabetical
 
     assert list(breakdown.index) == [
@@ -122,50 +126,11 @@ def test_breakdown_by_month():
     ]
 
 
-def test_breakdown_by_month_open_ended():
-    df = pd.DataFrame(
-        [
-            {
-                "key": "ABC-1",
-                "priority": "high",
-                "start": pd.Timestamp(2018, 1, 1),
-                "end": pd.Timestamp(2018, 3, 20),
-            },
-            {
-                "key": "ABC-2",
-                "priority": "med",
-                "start": pd.Timestamp(2018, 1, 2),
-                "end": pd.Timestamp(2018, 1, 20),
-            },
-            {
-                "key": "ABC-3",
-                "priority": "high",
-                "start": pd.Timestamp(2018, 2, 3),
-                "end": pd.Timestamp(2018, 3, 20),
-            },
-            {
-                "key": "ABC-4",
-                "priority": "med",
-                "start": pd.Timestamp(2018, 1, 4),
-                "end": pd.Timestamp(2018, 3, 20),
-            },
-            {
-                "key": "ABC-5",
-                "priority": "high",
-                "start": pd.Timestamp(2018, 2, 5),
-                "end": pd.Timestamp(2018, 2, 20),
-            },
-            {
-                "key": "ABC-6",
-                "priority": "med",
-                "start": pd.Timestamp(2018, 3, 6),
-                "end": None,
-            },
-        ],
-        columns=["key", "priority", "start", "end"],
-    )
+def test_breakdown_by_month_open_ended(issues):
+    # Replace ABC-6 end date to None
+    issues["end"][5] = None
 
-    breakdown = breakdown_by_month(df, "start", "end", "key", "priority")
+    breakdown = breakdown_by_month(issues, "start", "end", "key", "priority")
     assert list(breakdown.columns) == ["high", "med"]  # alphabetical
 
     # Note: We will get columns until the current month; assume this test is
@@ -186,50 +151,11 @@ def test_breakdown_by_month_open_ended():
     ]
 
 
-def test_breakdown_by_month_none_values():
-    df = pd.DataFrame(
-        [
-            {
-                "key": "ABC-1",
-                "priority": None,
-                "start": pd.Timestamp(2018, 1, 1),
-                "end": pd.Timestamp(2018, 3, 20),
-            },
-            {
-                "key": "ABC-2",
-                "priority": None,
-                "start": pd.Timestamp(2018, 1, 2),
-                "end": pd.Timestamp(2018, 1, 20),
-            },
-            {
-                "key": "ABC-3",
-                "priority": None,
-                "start": pd.Timestamp(2018, 2, 3),
-                "end": pd.Timestamp(2018, 3, 20),
-            },
-            {
-                "key": "ABC-4",
-                "priority": None,
-                "start": pd.Timestamp(2018, 1, 4),
-                "end": pd.Timestamp(2018, 3, 20),
-            },
-            {
-                "key": "ABC-5",
-                "priority": None,
-                "start": pd.Timestamp(2018, 2, 5),
-                "end": pd.Timestamp(2018, 2, 20),
-            },
-            {
-                "key": "ABC-6",
-                "priority": None,
-                "start": pd.Timestamp(2018, 3, 6),
-                "end": pd.Timestamp(2018, 3, 20),
-            },
-        ],
-        columns=["key", "priority", "start", "end"],
-    )
+def test_breakdown_by_month_none_values(issues):
+    # Replace all priorities to None
+    issues["priority"] = None
 
-    breakdown = breakdown_by_month(df, "start", "end", "key", "priority")
+    breakdown = breakdown_by_month(issues, "start", "end", "key", "priority")
     assert list(breakdown.columns) == [None]
 
     assert list(breakdown.index) == [
@@ -240,44 +166,8 @@ def test_breakdown_by_month_none_values():
     assert breakdown.to_dict("records") == [{None: 3}, {None: 4}, {None: 4}]
 
 
-def test_breakdown_by_month_sum_days():
-    df = pd.DataFrame(
-        [
-            {
-                "priority": "high",
-                "start": pd.Timestamp(2018, 1, 1),
-                "end": pd.Timestamp(2018, 3, 20),
-            },  # Jan: 31 Feb: 28 Mar: 20
-            {
-                "priority": "med",
-                "start": pd.Timestamp(2018, 1, 2),
-                "end": pd.Timestamp(2018, 1, 20),
-            },  # Jan: 19 Feb:  0 Mar:  0
-            {
-                "priority": "high",
-                "start": pd.Timestamp(2018, 2, 3),
-                "end": pd.Timestamp(2018, 3, 20),
-            },  # Jan:  0 Feb: 26 Mar: 20
-            {
-                "priority": "med",
-                "start": pd.Timestamp(2018, 1, 4),
-                "end": pd.Timestamp(2018, 3, 20),
-            },  # Jan: 28 Feb: 28 Mar: 20
-            {
-                "priority": "high",
-                "start": pd.Timestamp(2018, 2, 5),
-                "end": pd.Timestamp(2018, 2, 20),
-            },  # Jan:  0 Feb: 16 Mar:  0
-            {
-                "priority": "med",
-                "start": pd.Timestamp(2018, 3, 6),
-                "end": pd.Timestamp(2018, 3, 20),
-            },  # Jan:  0 Feb:  0 Mar: 15
-        ],
-        columns=["key", "priority", "start", "end"],
-    )
-
-    breakdown = breakdown_by_month_sum_days(df, "start", "end", "priority")
+def test_breakdown_by_month_sum_days(issues):
+    breakdown = breakdown_by_month_sum_days(issues, "start", "end", "priority")
     assert list(breakdown.columns) == ["high", "med"]  # alphabetical
 
     assert list(breakdown.index) == [
@@ -293,44 +183,11 @@ def test_breakdown_by_month_sum_days():
     ]
 
 
-def test_breakdown_by_month_sum_day_open_ended():
-    df = pd.DataFrame(
-        [
-            {
-                "priority": "high",
-                "start": pd.Timestamp(2018, 1, 1),
-                "end": pd.Timestamp(2018, 3, 20),
-            },  # Jan: 31 Feb: 28 Mar: 20
-            {
-                "priority": "med",
-                "start": pd.Timestamp(2018, 1, 2),
-                "end": pd.Timestamp(2018, 1, 20),
-            },  # Jan: 19 Feb:  0 Mar:  0
-            {
-                "priority": "high",
-                "start": pd.Timestamp(2018, 2, 3),
-                "end": pd.Timestamp(2018, 3, 20),
-            },  # Jan:  0 Feb: 26 Mar: 20
-            {
-                "priority": "med",
-                "start": pd.Timestamp(2018, 1, 4),
-                "end": pd.Timestamp(2018, 3, 20),
-            },  # Jan: 28 Feb: 28 Mar: 20
-            {
-                "priority": "high",
-                "start": pd.Timestamp(2018, 2, 5),
-                "end": pd.Timestamp(2018, 2, 20),
-            },  # Jan:  0 Feb: 16 Mar:  0
-            {
-                "priority": "med",
-                "start": pd.Timestamp(2018, 3, 6),
-                "end": None,
-            },  # Jan:  0 Feb:  0 Mar: 26
-        ],
-        columns=["key", "priority", "start", "end"],
-    )
+def test_breakdown_by_month_sum_day_open_ended(issues):
+    # Replace ABC-6 end date to None
+    issues["end"][5] = None
 
-    breakdown = breakdown_by_month_sum_days(df, "start", "end", "priority")
+    breakdown = breakdown_by_month_sum_days(issues, "start", "end", "priority")
     assert list(breakdown.columns) == ["high", "med"]  # alphabetical
 
     # Note: We will get columns until the current month; assume this test is
@@ -351,44 +208,11 @@ def test_breakdown_by_month_sum_day_open_ended():
     ]
 
 
-def test_breakdown_by_month_sum_days_none_values():
-    df = pd.DataFrame(
-        [
-            {
-                "priority": None,
-                "start": pd.Timestamp(2018, 1, 1),
-                "end": pd.Timestamp(2018, 3, 20),
-            },  # Jan: 31 Feb: 28 Mar: 20
-            {
-                "priority": "med",
-                "start": pd.Timestamp(2018, 1, 2),
-                "end": pd.Timestamp(2018, 1, 20),
-            },  # Jan: 19 Feb:  0 Mar:  0
-            {
-                "priority": None,
-                "start": pd.Timestamp(2018, 2, 3),
-                "end": pd.Timestamp(2018, 3, 20),
-            },  # Jan:  0 Feb: 26 Mar: 20
-            {
-                "priority": "med",
-                "start": pd.Timestamp(2018, 1, 4),
-                "end": pd.Timestamp(2018, 3, 20),
-            },  # Jan: 28 Feb: 28 Mar: 20
-            {
-                "priority": None,
-                "start": pd.Timestamp(2018, 2, 5),
-                "end": pd.Timestamp(2018, 2, 20),
-            },  # Jan:  0 Feb: 16 Mar:  0
-            {
-                "priority": "med",
-                "start": pd.Timestamp(2018, 3, 6),
-                "end": pd.Timestamp(2018, 3, 20),
-            },  # Jan:  0 Feb:  0 Mar: 15
-        ],
-        columns=["key", "priority", "start", "end"],
-    )
+def test_breakdown_by_month_sum_days_none_values(issues):
+    # Replace all high priorities to None
+    issues["priority"].mask(issues["priority"] == "high", None, inplace=True)
 
-    breakdown = breakdown_by_month_sum_days(df, "start", "end", "priority")
+    breakdown = breakdown_by_month_sum_days(issues, "start", "end", "priority")
     assert list(breakdown.columns) == [None, "med"]
 
     assert list(breakdown.index) == [
