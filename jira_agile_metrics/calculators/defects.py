@@ -146,6 +146,7 @@ class DefectsCalculator(Calculator):
     def write_defects_by_priority_chart(self, chart_data, output_file):
         window = self.settings["defects_window"]
         priority_values = self.settings["defects_priority_values"]
+        threshold = self.settings["defects_priority_threshold"]
 
         breakdown = filter_by_columns(
             breakdown_by_month(
@@ -156,6 +157,13 @@ class DefectsCalculator(Calculator):
 
         if window:
             breakdown = breakdown[-window:]
+
+        if threshold:
+            total = breakdown.sum(axis=1)
+            threshold_mask = (breakdown * 100.0 / total[1] < threshold).all()
+            others = breakdown.loc[:, threshold_mask].sum(axis=1)
+            breakdown = breakdown.loc[:, ~threshold_mask]
+            breakdown["Others"] = others
 
         if len(breakdown.index) == 0 or len(breakdown.columns) == 0:
             logger.warning(
@@ -187,6 +195,7 @@ class DefectsCalculator(Calculator):
     def write_defects_by_type_chart(self, chart_data, output_file):
         window = self.settings["defects_window"]
         type_values = self.settings["defects_type_values"]
+        threshold = self.settings["defects_type_threshold"]
 
         breakdown = filter_by_columns(
             breakdown_by_month(
@@ -197,6 +206,13 @@ class DefectsCalculator(Calculator):
 
         if window:
             breakdown = breakdown[-window:]
+
+        if threshold:
+            total = breakdown.sum(axis=1)
+            threshold_mask = (breakdown * 100.0 / total[1] < threshold).all()
+            others = breakdown.loc[:, threshold_mask].sum(axis=1)
+            breakdown = breakdown.loc[:, ~threshold_mask]
+            breakdown["Others"] = others
 
         if len(breakdown.index) == 0 or len(breakdown.columns) == 0:
             logger.warning("Cannot draw defects by type chart with zero items")
@@ -226,6 +242,7 @@ class DefectsCalculator(Calculator):
     def write_defects_by_environment_chart(self, chart_data, output_file):
         window = self.settings["defects_window"]
         environment_values = self.settings["defects_environment_values"]
+        threshold = self.settings["defects_environment_threshold"]
 
         breakdown = filter_by_columns(
             breakdown_by_month(
@@ -236,6 +253,13 @@ class DefectsCalculator(Calculator):
 
         if window:
             breakdown = breakdown[-window:]
+
+        if threshold:
+            total = breakdown.sum(axis=1)
+            threshold_mask = (breakdown * 100.0 / total[1] < threshold).all()
+            others = breakdown.loc[:, threshold_mask].sum(axis=1)
+            breakdown = breakdown.loc[:, ~threshold_mask]
+            breakdown["Others"] = others
 
         if len(breakdown.index) == 0 or len(breakdown.columns) == 0:
             logger.warning(

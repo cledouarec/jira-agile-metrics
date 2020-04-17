@@ -245,10 +245,13 @@ def config_to_options(data, cwd=None, extended=False):
             "defects_window": None,
             "defects_priority_field": None,
             "defects_priority_values": None,
+            "defects_priority_threshold": None,
             "defects_type_field": None,
             "defects_type_values": None,
+            "defects_type_threshold": None,
             "defects_environment_field": None,
             "defects_environment_values": None,
+            "defects_environment_threshold": None,
             "defects_by_priority_chart": None,
             "defects_by_priority_chart_title": None,
             "defects_by_type_chart": None,
@@ -384,6 +387,9 @@ def config_to_options(data, cwd=None, extended=False):
         # float values
         for key in [
             "burnup_forecast_chart_deadline_confidence",
+            "defects_priority_threshold",
+            "defects_type_threshold",
+            "defects_environment_threshold",
         ]:
             if expand_key(key) in config["output"]:
                 options["settings"][key] = force_float(

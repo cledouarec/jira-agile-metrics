@@ -166,16 +166,19 @@ Output:
         - Low
         - Medium
         - High
+    Defects priority threshold: 5.0
     Defects type field: Type
     Defects type values:
         - Config
         - Data
         - Code
+    Defects type threshold: 5.0
     Defects environment field: Environment
     Defects environment values:
         - SIT
         - UAT
         - PROD
+    Defects environment threshold: 5.0
     Defects by priority chart: defects-by-priority.png
     Defects by priority chart title: Defects by priority
     Defects by type chart: defects-by-type.png
@@ -325,10 +328,13 @@ Output:
         "defects_window": 3,
         "defects_priority_field": "Priority",
         "defects_priority_values": ["Low", "Medium", "High"],
+        "defects_priority_threshold": 5.0,
         "defects_type_field": "Type",
         "defects_type_values": ["Config", "Data", "Code"],
+        "defects_type_threshold": 5.0,
         "defects_environment_field": "Environment",
         "defects_environment_values": ["SIT", "UAT", "PROD"],
+        "defects_environment_threshold": 5.0,
         "defects_by_priority_chart": "defects-by-priority.png",
         "defects_by_priority_chart_title": "Defects by priority",
         "defects_by_type_chart": "defects-by-type.png",

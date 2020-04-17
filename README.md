@@ -676,9 +676,13 @@ The three available groupings are:
 
 They each require you to specify the name of the relevant field, and a chart
 output. You can also optionally specify a list of allowed values for each field,
-which lets you control the order. Finally, you can specify a "window" of how
+which lets you control the order. You can specify a "window" of how
 many of the most recent months to show (the default is to show all months for
-which there is data). Here is an example that enables all charts, and limits to
+which there is data). Finally, it is also possible to limit the number of
+allowed values by setting a threshold in percentage. All the fields on the
+period (or in the window period selected) that haven't at least 1 value higher
+than the threshold will be counted as "Others".
+Here is an example that enables all charts, and limits to
 showing the six most recent months in each:
 
     Defects query: issueType = Bug
@@ -1289,14 +1293,20 @@ of filenames, or a single filename.
    defect priority.
 - `Defects priority values: <list>` – List of valid values, in order,
    for defect priorities.
+- `Defects priority threshold: <number>` – Threshold in percentage to limit the
+number of values.
 - `Defects type field: <fieldname>` – Name of field identifying defect
    type.
 - `Defects type values: <list>` – List of valid values, in order, for
    defect values.
+- `Defects type threshold: <number>` – Threshold in percentage to limit the
+number of values.
 - `Defects environment field: <fieldname>` – Name of field identifying
    the environment in which a defect was discovered.
 - `Defects environment values: <list>` – List of valid values, in
    order, for defect environments.
+- `Defects environment threshold: <number>` – Threshold in percentage to limit
+the number of values.
 
 - `Defects by priority chart: <filename>.png` – Draw stacked bar chart of
    defects grouped by priority over time.
