@@ -38,4 +38,9 @@ jobs:
         # Stop the build if there are Python syntax errors or undefined names
         pylint --errors-only jira_agile_metrics
         # Exit-zero treats all errors as warnings.
-        pylint --exit-zero jira_agile_metrics
+        pylint --exit-zero jira_agile_metrics > pylint_results.txt
+    - name: Upload pylint results
+      uses: actions/upload-artifact@v2
+      with:
+        name: pylint_results
+        path: pylint_results.txt
