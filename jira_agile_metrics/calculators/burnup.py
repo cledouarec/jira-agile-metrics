@@ -3,16 +3,15 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 from ..calculator import Calculator
-from ..utils import set_chart_style
 
 from .cfd import CFDCalculator
+from ..utils import Chart
 
 logger = logging.getLogger(__name__)
 
 
 class BurnupCalculator(Calculator):
-    """Draw a simple burn-up chart.
-    """
+    """Draw a simple burn-up chart."""
 
     def run(self):
         cfd_data = self.get_result(CFDCalculator)
@@ -53,18 +52,15 @@ class BurnupCalculator(Calculator):
                 )
                 return
 
-        fig, ax = plt.subplots()
-
-        if self.settings["burnup_chart_title"]:
-            ax.set_title(self.settings["burnup_chart_title"])
+        with Chart.use_palette(self.settings["burnup_chart_palette"]):
+            fig, ax = plt.subplots()
+            chart_data.plot.line(ax=ax, legend=True)
 
         fig.autofmt_xdate()
-
+        if self.settings["burnup_chart_title"]:
+            ax.set_title(self.settings["burnup_chart_title"])
         ax.set_xlabel("Date")
         ax.set_ylabel("Number of items")
-
-        chart_data.plot.line(ax=ax, legend=True)
-
         bottom = chart_data[chart_data.columns[-1]].min()
         top = chart_data[chart_data.columns[0]].max()
         ax.set_ylim(bottom=bottom, top=top)
@@ -75,7 +71,6 @@ class BurnupCalculator(Calculator):
         ax.set_position(
             [box.x0, box.y0 + box.height * 0.1, box.width, box.height * 0.9]
         )
-
         ax.legend(
             handles[:2],
             labels[:2],
@@ -83,8 +78,6 @@ class BurnupCalculator(Calculator):
             bbox_to_anchor=(0.5, -0.2),
             ncol=2,
         )
-
-        set_chart_style()
 
         # Write file
         logger.info("Writing burnup chart to %s", output_file)

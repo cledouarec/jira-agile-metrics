@@ -36,21 +36,51 @@ def jira(custom_fields):
                     Change(
                         "2018-01-03 01:01:01",
                         [
-                            ("resolution", None, "Closed",),
-                            ("status", "Next", "Done",),
+                            (
+                                "resolution",
+                                None,
+                                "Closed",
+                            ),
+                            (
+                                "status",
+                                "Next",
+                                "Done",
+                            ),
                         ],
                     ),
                     Change(
-                        "2018-01-02 01:01:01", [("status", "Backlog", "Next",)]
+                        "2018-01-02 01:01:01",
+                        [
+                            (
+                                "status",
+                                "Backlog",
+                                "Next",
+                            )
+                        ],
                     ),
                     Change(
-                        "2018-01-02 01:01:01", [("Team", "Team 2", "Team 1",)]
+                        "2018-01-02 01:01:01",
+                        [
+                            (
+                                "Team",
+                                "Team 2",
+                                "Team 1",
+                            )
+                        ],
                     ),
                     Change(
                         "2018-01-04 01:01:01",
                         [
-                            ("resolution", "Closed", None,),
-                            ("status", "Done", "QA",),
+                            (
+                                "resolution",
+                                "Closed",
+                                None,
+                            ),
+                            (
+                                "status",
+                                "Done",
+                                "QA",
+                            ),
                         ],
                     ),
                 ],

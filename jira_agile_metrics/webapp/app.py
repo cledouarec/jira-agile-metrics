@@ -123,8 +123,7 @@ def override_options(options, form):
 
 
 def get_jira_client(connection):
-    """Create a JIRA client with the given connection options
-    """
+    """Create a JIRA client with the given connection options"""
 
     url = connection["domain"]
     username = connection["username"]

@@ -85,7 +85,6 @@ class CycleTimeCalculator(Calculator):
         )
 
         for output_file in output_files:
-
             logger.info("Writing cycle time data to %s", output_file)
             output_extension = get_extension(output_file)
 
@@ -141,7 +140,9 @@ def calculate_cycle_times(
     for idx, cycle_step in enumerate(cycle):
         for status in cycle_step["statuses"]:
             cycle_lookup[status.lower()] = dict(
-                index=idx, name=cycle_step["name"], type=cycle_step["type"],
+                index=idx,
+                name=cycle_step["name"],
+                type=cycle_step["type"],
             )
 
     unmapped_statuses = set()
@@ -177,7 +178,10 @@ def calculate_cycle_times(
             item = {
                 "key": issue.key,
                 "url": "%s/browse/%s"
-                % (query_manager.jira.client_info(), issue.key,),
+                % (
+                    query_manager.jira.client_info(),
+                    issue.key,
+                ),
                 "issue_type": issue.fields.issuetype.name,
                 "summary": issue.fields.summary,
                 "status": issue.fields.status.name,

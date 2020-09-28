@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 from ..calculator import Calculator
-from ..utils import get_extension, set_chart_style
+from ..utils import Chart, get_extension
 
 from .cycletime import CycleTimeCalculator
 
@@ -35,7 +35,13 @@ class HistogramCalculator(Calculator):
         for i, _ in enumerate(edges):
             if i == 0:
                 continue
-            index.append("%.01f to %.01f" % (edges[i - 1], edges[i],))
+            index.append(
+                "%.01f to %.01f"
+                % (
+                    edges[i - 1],
+                    edges[i],
+                )
+            )
 
         return pd.Series(values, name="Items", index=index)
 
@@ -67,7 +73,7 @@ class HistogramCalculator(Calculator):
             else:
                 data.to_csv(output_file, header=True)
 
-    def write_chart(self, data, output_file):
+    def write_chart(self, _, output_file):
         cycle_data = self.get_result(CycleTimeCalculator)
         chart_data = cycle_data[["cycle_time", "completed_timestamp"]].dropna(
             subset=["cycle_time"]
@@ -102,18 +108,22 @@ class HistogramCalculator(Calculator):
             ", ".join(["%.2f" % (q * 100.0) for q in quantiles]),
         )
 
-        fig, ax = plt.subplots()
-        bins = range(int(ct_days.max()) + 2)
-
-        sns.distplot(
-            ct_days, bins=bins, ax=ax, kde=False, axlabel="Cycle time (days)"
-        )
+        with Chart.use_palette(self.settings["histogram_chart_palette"]):
+            fig, ax = plt.subplots()
+            bins = range(int(ct_days.max()) + 2)
+            sns.histplot(
+                ct_days,
+                bins=bins,
+                ax=ax,
+                kde=True,
+            )
 
         if self.settings["histogram_chart_title"]:
             ax.set_title(self.settings["histogram_chart_title"])
-
         _, right = ax.get_xlim()
         ax.set_xlim(0, right)
+        ax.set_xlabel("Cycle time (days)")
+        ax.set_ylabel("Frequency")
 
         # Add quantiles
         bottom, top = ax.get_ylim()
@@ -122,16 +132,13 @@ class HistogramCalculator(Calculator):
                 value, bottom, top - 0.001, linestyles="--", linewidths=1
             )
             ax.annotate(
-                "%.0f%% (%.0f days)" % ((quantile * 100), value,),
+                "%.0f%% (%.0f days)" % ((quantile * 100), value),
                 xy=(value, top),
                 xytext=(value - 0.1, top - 0.001),
                 rotation="vertical",
                 fontsize="x-small",
                 ha="right",
             )
-
-        ax.set_ylabel("Frequency")
-        set_chart_style()
 
         # Write file
         logger.info("Writing histogram chart to %s", output_file)

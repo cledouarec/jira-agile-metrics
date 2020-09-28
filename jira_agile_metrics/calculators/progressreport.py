@@ -17,7 +17,7 @@ import matplotlib.transforms
 import jinja2
 
 from ..calculator import Calculator
-from ..utils import set_chart_style, to_days_since_epoch
+from ..utils import to_days_since_epoch
 
 from .cycletime import calculate_cycle_times
 from .throughput import calculate_throughput
@@ -34,8 +34,7 @@ jinja_env = jinja2.Environment(
 
 
 class ProgressReportCalculator(Calculator):
-    """Output a progress report based on Monte Carlo forecast to completion
-    """
+    """Output a progress report based on Monte Carlo forecast to completion"""
 
     def run(self, now=None, trials=1000):
 
@@ -299,7 +298,10 @@ class ProgressReportCalculator(Calculator):
                         logger.info(
                             "Cannot find team `%s` for epic `%s`. "
                             "Dynamically adding a non-forecasted team."
-                            % (epic_team_name, epic.key,)
+                            % (
+                                epic_team_name,
+                                epic.key,
+                            )
                         )
                         epic.team = Team(name=epic_team_name)
                         teams.append(epic.team)
@@ -820,7 +822,10 @@ def forecast_to_complete(
         if steps == max_iterations:
             logger.warning(
                 "Trial %d did not complete after %d weeks, aborted."
-                % (trial, max_iterations,)
+                % (
+                    trial,
+                    max_iterations,
+                )
             )
 
         # record this trial
@@ -949,8 +954,6 @@ def plot_cfd(
     )
     ax.set_ylim(bottom=bottom, top=top + (0 if target is None else 5))
 
-    set_chart_style()
-
     # Return as base64 encoded string
     buffer = io.BytesIO()
     fig.savefig(buffer, format="png", bbox_inches="tight", dpi=220)
@@ -1006,8 +1009,6 @@ def plot_throughput(cycle_data, frequency="1W"):
         throughput_data.index, throughput_data["fitted"], "--", linewidth=2
     )
 
-    set_chart_style()
-
     # Return as base64 encoded string
     buffer = io.BytesIO()
     fig.savefig(buffer, format="png", bbox_inches="tight", dpi=220)
@@ -1059,14 +1060,16 @@ def plot_scatterplot(cycle_data, quantiles):
     ):
         ax.hlines(value, left, right, linestyles="--", linewidths=1)
         ax.annotate(
-            "%.0f%% (%.0f days)" % ((quantile * 100), value,),
+            "%.0f%% (%.0f days)"
+            % (
+                (quantile * 100),
+                value,
+            ),
             xy=(left, value),
             xytext=(left, value),
             fontsize="x-small",
             ha="left",
         )
-
-    set_chart_style()
 
     # Return as base64 encoded string
     buffer = io.BytesIO()

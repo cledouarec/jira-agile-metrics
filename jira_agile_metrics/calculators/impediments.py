@@ -4,11 +4,12 @@ import matplotlib.pyplot as plt
 
 from ..calculator import Calculator
 from ..utils import (
-    get_extension,
+    Chart,
     breakdown_by_month,
     breakdown_by_month_sum_days,
     filter_by_columns,
-    set_chart_style,
+    filter_by_window,
+    get_extension,
 )
 
 from .cycletime import CycleTimeCalculator
@@ -128,33 +129,26 @@ class ImpedimentsCalculator(Calculator):
             logger.warning("Cannot draw impediments chart with zero items")
             return
 
-        window = self.settings["impediments_window"]
-        breakdown = breakdown_by_month(
-            chart_data, "start", "end", "key", "flag"
+        breakdown = filter_by_window(
+            breakdown_by_month(chart_data, "start", "end", "key", "flag"),
+            self.settings["impediments_window"],
         )
-
-        if window:
-            breakdown = breakdown[-window:]
 
         if len(breakdown.index) == 0:
             logger.warning("Cannot draw impediments chart with zero items")
             return
 
-        fig, ax = plt.subplots()
-
-        breakdown.plot.bar(ax=ax, stacked=True)
+        with Chart.use_palette(self.settings["impediments_chart_palette"]):
+            fig, ax = plt.subplots()
+            breakdown.plot.bar(ax=ax, stacked=True)
 
         if self.settings["impediments_chart_title"]:
             ax.set_title(self.settings["impediments_chart_title"])
-
-        ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
         ax.set_xlabel("Month", labelpad=20)
         ax.set_ylabel("Number of impediments", labelpad=10)
-
+        ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
         labels = [d.strftime("%b %y") for d in breakdown.index]
         ax.set_xticklabels(labels, rotation=90, size="small")
-
-        set_chart_style()
 
         # Write file
         logger.info("Writing impediments chart to %s", output_file)
@@ -168,33 +162,28 @@ class ImpedimentsCalculator(Calculator):
             )
             return
 
-        window = self.settings["impediments_window"]
-        breakdown = breakdown_by_month_sum_days(
-            chart_data, "start", "end", "flag"
+        breakdown = filter_by_window(
+            breakdown_by_month_sum_days(chart_data, "start", "end", "flag"),
+            self.settings["impediments_window"],
         )
-
-        if window:
-            breakdown = breakdown[-window:]
 
         if len(breakdown.index) == 0:
             logger.warning("Cannot draw impediments chart with zero items")
             return
 
-        fig, ax = plt.subplots()
-
-        breakdown.plot.bar(ax=ax, stacked=True)
+        with Chart.use_palette(
+            self.settings["impediments_days_chart_palette"]
+        ):
+            fig, ax = plt.subplots()
+            breakdown.plot.bar(ax=ax, stacked=True)
 
         if self.settings["impediments_days_chart_title"]:
             ax.set_title(self.settings["impediments_days_chart_title"])
-
-        ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
         ax.set_xlabel("Month", labelpad=20)
         ax.set_ylabel("Total impeded days", labelpad=10)
-
+        ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
         labels = [d.strftime("%b %y") for d in breakdown.index]
         ax.set_xticklabels(labels, rotation=90, size="small")
-
-        set_chart_style()
 
         # Write file
         logger.info("Writing impediments days chart to %s", output_file)
@@ -208,16 +197,17 @@ class ImpedimentsCalculator(Calculator):
             )
             return
 
-        window = self.settings["impediments_window"]
         cycle_names = [s["name"] for s in self.settings["cycle"]]
 
-        breakdown = filter_by_columns(
-            breakdown_by_month(chart_data, "start", "end", "key", "status"),
-            cycle_names,
+        breakdown = filter_by_window(
+            filter_by_columns(
+                breakdown_by_month(
+                    chart_data, "start", "end", "key", "status"
+                ),
+                cycle_names,
+            ),
+            self.settings["impediments_window"],
         )
-
-        if window:
-            breakdown = breakdown[-window:]
 
         if len(breakdown.index) == 0:
             logger.warning(
@@ -225,21 +215,20 @@ class ImpedimentsCalculator(Calculator):
             )
             return
 
-        fig, ax = plt.subplots()
-
-        breakdown.plot.bar(ax=ax, stacked=True)
+        with Chart.use_palette(
+            self.settings["impediments_status_chart_palette"],
+            len(breakdown.columns),
+        ):
+            fig, ax = plt.subplots()
+            breakdown.plot.bar(ax=ax, stacked=True)
 
         if self.settings["impediments_status_chart_title"]:
             ax.set_title(self.settings["impediments_status_chart_title"])
-
-        ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
         ax.set_xlabel("Month", labelpad=20)
         ax.set_ylabel("Number of impediments", labelpad=10)
-
+        ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
         labels = [d.strftime("%b %y") for d in breakdown.index]
         ax.set_xticklabels(labels, rotation=90, size="small")
-
-        set_chart_style()
 
         # Write file
         logger.info("Writing impediments status chart to %s", output_file)
@@ -253,15 +242,14 @@ class ImpedimentsCalculator(Calculator):
             )
             return
 
-        window = self.settings["impediments_window"]
         cycle_names = [s["name"] for s in self.settings["cycle"]]
 
-        breakdown = breakdown_by_month_sum_days(
-            chart_data, "start", "end", "status", cycle_names
+        breakdown = filter_by_window(
+            breakdown_by_month_sum_days(
+                chart_data, "start", "end", "status", cycle_names
+            ),
+            self.settings["impediments_window"],
         )
-
-        if window:
-            breakdown = breakdown[-window:]
 
         if len(breakdown.index) == 0:
             logger.warning(
@@ -269,21 +257,20 @@ class ImpedimentsCalculator(Calculator):
             )
             return
 
-        fig, ax = plt.subplots()
-
-        breakdown.plot.bar(ax=ax, stacked=True)
+        with Chart.use_palette(
+            self.settings["impediments_status_days_chart_palette"],
+            len(breakdown.columns),
+        ):
+            fig, ax = plt.subplots()
+            breakdown.plot.bar(ax=ax, stacked=True)
 
         if self.settings["impediments_status_days_chart_title"]:
             ax.set_title(self.settings["impediments_status_days_chart_title"])
-
-        ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
         ax.set_xlabel("Month", labelpad=20)
         ax.set_ylabel("Total impeded days", labelpad=10)
-
+        ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
         labels = [d.strftime("%b %y") for d in breakdown.index]
         ax.set_xticklabels(labels, rotation=90, size="small")
-
-        set_chart_style()
 
         # Write file
         logger.info("Writing impediments status days chart to %s", output_file)

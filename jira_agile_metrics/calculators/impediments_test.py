@@ -11,7 +11,14 @@ from ..conftest import _issues
 
 
 def _ts(datestring, timestring="00:00:00", freq=None):
-    return Timestamp("%s %s" % (datestring, timestring,), freq=freq)
+    return Timestamp(
+        "%s %s"
+        % (
+            datestring,
+            timestring,
+        ),
+        freq=freq,
+    )
 
 
 @pytest.fixture
@@ -40,8 +47,8 @@ def columns(minimal_cycle_time_columns):
 
 @pytest.fixture
 def cycle_time_results(minimal_cycle_time_columns):
-    """A results dict mimicing a minimal result from the CycleTimeCalculator.
-    """
+    """A results dict mimicing a minimal result from the
+    CycleTimeCalculator."""
     return {
         CycleTimeCalculator: DataFrame(
             _issues(

@@ -8,8 +8,9 @@ import matplotlib.pyplot as plt
 from ..calculator import Calculator
 from ..utils import (
     breakdown_by_month,
+    Chart,
     filter_by_columns,
-    set_chart_style,
+    filter_by_window,
     to_bin,
 )
 
@@ -114,34 +115,31 @@ class DebtCalculator(Calculator):
             )
 
     def write_debt_chart(self, chart_data, output_file):
-        window = self.settings["debt_window"]
         priority_values = self.settings["debt_priority_values"]
 
-        breakdown = filter_by_columns(
-            breakdown_by_month(
-                chart_data, "created", "resolved", "key", "priority"
+        breakdown = filter_by_window(
+            filter_by_columns(
+                breakdown_by_month(
+                    chart_data, "created", "resolved", "key", "priority"
+                ),
+                priority_values,
             ),
-            priority_values,
+            self.settings["debt_window"],
         )
 
-        if window:
-            breakdown = breakdown[-window:]
-
-        fig, ax = plt.subplots()
-
-        breakdown.plot.bar(ax=ax, stacked=True)
+        with Chart.use_palette(
+            self.settings["debt_chart_palette"], len(breakdown.columns)
+        ):
+            fig, ax = plt.subplots()
+            breakdown.plot.bar(ax=ax, stacked=True)
 
         if self.settings["debt_chart_title"]:
             ax.set_title(self.settings["debt_chart_title"])
-
-        ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
         ax.set_xlabel("Month", labelpad=20)
         ax.set_ylabel("Number of items", labelpad=10)
-
+        ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
         labels = [d.strftime("%b %y") for d in breakdown.index]
         ax.set_xticklabels(labels, rotation=90, size="small")
-
-        set_chart_style()
 
         # Write file
         logger.info("Writing debt chart to %s", output_file)
@@ -157,7 +155,11 @@ class DebtCalculator(Calculator):
             return (
                 "> %d days" % (low,)
                 if high is None
-                else "%d-%d days" % (low, high,)
+                else "%d-%d days"
+                % (
+                    low,
+                    high,
+                )
             )
 
         def day_grouper(value):
@@ -178,18 +180,17 @@ class DebtCalculator(Calculator):
         if priority_values:
             breakdown = breakdown.reindex(priority_values)
 
-        fig, ax = plt.subplots()
-
-        breakdown.plot.barh(ax=ax, stacked=True)
+        with Chart.use_palette(
+            self.settings["debt_age_chart_palette"], len(chart_data.columns)
+        ):
+            fig, ax = plt.subplots()
+            breakdown.plot.barh(ax=ax, stacked=True)
 
         if self.settings["debt_age_chart_title"]:
             ax.set_title(self.settings["debt_age_chart_title"])
-
-        ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
         ax.set_xlabel("Number of items", labelpad=20)
         ax.set_ylabel("Priority", labelpad=10)
-
-        set_chart_style()
+        ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
 
         # Write file
         logger.info("Writing debt age chart to %s", output_file)

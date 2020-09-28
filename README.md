@@ -1145,8 +1145,13 @@ file.
 
 These options affect multiple charts and files.
 
+- `Chart palette: <list>` – Color palette to use. Could be a unique colormap
+(See https://matplotlib.org/tutorials/colors/colormaps.html) or a list of
+colors. In this second case, the colors can be specified by name
+(See https://matplotlib.org/tutorials/colors/colors.html) or hexadecimal
+format (ex: #ff0000)
 - `Quantiles: <list>` – Quantiles to use when calculating percentiles.
-- `Backlog column: <name>` --Name of the backlog column. Defaults to the first column.
+- `Backlog column: <name>` – Name of the backlog column. Defaults to the first column.
 - `Committed column: <name>` – Name of the column from which work is considered
    committed. Defaults to the second column.
 - `Final column: <name>` – Name of the final 'work' column. Defaults to the
@@ -1183,6 +1188,11 @@ of filenames, or a single filename.
 - `Scatterplot chart: <filename>.png` – Draw cycle time scatter plot.
 - `Scatterplot chart title: <title>` – Title for cycle time
    scatter plot.
+- `Scatterplot chart palette: <list>` – Color palette to use. Could be a unique
+colormap (See https://matplotlib.org/tutorials/colors/colormaps.html) or a list
+of colors. In this second case, the colors can be specified by name
+(See https://matplotlib.org/tutorials/colors/colors.html) or hexadecimal
+format (ex: #ff0000)
 
 ### Histogram chart
 
@@ -1191,6 +1201,11 @@ of filenames, or a single filename.
 - `Histogram chart: <filename>.png` – Draw cycle time histogram.
 - `Histogram chart title: <title>` – Title for cycle time
    histogram.
+- `Histogram chart palette: <list>` – Color palette to use. Could be a unique
+colormap (See https://matplotlib.org/tutorials/colors/colormaps.html) or a list
+of colors. In this second case, the colors can be specified by name
+(See https://matplotlib.org/tutorials/colors/colors.html) or hexadecimal
+format (ex: #ff0000)
 
 ### Cumulative Flow Diagram
 
@@ -1198,6 +1213,11 @@ of filenames, or a single filename.
    Defaults to showing all periods.
 - `CFD chart: <filename>.png` – Draw Cumulative Flow Diagram.
 - `CFD chart title: <title>` – Title for the CFD.
+- `CFD chart palette: <list>` – Color palette to use. Could be a unique
+colormap (See https://matplotlib.org/tutorials/colors/colormaps.html) or a list
+of colors. In this second case, the colors can be specified by name
+(See https://matplotlib.org/tutorials/colors/colors.html) or hexadecimal
+format (ex: #ff0000)
 
 ### Throughput chart
 
@@ -1208,13 +1228,25 @@ of filenames, or a single filename.
 - `Throughput chart: <filename>.png` – Draw weekly throughput chart with trend
   line.
 - `Throughput chart title: <title>` – Title for throughput chart.
+- `Throughput chart palette: <list>` – Color palette to use. Could be a unique
+colormap (See https://matplotlib.org/tutorials/colors/colormaps.html) or a list
+of colors. In this second case, the colors can be specified by name
+(See https://matplotlib.org/tutorials/colors/colors.html) or hexadecimal
+format (ex: #ff0000). The first color of the palette is used for throughput
+values, the second one for linear regression calculated.
 
 ### Burnup chart
 
 - `Burnup window: <number>` – Number of recent periods to show in burnup.
    Defaults to showing all periods.
 - `Burnup chart: <filename>.png` – Draw simple burn-up chart.
-- `Burnup-chart-title <title>` – Title for burn-up charts_scatterplot.
+- `Burnup chart title <title>` – Title for burn-up charts_scatterplot.
+- `Burnup chart palette: <list>` – Color palette to use. Could be a unique
+colormap (See https://matplotlib.org/tutorials/colors/colormaps.html) or a list
+of colors. In this second case, the colors can be specified by name
+(See https://matplotlib.org/tutorials/colors/colors.html) or hexadecimal
+format (ex: #ff0000). The first color of the palette is used for backlog
+values, the second one for finished tasks.
 
 ### Burnup forecast chart
 
@@ -1223,6 +1255,12 @@ of filenames, or a single filename.
 - `Burnup forecast chart: <filename>.png` – Draw burn-up chart with Monte Carlo
    simulation forecast to completion.
 - `Burnup forecast chart title: <title>` – Title for burn-up forecast chart.
+- `Burnup forecast chart palette: <list>` – Color palette to use. Could be a
+unique colormap (See https://matplotlib.org/tutorials/colors/colormaps.html) or
+a list of colors. In this second case, the colors can be specified by name
+(See https://matplotlib.org/tutorials/colors/colors.html) or hexadecimal
+format (ex: #ff0000). The first color of the palette is used for backlog
+values, the second one for finished tasks.
 - `Burnup forecast chart target: <number>` – Target completion scope for
    forecast. Defaults to current size of backlog.
 - `Burnup forecast chart deadline: <date>` – Deadline date for completion of
@@ -1247,11 +1285,21 @@ of filenames, or a single filename.
    Defaults to showing all periods.
 - `WIP chart: <filename>.png` –  Draw weekly WIP box plot.
 - `WIP chart title: <title>` – Title for WIP chart
+- `WIP chart palette: <list>` – Color palette to use. Could be a unique
+colormap (See https://matplotlib.org/tutorials/colors/colormaps.html) or a list
+of colors. In this second case, the colors can be specified by name
+(See https://matplotlib.org/tutorials/colors/colors.html) or hexadecimal
+format (ex: #ff0000)
 
 ### Ageing WIP chart
 
 - `Ageing WIP chart: <filename>.png` – Draw current ageing WIP chart.
 - `Ageing WIP chart title: <title>` – Title for ageing WIP chart.
+- `Ageing WIP chart palette: <list>` – Color palette to use. Could be a unique
+colormap (See https://matplotlib.org/tutorials/colors/colormaps.html) or a list
+of colors. In this second case, the colors can be specified by name
+(See https://matplotlib.org/tutorials/colors/colors.html) or hexadecimal
+format (ex: #ff0000)
 
 ### Net flow chart
 
@@ -1261,6 +1309,12 @@ of filenames, or a single filename.
    chart. Defaults to showing all periods.
 - `Net flow chart: <filename>.png` – Draw weekly net flow bar chart.
 - `Net flow chart title: <title>` – Title for net flow bar chart.
+- `Net flow chart palette: <list>` – Color palette to use. Could be a unique
+colormap (See https://matplotlib.org/tutorials/colors/colormaps.html) or a list
+of colors. In this second case, the colors can be specified by name
+(See https://matplotlib.org/tutorials/colors/colors.html) or hexadecimal
+format (ex: #ff0000). The first color of the palette is used for positives
+values, the second one for negatives.
 
 ## Impediments chart
 
@@ -1268,22 +1322,42 @@ of filenames, or a single filename.
 - `Impediments chart: <filename>.png` – Draw a bar chart of the number of
   active impediments during each month, stacked by the impediments flag set.
 - `Impediments chart title: <title>` – Title for the impediments chart.
+- `Impediments chart palette: <list>` – Color palette to use. Could be a unique
+colormap (See https://matplotlib.org/tutorials/colors/colormaps.html) or a list
+of colors. In this second case, the colors can be specified by name
+(See https://matplotlib.org/tutorials/colors/colors.html) or hexadecimal
+format (ex: #ff0000)
 - `Impediments days chart: <filename>.png` – Draw a bar chart of the total
    number of days of all the impediments active during each month, stacked by
    the impediments flag set.
 - `Impediments days chart title: <title>` – Title for the impediments days
    chart.
+- `Impediments days chart palette: <list>` – Color palette to use. Could be a
+unique colormap (See https://matplotlib.org/tutorials/colors/colormaps.html) or
+a list of colors. In this second case, the colors can be specified by name
+(See https://matplotlib.org/tutorials/colors/colors.html) or hexadecimal
+format (ex: #ff0000)
 - `Impediments status chart: <filename>.png` – Draw a bar chart of the number of
   active impediments during each month, stacked by the ticket status at the
   time the impediment was raised.
 - `Impediments status chart title: <title>` – Title for the impediments status
    chart.
+- `Impediments status chart palette: <list>` – Color palette to use. Could be a
+unique colormap (See https://matplotlib.org/tutorials/colors/colormaps.html) or
+a list of colors. In this second case, the colors can be specified by name
+(See https://matplotlib.org/tutorials/colors/colors.html) or hexadecimal
+format (ex: #ff0000)
 - `Impediments status days chart: <filename>.png` – Draw a bar chart of the
    total number of days of all the impediments active during each month, stacked
    by the ticket status at the time each impediment was raised.
 - `Impediments status days chart title: <title>` – Title for the impediments
    status days chart.
-
+- `Impediments status days chart palette: <list>` – Color palette to use. Could
+be a unique colormap
+(See https://matplotlib.org/tutorials/colors/colormaps.html) or a list of
+colors. In this second case, the colors can be specified by name
+(See https://matplotlib.org/tutorials/colors/colors.html) or hexadecimal
+format (ex: #ff0000)
 
 ### Defect density charts
 
@@ -1310,17 +1384,33 @@ the number of values.
 
 - `Defects by priority chart: <filename>.png` – Draw stacked bar chart of
    defects grouped by priority over time.
-- `defects-by priority chart title: <title>` – Title for defects-by-priority
+- `Defects by priority chart title: <title>` – Title for defects-by-priority
    chart.
+- `Defects by priority chart palette: <list>` – Color palette to use. Could be
+a unique colormap (See https://matplotlib.org/tutorials/colors/colormaps.html)
+or a list of colors. In this second case, the colors can be specified by name
+(See https://matplotlib.org/tutorials/colors/colors.html) or hexadecimal
+format (ex: #ff0000)
 
 - `Defects by type chart: <filename>.png` – Draw stacked bar chart of defects
    grouped by type over time.
 - `Defects by type chart title: <title>` – Title for defects-by-type chart.
+- `Defects by type chart palette: <list>` – Color palette to use. Could be a
+unique colormap (See https://matplotlib.org/tutorials/colors/colormaps.html) or
+a list of colors. In this second case, the colors can be specified by name
+(See https://matplotlib.org/tutorials/colors/colors.html) or hexadecimal
+format (ex: #ff0000)
 
 - `Defects by environment chart: <filename>.png` – Draw stacked bar chart of
    defects grouped by environment over time.
 - `Defects by environment chart title: <title>` – Title for defects-by-
    environment chart.
+- `Defects by environment chart palette: <list>` – Color palette to use. Could
+be a unique colormap
+(See https://matplotlib.org/tutorials/colors/colormaps.html) or a list of
+colors. In this second case, the colors can be specified by name
+(See https://matplotlib.org/tutorials/colors/colors.html) or hexadecimal
+format (ex: #ff0000)
 
 ### Debt density chart
 
@@ -1335,10 +1425,20 @@ the number of values.
 - `Debt chart: <filename>.png` – Draw a stacked bar chart of technical debt
    grouped by priority over time.
 - `Debt chart title: <title>` – Title for the technical debt chart.
+- `Debt chart palette: <list>` – Color palette to use. Could be a unique
+colormap (See https://matplotlib.org/tutorials/colors/colormaps.html) or a list
+of colors. In this second case, the colors can be specified by name
+(See https://matplotlib.org/tutorials/colors/colors.html) or hexadecimal
+format (ex: #ff0000)
 
 - `Debt age chart: <filename>.png` – Draw a stacked bar chart of technical debt
    grouped by priority by age.
 - `Debt age chart title: <title>` – Title for the technical debt age chart.
+- `Debt age chart palette: <list>` – Color palette to use. Could be a unique
+colormap (See https://matplotlib.org/tutorials/colors/colormaps.html) or a list
+of colors. In this second case, the colors can be specified by name
+(See https://matplotlib.org/tutorials/colors/colors.html) or hexadecimal
+format (ex: #ff0000)
 - `Debt age chart bins: <list>` – List of bins for bracketing the ages shown.
    Defaults to `30`, `60`, and `90`, which will group ages into `0-30 days`,
    `31-60 days`, `61-90 days` and `91 days or more`.
@@ -1354,6 +1454,11 @@ the number of values.
 - `Waste chart: <filename>.png` – Draw a stacked bar chart of wasted items,
    grouped by last non-resolved status.
 - `Waste chart title: <title>` – Title for the waste chart.
+- `Waste chart palette: <list>` – Color palette to use. Could be a unique
+colormap (See https://matplotlib.org/tutorials/colors/colormaps.html) or a list
+of colors. In this second case, the colors can be specified by name
+(See https://matplotlib.org/tutorials/colors/colors.html) or hexadecimal
+format (ex: #ff0000)
 
 ### Progress report
 

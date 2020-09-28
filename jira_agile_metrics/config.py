@@ -70,7 +70,17 @@ def ordered_load(stream, loader=yaml.Loader, object_pairs_hook=odicti):
 
 
 def force_list(val):
-    return list(val) if isinstance(val, (list, tuple,)) else [val]
+    return (
+        list(val)
+        if isinstance(
+            val,
+            (
+                list,
+                tuple,
+            ),
+        )
+        else [val]
+    )
 
 
 def force_int(key, value):
@@ -79,7 +89,10 @@ def force_int(key, value):
     except ValueError:
         raise ConfigError(
             "Could not convert value `%s` for key `%s` to integer"
-            % (value, expand_key(key),)
+            % (
+                value,
+                expand_key(key),
+            )
         ) from None
 
 
@@ -89,14 +102,21 @@ def force_float(key, value):
     except ValueError:
         raise ConfigError(
             "Could not convert value `%s` for key `%s` to decimal"
-            % (value, expand_key(key),)
+            % (
+                value,
+                expand_key(key),
+            )
         ) from None
 
 
 def force_date(key, value):
     if not isinstance(value, datetime.date):
         raise ConfigError(
-            "Value `%s` for key `%s` is not a date" % (value, expand_key(key),)
+            "Value `%s` for key `%s` is not a date"
+            % (
+                value,
+                expand_key(key),
+            )
         )
     return value
 
@@ -192,29 +212,36 @@ def config_to_options(data, cwd=None, extended=False):
             "done_column": None,
             "cycle_time_data": None,
             "percentiles_data": None,
+            "chart_palette": None,
             "scatterplot_window": None,
             "scatterplot_data": None,
             "scatterplot_chart": None,
             "scatterplot_chart_title": None,
+            "scatterplot_chart_palette": None,
             "histogram_window": None,
             "histogram_data": None,
             "histogram_chart": None,
             "histogram_chart_title": None,
+            "histogram_chart_palette": None,
             "cfd_window": None,
             "cfd_data": None,
             "cfd_chart": None,
             "cfd_chart_title": None,
+            "cfd_chart_palette": None,
             "throughput_frequency": "1W-MON",
             "throughput_window": None,
             "throughput_data": None,
             "throughput_chart": None,
             "throughput_chart_title": None,
+            "throughput_chart_palette": None,
             "burnup_window": None,
             "burnup_chart": None,
             "burnup_chart_title": None,
+            "burnup_chart_palette": None,
             "burnup_forecast_window": None,
             "burnup_forecast_chart": None,
             "burnup_forecast_chart_title": None,
+            "burnup_forecast_chart_palette": None,
             "burnup_forecast_chart_target": None,
             "burnup_forecast_chart_deadline": None,
             "burnup_forecast_chart_deadline_confidence": None,
@@ -225,22 +252,29 @@ def config_to_options(data, cwd=None, extended=False):
             "wip_window": None,
             "wip_chart": None,
             "wip_chart_title": None,
+            "wip_chart_palette": None,
             "ageing_wip_chart": None,
             "ageing_wip_chart_title": None,
+            "ageing_wip_chart_palette": None,
             "net_flow_frequency": "1W-MON",
             "net_flow_window": None,
             "net_flow_chart": None,
             "net_flow_chart_title": None,
+            "net_flow_chart_palette": None,
             "impediments_data": None,
             "impediments_window": None,
             "impediments_chart": None,
             "impediments_chart_title": None,
+            "impediments_chart_palette": None,
             "impediments_days_chart": None,
             "impediments_days_chart_title": None,
+            "impediments_days_chart_palette": None,
             "impediments_status_chart": None,
             "impediments_status_chart_title": None,
+            "impediments_status_chart_palette": None,
             "impediments_status_days_chart": None,
             "impediments_status_days_chart_title": None,
+            "impediments_status_days_chart_palette": None,
             "defects_query": None,
             "defects_window": None,
             "defects_priority_field": None,
@@ -254,24 +288,30 @@ def config_to_options(data, cwd=None, extended=False):
             "defects_environment_threshold": None,
             "defects_by_priority_chart": None,
             "defects_by_priority_chart_title": None,
+            "defects_by_priority_chart_palette": None,
             "defects_by_type_chart": None,
             "defects_by_type_chart_title": None,
+            "defects_by_type_chart_palette": None,
             "defects_by_environment_chart": None,
             "defects_by_environment_chart_title": None,
+            "defects_by_environment_chart_palette": None,
             "debt_query": None,
             "debt_window": None,
             "debt_priority_field": None,
             "debt_priority_values": None,
             "debt_chart": None,
             "debt_chart_title": None,
+            "debt_chart_palette": None,
             "debt_age_chart": None,
             "debt_age_chart_title": None,
+            "debt_age_chart_palette": None,
             "debt_age_chart_bins": [30, 60, 90],
             "waste_query": None,
             "waste_window": None,
             "waste_frequency": "MS",
             "waste_chart": None,
             "waste_chart_title": None,
+            "waste_chart_palette": None,
             "progress_report": None,
             "progress_report_title": None,
             "progress_report_epic_query_template": None,
@@ -454,11 +494,31 @@ def config_to_options(data, cwd=None, extended=False):
 
         # list values
         for key in [
+            "chart_palette",
+            "scatterplot_chart_palette",
+            "histogram_chart_palette",
+            "cfd_chart_palette",
+            "throughput_chart_palette",
+            "burnup_chart_palette",
+            "burnup_forecast_chart_palette",
+            "wip_chart_palette",
+            "ageing_wip_chart_palette",
+            "net_flow_chart_palette",
+            "impediments_chart_palette",
+            "impediments_days_chart_palette",
+            "impediments_status_chart_palette",
+            "impediments_status_days_chart_palette",
             "defects_priority_values",
             "defects_type_values",
             "defects_environment_values",
+            "defects_by_priority_chart_palette",
+            "defects_by_type_chart_palette",
+            "defects_by_environment_chart_palette",
             "debt_priority_values",
+            "debt_chart_palette",
+            "debt_age_chart_palette",
             "debt_age_chart_bins",
+            "waste_chart_palette",
         ]:
             if expand_key(key) in config["output"]:
                 options["settings"][key] = force_list(

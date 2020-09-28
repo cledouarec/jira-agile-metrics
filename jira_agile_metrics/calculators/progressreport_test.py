@@ -290,7 +290,13 @@ def query_manager(fields, settings):
                         ),
                         Change(
                             "2018-01-03 01:01:01",
-                            [("status", "Backlog", "Next",)],
+                            [
+                                (
+                                    "status",
+                                    "Backlog",
+                                    "Next",
+                                )
+                            ],
                         ),
                         Change(
                             "2018-01-04 10:01:01",
@@ -320,21 +326,47 @@ def query_manager(fields, settings):
                     changes=[
                         Change(
                             "2018-01-03 01:01:01",
-                            [("status", "Backlog", "Next",)],
+                            [
+                                (
+                                    "status",
+                                    "Backlog",
+                                    "Next",
+                                )
+                            ],
                         ),
                         Change(
                             "2018-01-04 01:01:01",
-                            [("status", "Next", "Build",)],
+                            [
+                                (
+                                    "status",
+                                    "Next",
+                                    "Build",
+                                )
+                            ],
                         ),
                         Change(
                             "2018-01-04 10:01:01",
                             [("Flagged", None, "Impediment")],
                         ),  # should clear two days later when issue resolved
                         Change(
-                            "2018-01-05 01:01:01", [("status", "Build", "QA",)]
+                            "2018-01-05 01:01:01",
+                            [
+                                (
+                                    "status",
+                                    "Build",
+                                    "QA",
+                                )
+                            ],
                         ),
                         Change(
-                            "2018-01-06 01:01:01", [("status", "QA", "Done",)]
+                            "2018-01-06 01:01:01",
+                            [
+                                (
+                                    "status",
+                                    "QA",
+                                    "Done",
+                                )
+                            ],
                         ),
                     ],
                 ),
@@ -350,15 +382,33 @@ def query_manager(fields, settings):
                     changes=[
                         Change(
                             "2018-01-04 01:01:01",
-                            [("status", "Backlog", "Next",)],
+                            [
+                                (
+                                    "status",
+                                    "Backlog",
+                                    "Next",
+                                )
+                            ],
                         ),
                         Change(
                             "2018-01-05 01:01:01",
-                            [("status", "Next", "Build",)],
+                            [
+                                (
+                                    "status",
+                                    "Next",
+                                    "Build",
+                                )
+                            ],
                         ),
                         Change(
                             "2018-01-06 01:01:01",
-                            [("status", "Build", "Next",)],
+                            [
+                                (
+                                    "status",
+                                    "Build",
+                                    "Next",
+                                )
+                            ],
                         ),
                         Change(
                             "2018-01-07 01:01:01",
@@ -405,7 +455,13 @@ def query_manager(fields, settings):
                     changes=[
                         Change(
                             "2018-01-03 01:01:01",
-                            [("status", "Backlog", "Next",)],
+                            [
+                                (
+                                    "status",
+                                    "Backlog",
+                                    "Next",
+                                )
+                            ],
                         ),
                     ],
                 ),
@@ -421,17 +477,43 @@ def query_manager(fields, settings):
                     changes=[
                         Change(
                             "2018-01-03 01:01:01",
-                            [("status", "Backlog", "Next",)],
+                            [
+                                (
+                                    "status",
+                                    "Backlog",
+                                    "Next",
+                                )
+                            ],
                         ),
                         Change(
                             "2018-01-04 01:01:01",
-                            [("status", "Next", "Build",)],
+                            [
+                                (
+                                    "status",
+                                    "Next",
+                                    "Build",
+                                )
+                            ],
                         ),
                         Change(
-                            "2018-01-05 01:01:01", [("status", "Build", "QA",)]
+                            "2018-01-05 01:01:01",
+                            [
+                                (
+                                    "status",
+                                    "Build",
+                                    "QA",
+                                )
+                            ],
                         ),
                         Change(
-                            "2018-01-06 01:01:01", [("status", "QA", "Done",)]
+                            "2018-01-06 01:01:01",
+                            [
+                                (
+                                    "status",
+                                    "QA",
+                                    "Done",
+                                )
+                            ],
                         ),
                     ],
                 ),
@@ -447,17 +529,43 @@ def query_manager(fields, settings):
                     changes=[
                         Change(
                             "2018-01-04 01:01:01",
-                            [("status", "Backlog", "Next",)],
+                            [
+                                (
+                                    "status",
+                                    "Backlog",
+                                    "Next",
+                                )
+                            ],
                         ),
                         Change(
                             "2018-01-05 01:01:01",
-                            [("status", "Next", "Build",)],
+                            [
+                                (
+                                    "status",
+                                    "Next",
+                                    "Build",
+                                )
+                            ],
                         ),
                         Change(
-                            "2018-01-05 01:01:02", [("status", "Build", "QA",)]
+                            "2018-01-05 01:01:02",
+                            [
+                                (
+                                    "status",
+                                    "Build",
+                                    "QA",
+                                )
+                            ],
                         ),
                         Change(
-                            "2018-01-06 01:01:03", [("status", "QA", "Done",)]
+                            "2018-01-06 01:01:03",
+                            [
+                                (
+                                    "status",
+                                    "QA",
+                                    "Done",
+                                )
+                            ],
                         ),
                     ],
                 ),
@@ -473,17 +581,43 @@ def query_manager(fields, settings):
                     changes=[
                         Change(
                             "2018-01-04 01:01:01",
-                            [("status", "Backlog", "Next",)],
+                            [
+                                (
+                                    "status",
+                                    "Backlog",
+                                    "Next",
+                                )
+                            ],
                         ),
                         Change(
                             "2018-01-05 01:01:01",
-                            [("status", "Next", "Build",)],
+                            [
+                                (
+                                    "status",
+                                    "Next",
+                                    "Build",
+                                )
+                            ],
                         ),
                         Change(
-                            "2018-01-05 01:01:02", [("status", "Build", "QA",)]
+                            "2018-01-05 01:01:02",
+                            [
+                                (
+                                    "status",
+                                    "Build",
+                                    "QA",
+                                )
+                            ],
                         ),
                         Change(
-                            "2018-01-08 01:01:03", [("status", "QA", "Done",)]
+                            "2018-01-08 01:01:03",
+                            [
+                                (
+                                    "status",
+                                    "QA",
+                                    "Done",
+                                )
+                            ],
                         ),
                     ],
                 ),
@@ -1626,7 +1760,13 @@ def test_with_large_dataset(fields, settings, results):
             customfield_201=random.choice(outcomes),
             customfield_202="%s 00:00:00"
             % random_date_future(today + timedelta(days=55), 65).isoformat()
-            if random.choice((True, True, False,))
+            if random.choice(
+                (
+                    True,
+                    True,
+                    False,
+                )
+            )
             else None,
             customfield_203=random.randint(15, 20),
             customfield_204=random.randint(20, 25),
@@ -1672,7 +1812,13 @@ def test_with_large_dataset(fields, settings, results):
             changes=[
                 Change(
                     "%s 00:00:00" % c["date"],
-                    [("status", c["from"], c["to"],)],
+                    [
+                        (
+                            "status",
+                            c["from"],
+                            c["to"],
+                        )
+                    ],
                 )
                 for c in changes[1:]
             ],
@@ -1759,7 +1905,13 @@ def test_with_large_dataset_and_outcome_as_tickets(fields, settings, results):
             created="%s 00:00:00" % random_date_past(today, 30).isoformat(),
             customfield_202="%s 00:00:00"
             % random_date_future(today + timedelta(days=55), 65).isoformat()
-            if random.choice((True, True, False,))
+            if random.choice(
+                (
+                    True,
+                    True,
+                    False,
+                )
+            )
             else None,
             changes=[],
         )
@@ -1780,7 +1932,13 @@ def test_with_large_dataset_and_outcome_as_tickets(fields, settings, results):
             customfield_201=random.choice([o.key for o in outcomes]),
             customfield_202="%s 00:00:00"
             % random_date_future(today + timedelta(days=55), 65).isoformat()
-            if random.choice((True, True, False,))
+            if random.choice(
+                (
+                    True,
+                    True,
+                    False,
+                )
+            )
             else None,
             customfield_203=random.randint(15, 20),
             customfield_204=random.randint(20, 25),
@@ -1826,7 +1984,13 @@ def test_with_large_dataset_and_outcome_as_tickets(fields, settings, results):
             changes=[
                 Change(
                     "%s 00:00:00" % c["date"],
-                    [("status", c["from"], c["to"],)],
+                    [
+                        (
+                            "status",
+                            c["from"],
+                            c["to"],
+                        )
+                    ],
                 )
                 for c in changes[1:]
             ],
@@ -1916,7 +2080,13 @@ def test_with_large_dataset_and_outcome_as_tickets_no_forecast(
             created="%s 00:00:00" % random_date_past(today, 30).isoformat(),
             customfield_202="%s 00:00:00"
             % random_date_future(today + timedelta(days=55), 65).isoformat()
-            if random.choice((True, True, False,))
+            if random.choice(
+                (
+                    True,
+                    True,
+                    False,
+                )
+            )
             else None,
             changes=[],
         )
@@ -1937,7 +2107,13 @@ def test_with_large_dataset_and_outcome_as_tickets_no_forecast(
             customfield_201=random.choice([o.key for o in outcomes]),
             customfield_202="%s 00:00:00"
             % random_date_future(today + timedelta(days=55), 65).isoformat()
-            if random.choice((True, True, False,))
+            if random.choice(
+                (
+                    True,
+                    True,
+                    False,
+                )
+            )
             else None,
             customfield_203=random.randint(15, 20),
             customfield_204=random.randint(20, 25),
@@ -1983,7 +2159,13 @@ def test_with_large_dataset_and_outcome_as_tickets_no_forecast(
             changes=[
                 Change(
                     "%s 00:00:00" % c["date"],
-                    [("status", c["from"], c["to"],)],
+                    [
+                        (
+                            "status",
+                            c["from"],
+                            c["to"],
+                        )
+                    ],
                 )
                 for c in changes[1:]
             ],
@@ -2073,7 +2255,13 @@ def test_with_large_dataset_and_outcome_as_tickets_mixed_forecast(
             created="%s 00:00:00" % random_date_past(today, 30).isoformat(),
             customfield_202="%s 00:00:00"
             % random_date_future(today + timedelta(days=55), 65).isoformat()
-            if random.choice((True, True, False,))
+            if random.choice(
+                (
+                    True,
+                    True,
+                    False,
+                )
+            )
             else None,
             changes=[],
         )
@@ -2094,7 +2282,13 @@ def test_with_large_dataset_and_outcome_as_tickets_mixed_forecast(
             customfield_201=random.choice([o.key for o in outcomes]),
             customfield_202="%s 00:00:00"
             % random_date_future(today + timedelta(days=55), 65).isoformat()
-            if random.choice((True, True, False,))
+            if random.choice(
+                (
+                    True,
+                    True,
+                    False,
+                )
+            )
             else None,
             customfield_203=random.randint(15, 20),
             customfield_204=random.randint(20, 25),
@@ -2140,7 +2334,13 @@ def test_with_large_dataset_and_outcome_as_tickets_mixed_forecast(
             changes=[
                 Change(
                     "%s 00:00:00" % c["date"],
-                    [("status", c["from"], c["to"],)],
+                    [
+                        (
+                            "status",
+                            c["from"],
+                            c["to"],
+                        )
+                    ],
                 )
                 for c in changes[1:]
             ],
@@ -2265,7 +2465,13 @@ def test_with_large_dataset_minimal(fields, settings, results):
             changes=[
                 Change(
                     "%s 00:00:00" % c["date"],
-                    [("status", c["from"], c["to"],)],
+                    [
+                        (
+                            "status",
+                            c["from"],
+                            c["to"],
+                        )
+                    ],
                 )
                 for c in changes[1:]
             ],
@@ -2386,7 +2592,13 @@ def test_with_large_dataset_minimal_no_forecast(fields, settings, results):
             changes=[
                 Change(
                     "%s 00:00:00" % c["date"],
-                    [("status", c["from"], c["to"],)],
+                    [
+                        (
+                            "status",
+                            c["from"],
+                            c["to"],
+                        )
+                    ],
                 )
                 for c in changes[1:]
             ],
@@ -2473,7 +2685,13 @@ def test_with_large_dataset_teams_no_outcomes(fields, settings, results):
             customfield_201=None,
             customfield_202="%s 00:00:00"
             % random_date_future(today + timedelta(days=55), 65).isoformat()
-            if random.choice((True, True, False,))
+            if random.choice(
+                (
+                    True,
+                    True,
+                    False,
+                )
+            )
             else None,
             customfield_203=random.randint(15, 20),
             customfield_204=random.randint(20, 25),
@@ -2519,7 +2737,13 @@ def test_with_large_dataset_teams_no_outcomes(fields, settings, results):
             changes=[
                 Change(
                     "%s 00:00:00" % c["date"],
-                    [("status", c["from"], c["to"],)],
+                    [
+                        (
+                            "status",
+                            c["from"],
+                            c["to"],
+                        )
+                    ],
                 )
                 for c in changes[1:]
             ],
@@ -2587,7 +2811,13 @@ def test_with_large_dataset_no_teams(fields, settings, results):
             created="%s 00:00:00" % random_date_past(today, 30).isoformat(),
             customfield_202="%s 00:00:00"
             % random_date_future(today + timedelta(days=55), 65).isoformat()
-            if random.choice((True, True, False,))
+            if random.choice(
+                (
+                    True,
+                    True,
+                    False,
+                )
+            )
             else None,
             changes=[],
         )
@@ -2607,7 +2837,13 @@ def test_with_large_dataset_no_teams(fields, settings, results):
             customfield_201=random.choice([o.key for o in outcomes]),
             customfield_202="%s 00:00:00"
             % random_date_future(today + timedelta(days=55), 65).isoformat()
-            if random.choice((True, True, False,))
+            if random.choice(
+                (
+                    True,
+                    True,
+                    False,
+                )
+            )
             else None,
             customfield_203=random.randint(15, 20),
             customfield_204=random.randint(20, 25),
@@ -2652,7 +2888,13 @@ def test_with_large_dataset_no_teams(fields, settings, results):
             changes=[
                 Change(
                     "%s 00:00:00" % c["date"],
-                    [("status", c["from"], c["to"],)],
+                    [
+                        (
+                            "status",
+                            c["from"],
+                            c["to"],
+                        )
+                    ],
                 )
                 for c in changes[1:]
             ],
@@ -2723,7 +2965,13 @@ def test_with_large_dataset_dynamic_teams(fields, settings, results):
             created="%s 00:00:00" % random_date_past(today, 30).isoformat(),
             customfield_202="%s 00:00:00"
             % random_date_future(today + timedelta(days=55), 65).isoformat()
-            if random.choice((True, True, False,))
+            if random.choice(
+                (
+                    True,
+                    True,
+                    False,
+                )
+            )
             else None,
             changes=[],
         )
@@ -2744,7 +2992,13 @@ def test_with_large_dataset_dynamic_teams(fields, settings, results):
             customfield_201=random.choice([o.key for o in outcomes]),
             customfield_202="%s 00:00:00"
             % random_date_future(today + timedelta(days=55), 65).isoformat()
-            if random.choice((True, True, False,))
+            if random.choice(
+                (
+                    True,
+                    True,
+                    False,
+                )
+            )
             else None,
             customfield_203=random.randint(15, 20),
             customfield_204=random.randint(20, 25),
@@ -2790,7 +3044,13 @@ def test_with_large_dataset_dynamic_teams(fields, settings, results):
             changes=[
                 Change(
                     "%s 00:00:00" % c["date"],
-                    [("status", c["from"], c["to"],)],
+                    [
+                        (
+                            "status",
+                            c["from"],
+                            c["to"],
+                        )
+                    ],
                 )
                 for c in changes[1:]
             ],
@@ -2873,7 +3133,13 @@ def test_with_large_dataset_static_and_dynamic_teams(
             created="%s 00:00:00" % random_date_past(today, 30).isoformat(),
             customfield_202="%s 00:00:00"
             % random_date_future(today + timedelta(days=55), 65).isoformat()
-            if random.choice((True, True, False,))
+            if random.choice(
+                (
+                    True,
+                    True,
+                    False,
+                )
+            )
             else None,
             changes=[],
         )
@@ -2894,7 +3160,13 @@ def test_with_large_dataset_static_and_dynamic_teams(
             customfield_201=random.choice([o.key for o in outcomes]),
             customfield_202="%s 00:00:00"
             % random_date_future(today + timedelta(days=55), 65).isoformat()
-            if random.choice((True, True, False,))
+            if random.choice(
+                (
+                    True,
+                    True,
+                    False,
+                )
+            )
             else None,
             customfield_203=random.randint(15, 20),
             customfield_204=random.randint(20, 25),
@@ -2940,7 +3212,13 @@ def test_with_large_dataset_static_and_dynamic_teams(
             changes=[
                 Change(
                     "%s 00:00:00" % c["date"],
-                    [("status", c["from"], c["to"],)],
+                    [
+                        (
+                            "status",
+                            c["from"],
+                            c["to"],
+                        )
+                    ],
                 )
                 for c in changes[1:]
             ],

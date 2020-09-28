@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from ..calculator import Calculator
-from ..utils import get_extension, set_chart_style
+from ..utils import Chart, get_extension
 
 from .cycletime import CycleTimeCalculator
 
@@ -70,16 +70,6 @@ class CFDCalculator(Calculator):
                 logger.warning("Cannot draw CFD with no data")
                 return
 
-        fig, ax = plt.subplots()
-
-        if self.settings["cfd_chart_title"]:
-            ax.set_title(self.settings["cfd_chart_title"])
-
-        fig.autofmt_xdate()
-
-        ax.set_xlabel("Date")
-        ax.set_ylabel("Number of items")
-
         backlog_column = self.settings["backlog_column"]
 
         if backlog_column not in data.columns:
@@ -87,15 +77,22 @@ class CFDCalculator(Calculator):
             return None
 
         data = data.drop([backlog_column], axis=1)
-        data.plot.area(ax=ax, stacked=False, legend=False)
 
+        with Chart.use_palette(
+            self.settings["cfd_chart_palette"], len(data.columns)
+        ):
+            fig, ax = plt.subplots()
+            data.plot.area(ax=ax, stacked=False, legend=False)
+
+        fig.autofmt_xdate()
+        if self.settings["cfd_chart_title"]:
+            ax.set_title(self.settings["cfd_chart_title"])
+        ax.set_xlabel("Date")
+        ax.set_ylabel("Number of items")
         ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
-
         bottom = data[data.columns[-1]].min()
         top = data[data.columns[0]].max()
         ax.set_ylim(bottom=bottom, top=top)
-
-        set_chart_style()
 
         # Write file
         logger.info("Writing CFD chart to %s", output_file)
@@ -104,7 +101,6 @@ class CFDCalculator(Calculator):
 
 
 def calculate_cfd_data(cycle_data, cycle_names):
-
     # Build a dataframe of just the "date" columns
     cfd_data = cycle_data[cycle_names]
 

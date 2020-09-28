@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
 from ..calculator import Calculator
-from ..utils import get_extension, set_chart_style
+from ..utils import Chart, get_extension
 
 from .cycletime import CycleTimeCalculator
 
@@ -89,18 +89,19 @@ class ScatterplotCalculator(Calculator):
             ", ".join(["%.2f" % (q * 100.0) for q in quantiles]),
         )
 
-        fig, ax = plt.subplots()
+        with Chart.use_palette(self.settings["scatterplot_chart_palette"]):
+            fig, ax = plt.subplots()
+            ax.plot_date(
+                x=chart_data["completed_date"],
+                y=chart_data["cycle_time"],
+                ms=5,
+            )
+
         fig.autofmt_xdate()
-
-        ax.set_xlabel("Completed date")
-        ax.set_ylabel("Cycle time (days)")
-
         if self.settings["scatterplot_chart_title"]:
             ax.set_title(self.settings["scatterplot_chart_title"])
-
-        ax.plot_date(
-            x=chart_data["completed_date"], y=chart_data["cycle_time"], ms=5
-        )
+        ax.set_xlabel("Completed date")
+        ax.set_ylabel("Cycle time (days)")
         ax.xaxis.set_major_formatter(mdates.DateFormatter("%d/%m/%Y"))
 
         # Add quantiles
@@ -110,14 +111,16 @@ class ScatterplotCalculator(Calculator):
         ):
             ax.hlines(value, left, right, linestyles="--", linewidths=1)
             ax.annotate(
-                "%.0f%% (%.0f days)" % ((quantile * 100), value,),
+                "%.0f%% (%.0f days)"
+                % (
+                    (quantile * 100),
+                    value,
+                ),
                 xy=(left, value),
                 xytext=(left, value + 0.5),
                 fontsize="x-small",
                 ha="left",
             )
-
-        set_chart_style()
 
         # Write file
         logger.info("Writing scatterplot chart to %s", output_file)

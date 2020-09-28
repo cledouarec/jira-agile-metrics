@@ -87,6 +87,9 @@ Workflow:
     Done: Done
 
 Output:
+    Chart palette:
+        - deep
+
     Quantiles:
         - 0.1
         - 0.2
@@ -103,15 +106,21 @@ Output:
     Scatterplot data: scatterplot.csv
     Scatterplot chart: scatterplot.png
     Scatterplot chart title: Cycle time scatter plot
+    Scatterplot chart palette:
+        - deep
 
     Histogram window: 30
     Histogram chart: histogram.png
     Histogram chart title: Cycle time histogram
+    Histogram chart palette:
+        - deep
 
     CFD window: 30
     CFD data: cfd.csv
     CFD chart: cfd.png
     CFD chart title: Cumulative Flow Diagram
+    CFD chart palette:
+        - deep
 
     Histogram data: histogram.csv
 
@@ -120,14 +129,20 @@ Output:
     Throughput data: throughput.csv
     Throughput chart: throughput.png
     Throughput chart title: Throughput trend
+    Throughput chart palette:
+        - deep
 
     Burnup window: 30
     Burnup chart: burnup.png
     Burnup chart title: Burn-up
+    Burnup chart palette:
+        - deep
 
     Burnup forecast window: 30
     Burnup forecast chart: burnup-forecast.png
     Burnup forecast chart title: Burn-up forecast
+    Burnup forecast chart palette:
+        - deep
     Burnup forecast chart target: 100
     Burnup forecast chart deadline: 2018-06-01
     Burnup forecast chart deadline confidence: .85
@@ -139,25 +154,39 @@ Output:
     WIP window: 3
     WIP chart: wip.png
     WIP chart title: Work in Progress
+    WIP chart palette:
+        - deep
 
     Ageing WIP chart: ageing-wip.png
     Ageing WIP chart title: Ageing WIP
+    Ageing WIP chart palette:
+        - deep
 
     Net flow frequency: 5D
     Net flow window: 3
     Net flow chart: net-flow.png
     Net flow chart title: Net flow
+    Net flow chart palette:
+        - deep
 
     Impediments data: impediments.csv
     Impediments window: 3
     Impediments chart: impediments.png
     Impediments chart title: Impediments
+    Impediments chart palette:
+        - deep
     Impediments days chart: impediments-days.png
     Impediments days chart title: Total impeded days
+    Impediments days chart palette:
+        - deep
     Impediments status chart: impediments-status.png
     Impediments status chart title: Impediments by status
+    Impediments status chart palette:
+        - deep
     Impediments status days chart: impediments-status-days.png
     Impediments status days chart title: Total impeded days by status
+    Impediments status days chart palette:
+        - deep
 
     Defects query: issueType = Bug
     Defects window: 3
@@ -181,10 +210,16 @@ Output:
     Defects environment threshold: 5.0
     Defects by priority chart: defects-by-priority.png
     Defects by priority chart title: Defects by priority
+    Defects by priority chart palette:
+        - deep
     Defects by type chart: defects-by-type.png
     Defects by type chart title: Defects by type
+    Defects by type chart palette:
+        - deep
     Defects by environment chart: defects-by-environment.png
     Defects by environment chart title: Defects by environment
+    Defects by environment chart palette:
+        - deep
 
     Debt query: issueType = "Tech debt"
     Debt window: 3
@@ -195,8 +230,12 @@ Output:
         - High
     Debt chart: tech-debt.png
     Debt chart title: Technical debt
+    Debt chart palette:
+        - deep
     Debt age chart: tech-debt-age.png
     Debt age chart title: Technical debt age
+    Debt age chart palette:
+        - deep
     Debt age chart bins:
         - 10
         - 20
@@ -207,6 +246,8 @@ Output:
     Waste frequency: 2W-WED
     Waste chart: waste.png
     Waste chart title: Waste
+    Waste chart palette:
+        - deep
 
     Progress report: progress.html
     Progress report title: Test progress report
@@ -271,12 +312,15 @@ Output:
         "final_column": "Test",
         "done_column": "Done",
         "quantiles": [0.1, 0.2],
+        "chart_palette": ["deep"],
         "cycle_time_data": ["cycletime.csv"],
         "ageing_wip_chart": "ageing-wip.png",
         "ageing_wip_chart_title": "Ageing WIP",
+        "ageing_wip_chart_palette": ["deep"],
         "burnup_window": 30,
         "burnup_chart": "burnup.png",
         "burnup_chart_title": "Burn-up",
+        "burnup_chart_palette": ["deep"],
         "burnup_forecast_window": 30,
         "burnup_forecast_chart": "burnup-forecast.png",
         "burnup_forecast_chart_deadline": datetime.date(2018, 6, 1),
@@ -287,43 +331,54 @@ Output:
             2018, 3, 1
         ),
         "burnup_forecast_chart_title": "Burn-up forecast",
+        "burnup_forecast_chart_palette": ["deep"],
         "burnup_forecast_chart_trials": 50,
         "cfd_window": 30,
         "cfd_chart": "cfd.png",
         "cfd_chart_title": "Cumulative Flow Diagram",
+        "cfd_chart_palette": ["deep"],
         "cfd_data": ["cfd.csv"],
         "histogram_window": 30,
         "histogram_chart": "histogram.png",
         "histogram_chart_title": "Cycle time histogram",
+        "histogram_chart_palette": ["deep"],
         "histogram_data": ["histogram.csv"],
         "net_flow_frequency": "5D",
         "net_flow_window": 3,
         "net_flow_chart": "net-flow.png",
         "net_flow_chart_title": "Net flow",
+        "net_flow_chart_palette": ["deep"],
         "percentiles_data": ["percentiles.csv"],
         "scatterplot_window": 30,
         "scatterplot_chart": "scatterplot.png",
         "scatterplot_chart_title": "Cycle time scatter plot",
+        "scatterplot_chart_palette": ["deep"],
         "scatterplot_data": ["scatterplot.csv"],
         "throughput_frequency": "1D",
         "throughput_window": 3,
         "throughput_chart": "throughput.png",
         "throughput_chart_title": "Throughput trend",
+        "throughput_chart_palette": ["deep"],
         "throughput_data": ["throughput.csv"],
         "wip_frequency": "3D",
         "wip_window": 3,
         "wip_chart": "wip.png",
         "wip_chart_title": "Work in Progress",
+        "wip_chart_palette": ["deep"],
         "impediments_data": ["impediments.csv"],
         "impediments_window": 3,
         "impediments_chart": "impediments.png",
         "impediments_chart_title": "Impediments",
+        "impediments_chart_palette": ["deep"],
         "impediments_days_chart": "impediments-days.png",
         "impediments_days_chart_title": "Total impeded days",
+        "impediments_days_chart_palette": ["deep"],
         "impediments_status_chart": "impediments-status.png",
         "impediments_status_chart_title": "Impediments by status",
+        "impediments_status_chart_palette": ["deep"],
         "impediments_status_days_chart": "impediments-status-days.png",
         "impediments_status_days_chart_title": "Total impeded days by status",
+        "impediments_status_days_chart_palette": ["deep"],
         "defects_query": "issueType = Bug",
         "defects_window": 3,
         "defects_priority_field": "Priority",
@@ -337,18 +392,23 @@ Output:
         "defects_environment_threshold": 5.0,
         "defects_by_priority_chart": "defects-by-priority.png",
         "defects_by_priority_chart_title": "Defects by priority",
+        "defects_by_priority_chart_palette": ["deep"],
         "defects_by_type_chart": "defects-by-type.png",
         "defects_by_type_chart_title": "Defects by type",
+        "defects_by_type_chart_palette": ["deep"],
         "defects_by_environment_chart": "defects-by-environment.png",
         "defects_by_environment_chart_title": "Defects by environment",
+        "defects_by_environment_chart_palette": ["deep"],
         "debt_query": 'issueType = "Tech debt"',
         "debt_window": 3,
         "debt_priority_field": "Priority",
         "debt_priority_values": ["Low", "Medium", "High"],
         "debt_chart": "tech-debt.png",
         "debt_chart_title": "Technical debt",
+        "debt_chart_palette": ["deep"],
         "debt_age_chart": "tech-debt-age.png",
         "debt_age_chart_title": "Technical debt age",
+        "debt_age_chart_palette": ["deep"],
         "debt_age_chart_bins": [10, 20, 30],
         "waste_query": (
             "issueType = Story AND resolution IN (Withdrawn, Invalid)"
@@ -357,6 +417,7 @@ Output:
         "waste_frequency": "2W-WED",
         "waste_chart": "waste.png",
         "waste_chart_title": "Waste",
+        "waste_chart_palette": ["deep"],
         "progress_report": "progress.html",
         "progress_report_title": "Test progress report",
         "progress_report_epic_query_template": (

@@ -9,14 +9,13 @@ from .config import config_to_options, CALCULATORS
 from .webapp.app import app as webapp
 from .querymanager import QueryManager
 from .calculator import run_calculators
-from .utils import set_chart_context
+from .utils import Chart
 
 logger = logging.getLogger(__name__)
 
 
 def configure_argument_parser():
-    """Configure an ArgumentParser that manages command line options.
-    """
+    """Configure an ArgumentParser that manages command line options."""
 
     parser = argparse.ArgumentParser(
         description=(
@@ -110,7 +109,7 @@ def run_server(parser, args):
         (host, port) = args.server.split(":")
     port = int(port)
 
-    set_chart_context("paper")
+    Chart.set_style()
     webapp.run(host=host, port=port)
 
 
@@ -144,7 +143,7 @@ def run_command_line(parser, args):
     override_options(options["settings"], args)
 
     # Set charting context, which determines how charts are rendered
-    set_chart_context("paper")
+    Chart.set_style(palette=options["settings"]["chart_palette"])
 
     # Set output directory if required
     if args.output_directory:

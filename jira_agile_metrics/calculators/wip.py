@@ -4,7 +4,7 @@ import pandas as pd
 import pandas.tseries.frequencies as freq
 
 from ..calculator import Calculator
-from ..utils import set_chart_style
+from ..utils import Chart
 
 from .cfd import CFDCalculator
 
@@ -12,8 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class WIPChartCalculator(Calculator):
-    """Draw a weekly WIP chart
-    """
+    """Draw a weekly WIP chart"""
 
     def run(self):
         cfd_data = self.get_result(CFDCalculator)
@@ -46,11 +45,6 @@ class WIPChartCalculator(Calculator):
             logger.warning("Cannot draw WIP chart with no completed items")
             return
 
-        fig, ax = plt.subplots()
-
-        if self.settings["wip_chart_title"]:
-            ax.set_title(self.settings["wip_chart_title"])
-
         frequency = self.settings["wip_frequency"]
         logger.debug("Calculating WIP chart with frequency %s", frequency)
 
@@ -72,17 +66,19 @@ class WIPChartCalculator(Calculator):
         groups = wip_data.groupby(
             pd.Grouper(freq=frequency, label="left", closed="left")
         )
-        labels = [x[0].strftime("%d/%m/%Y") for x in groups]
 
-        groups.boxplot(
-            subplots=False, ax=ax, showmeans=True, return_type="axes"
-        )
-        ax.set_xticklabels(labels, rotation=70, size="small")
+        with Chart.use_palette(self.settings["wip_chart_palette"]):
+            fig, ax = plt.subplots()
+            groups.boxplot(
+                subplots=False, ax=ax, showmeans=True, return_type="axes"
+            )
 
+        if self.settings["wip_chart_title"]:
+            ax.set_title(self.settings["wip_chart_title"])
         ax.set_xlabel("Period starting")
         ax.set_ylabel("WIP")
-
-        set_chart_style()
+        labels = [x[0].strftime("%d/%m/%Y") for x in groups]
+        ax.set_xticklabels(labels, rotation=70, size="small")
 
         # Write file
         logger.info("Writing WIP chart to %s", output_file)

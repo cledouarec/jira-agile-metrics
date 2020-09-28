@@ -9,8 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class PercentilesCalculator(Calculator):
-    """Build percentiles for `cycle_time` in cycle data as a DataFrame
-    """
+    """Build percentiles for `cycle_time` in cycle data as a DataFrame"""
 
     def run(self):
         cycle_data = self.get_result(CycleTimeCalculator)

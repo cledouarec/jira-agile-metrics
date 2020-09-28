@@ -43,10 +43,13 @@ class IssueSnapshot(object):
 
 
 class QueryManager(object):
-    """Manage and execute queries
-    """
+    """Manage and execute queries"""
 
-    settings = dict(attributes={}, known_values={}, max_results=False,)
+    settings = dict(
+        attributes={},
+        known_values={},
+        max_results=False,
+    )
 
     def __init__(self, jira, settings):
         self.jira = jira

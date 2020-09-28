@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import statsmodels.formula.api as sm
 
 from ..calculator import Calculator
-from ..utils import get_extension, set_chart_style
+from ..utils import Chart, get_extension
 
 from .cycletime import CycleTimeCalculator
 
@@ -63,11 +63,6 @@ class ThroughputCalculator(Calculator):
             )
             return
 
-        fig, ax = plt.subplots()
-
-        if self.settings["throughput_chart_title"]:
-            ax.set_title(self.settings["throughput_chart_title"])
-
         # Calculate zero-indexed days to allow linear regression calculation
         day_zero = chart_data.index[0]
         chart_data["day"] = (chart_data.index - day_zero).days
@@ -77,18 +72,21 @@ class ThroughputCalculator(Calculator):
         fit = sm.ols(formula="count ~ day", data=chart_data).fit()
         chart_data["fitted"] = fit.predict(chart_data)
 
-        # Plot
+        with Chart.use_palette(self.settings["throughput_chart_palette"]):
+            fig, ax = plt.subplots()
+            ax.plot(chart_data.index, chart_data["count"], marker="o")
+            plt.xticks(
+                chart_data.index,
+                [d.date().strftime("%d/%m/%Y") for d in chart_data.index],
+                rotation=70,
+                size="small",
+            )
+            ax.plot(chart_data.index, chart_data["fitted"], "--", linewidth=2)
+
+        if self.settings["throughput_chart_title"]:
+            ax.set_title(self.settings["throughput_chart_title"])
         ax.set_xlabel("Period starting")
         ax.set_ylabel("Number of items")
-
-        ax.plot(chart_data.index, chart_data["count"], marker="o")
-        plt.xticks(
-            chart_data.index,
-            [d.date().strftime("%d/%m/%Y") for d in chart_data.index],
-            rotation=70,
-            size="small",
-        )
-
         _, top = ax.get_ylim()
         ax.set_ylim(0, top + 1)
 
@@ -102,10 +100,6 @@ class ThroughputCalculator(Calculator):
                 va="bottom",
                 fontsize="x-small",
             )
-
-        ax.plot(chart_data.index, chart_data["fitted"], "--", linewidth=2)
-
-        set_chart_style()
 
         # Write file
         logger.info("Writing throughput chart to %s", output_file)

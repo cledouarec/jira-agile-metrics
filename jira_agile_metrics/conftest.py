@@ -11,8 +11,7 @@ from .calculators.cfd import CFDCalculator
 
 
 class FauxFieldValue(object):
-    """A complex field value, with a name and a typed value
-    """
+    """A complex field value, with a name and a typed value"""
 
     def __init__(self, name, value):
         self.name = name
@@ -20,16 +19,14 @@ class FauxFieldValue(object):
 
 
 class FauxFields(object):
-    """Container for `issue.fields`
-    """
+    """Container for `issue.fields`"""
 
     def __init__(self, fields):
         self.__dict__.update(fields)
 
 
 class FauxChangeItem(object):
-    """An item in a changelog change
-    """
+    """An item in a changelog change"""
 
     def __init__(self, field, fromString, toString):
         self.field = field
@@ -38,8 +35,7 @@ class FauxChangeItem(object):
 
 
 class FauxChange(object):
-    """A change in a changelog. Contains a list of change items.
-    """
+    """A change in a changelog. Contains a list of change items."""
 
     def __init__(self, created, items):
         self.created = created
@@ -47,16 +43,14 @@ class FauxChange(object):
 
 
 class FauxChangelog(object):
-    """A changelog. Contains a list of changes in `histories`.
-    """
+    """A changelog. Contains a list of changes in `histories`."""
 
     def __init__(self, changes):
         self.histories = changes
 
 
 class FauxIssue(object):
-    """An issue, with a key, change log, and set of fields
-    """
+    """An issue, with a key, change log, and set of fields"""
 
     def __init__(self, key, changes, **fields):
         self.key = key
@@ -130,8 +124,7 @@ def minimal_settings():
 
 @pytest.fixture
 def custom_settings(minimal_settings):
-    """A `settings` dict that uses custom fields and attributes.
-    """
+    """A `settings` dict that uses custom fields and attributes."""
     return extend_dict(
         minimal_settings,
         {
@@ -150,8 +143,7 @@ def custom_settings(minimal_settings):
 
 @pytest.fixture
 def minimal_fields():
-    """A `fields` list for all basic fields, but no custom fields.
-    """
+    """A `fields` list for all basic fields, but no custom fields."""
     return [
         {"id": "summary", "name": "Summary"},
         {"id": "issuetype", "name": "Issue type"},
@@ -164,8 +156,8 @@ def minimal_fields():
 
 @pytest.fixture
 def custom_fields(minimal_fields):
-    """A `fields` list with the three custom fields used by `custom_settings`
-    """
+    """A `fields` list with the three custom fields used by
+    `custom_settings`"""
     return minimal_fields + [
         {"id": "customfield_001", "name": "Team"},
         {"id": "customfield_002", "name": "Size"},
@@ -226,8 +218,7 @@ def custom_cycle_time_columns(minimal_fields):
 
 @pytest.fixture
 def cfd_columns():
-    """A columns list for the results of the CFDCalculator.
-    """
+    """A columns list for the results of the CFDCalculator."""
     return ["Backlog", "Committed", "Build", "Test", "Done"]
 
 
@@ -236,16 +227,14 @@ def cfd_columns():
 
 @pytest.fixture
 def minimal_query_manager(minimal_fields, minimal_settings):
-    """A minimal query manager (no custom fields)
-    """
+    """A minimal query manager (no custom fields)"""
     jira = FauxJIRA(fields=minimal_fields, issues=[])
     return QueryManager(jira, minimal_settings)
 
 
 @pytest.fixture
 def custom_query_manager(custom_fields, custom_settings):
-    """A query manager capable of returning values for custom fields
-    """
+    """A query manager capable of returning values for custom fields"""
     jira = FauxJIRA(fields=custom_fields, issues=[])
     return QueryManager(jira, custom_settings)
 
@@ -289,13 +278,20 @@ def _issues(issues):
 
 
 def _ts(datestring, timestring="00:00:00", freq=None):
-    return Timestamp("%s %s" % (datestring, timestring,), freq=freq)
+    return Timestamp(
+        "%s %s"
+        % (
+            datestring,
+            timestring,
+        ),
+        freq=freq,
+    )
 
 
 @pytest.fixture
 def minimal_cycle_time_results(minimal_cycle_time_columns):
-    """A results dict mimicing a minimal result from the CycleTimeCalculator.
-    """
+    """A results dict mimicing a minimal result from the
+    CycleTimeCalculator."""
     return {
         CycleTimeCalculator: DataFrame(
             _issues(
@@ -337,8 +333,7 @@ def minimal_cycle_time_results(minimal_cycle_time_columns):
 
 @pytest.fixture
 def large_cycle_time_results(minimal_cycle_time_columns):
-    """A results dict mimicing a larger result from the CycleTimeCalculator.
-    """
+    """A results dict mimicing a larger result from the CycleTimeCalculator."""
     return {
         CycleTimeCalculator: DataFrame(
             _issues(
@@ -483,8 +478,8 @@ def large_cycle_time_results(minimal_cycle_time_columns):
 
 @pytest.fixture
 def minimal_cfd_results(minimal_cycle_time_results, cfd_columns):
-    """A results dict mimicing a minimal result from the CycleTimeCalculator.
-    """
+    """A results dict mimicing a minimal result from the
+    CycleTimeCalculator."""
     return extend_dict(
         minimal_cycle_time_results,
         {

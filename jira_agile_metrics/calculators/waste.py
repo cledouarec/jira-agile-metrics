@@ -4,7 +4,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 
 from ..calculator import Calculator
-from ..utils import set_chart_style
+from ..utils import Chart, filter_by_window
 
 logger = logging.getLogger(__name__)
 
@@ -48,7 +48,6 @@ class WasteCalculator(Calculator):
         }
 
         for issue in self.query_manager.find_issues(query):
-
             # Assume all waste items are resolved somehow
             if not issue.fields.resolution:
                 continue
@@ -101,9 +100,6 @@ class WasteCalculator(Calculator):
             logger.warning("Cannot draw waste chart with zero items")
             return
 
-        frequency = self.settings["waste_frequency"]
-        window = self.settings["waste_window"]
-
         cycle_names = [s["name"] for s in self.settings["cycle"]]
         backlog_column = self.settings["backlog_column"]
         done_column = self.settings["done_column"]
@@ -111,40 +107,43 @@ class WasteCalculator(Calculator):
         cycle_names.remove(backlog_column)
         cycle_names.remove(done_column)
 
-        breakdown = (
+        breakdown = filter_by_window(
             chart_data.pivot_table(
                 index="withdrawn_date",
                 columns="last_status",
                 values="key",
                 aggfunc="count",
             )
-            .groupby(pd.Grouper(freq=frequency, closed="left", label="left"))
+            .groupby(
+                pd.Grouper(
+                    freq=self.settings["waste_frequency"],
+                    closed="left",
+                    label="left",
+                )
+            )
             .sum()
-            .reindex(cycle_names, axis=1)
+            .reindex(cycle_names, axis=1),
+            self.settings["waste_window"],
         )
 
-        if window:
-            breakdown = breakdown[-window:]
-
-        if len(breakdown.index) == 0 or len(breakdown.columns) == 0:
+        n_columns = len(breakdown.columns)
+        if len(breakdown.index) == 0 or n_columns == 0:
             logger.warning("Cannot draw waste chart with zero items")
             return
 
-        fig, ax = plt.subplots()
-
-        breakdown.plot.bar(ax=ax, stacked=True)
+        with Chart.use_palette(
+            self.settings["waste_chart_palette"], n_columns
+        ):
+            fig, ax = plt.subplots()
+            breakdown.plot.bar(ax=ax, stacked=True)
 
         if self.settings["waste_chart_title"]:
             ax.set_title(self.settings["waste_chart_title"])
-
-        ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
         ax.set_xlabel("Month", labelpad=20)
         ax.set_ylabel("Number of items", labelpad=10)
-
+        ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
         labels = [d.strftime("%b %y") for d in breakdown.index]
         ax.set_xticklabels(labels, rotation=90, size="small")
-
-        set_chart_style()
 
         # Write file
         logger.info("Writing waste chart to %s", output_file)

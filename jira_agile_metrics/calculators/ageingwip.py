@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 from ..calculator import Calculator
-from ..utils import set_chart_style
+from ..utils import Chart
 
 from .cycletime import CycleTimeCalculator
 
@@ -13,8 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 class AgeingWIPChartCalculator(Calculator):
-    """Draw an ageing WIP chart
-    """
+    """Draw an ageing WIP chart"""
 
     def run(self, today=None):
 
@@ -55,7 +54,16 @@ class AgeingWIPChartCalculator(Calculator):
         def extract_age(row):
             if start_column not in row:
                 return np.NaN
-            started = row[start_column]
+            if pd.isna(row[start_column]):
+                # for all stages except backlog stage, get the first date and
+                # use it to compute age
+                dates = sorted(filter(pd.notna, row[start_column:end_column]))
+                if len(dates) > 0:
+                    started = dates[0]
+                else:
+                    return np.NaN
+            else:
+                started = row[start_column]
             if pd.isnull(started):
                 return np.NaN
             return (today - started.date()).days
@@ -96,28 +104,29 @@ class AgeingWIPChartCalculator(Calculator):
             )
             return
 
-        fig, ax = plt.subplots()
+        n_columns = len(chart_data.columns[4:])
+        # Trick to avoid middle value in case of using diverging palette to
+        # increase readability
+        n_columns = n_columns + 1 if n_columns % 2 else n_columns
+        with Chart.use_palette(
+            self.settings["ageing_wip_chart_palette"], n_columns
+        ):
+            fig, ax = plt.subplots()
+            sns.swarmplot(
+                x="status",
+                y="age",
+                order=chart_data.columns[4:],
+                data=chart_data,
+                ax=ax,
+            )
 
         if self.settings["ageing_wip_chart_title"]:
             ax.set_title(self.settings["ageing_wip_chart_title"])
-
-        sns.swarmplot(
-            x="status",
-            y="age",
-            order=chart_data.columns[4:],
-            data=chart_data,
-            ax=ax,
-        )
-
         ax.set_xlabel("Status")
         ax.set_ylabel("Age (days)")
-
         ax.set_xticklabels(ax.xaxis.get_majorticklabels(), rotation=90)
-
         _, top = ax.get_ylim()
         ax.set_ylim(0, top)
-
-        set_chart_style()
 
         # Write file
         logger.info("Writing ageing WIP chart to %s", output_file)

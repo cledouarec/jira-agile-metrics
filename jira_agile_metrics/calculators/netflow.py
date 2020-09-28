@@ -2,16 +2,14 @@ import logging
 import matplotlib.pyplot as plt
 
 from ..calculator import Calculator
-from ..utils import set_chart_style
-
+from ..utils import Chart, filter_by_window
 from .cfd import CFDCalculator
 
 logger = logging.getLogger(__name__)
 
 
 class NetFlowChartCalculator(Calculator):
-    """Draw a net flow chart
-    """
+    """Draw a net flow chart"""
 
     def run(self):
         cfd_data = self.get_result(CFDCalculator)
@@ -48,7 +46,6 @@ class NetFlowChartCalculator(Calculator):
         net_flow_data["net_flow"] = (
             net_flow_data["arrivals"] - net_flow_data["departures"]
         )
-        net_flow_data["positive"] = net_flow_data["net_flow"] >= 0
 
         return net_flow_data
 
@@ -64,29 +61,28 @@ class NetFlowChartCalculator(Calculator):
             logger.warning("Cannot draw net flow chart with zero items")
             return
 
-        fig, ax = plt.subplots()
+        net_flow_data = filter_by_window(
+            chart_data[["net_flow"]],
+            self.settings["net_flow_window"],
+        )
+
+        with Chart.use_palette(
+            self.settings["net_flow_chart_palette"]
+        ) as colors:
+            fig, ax = plt.subplots()
+            net_flow_data["net_flow"].plot.bar(
+                ax=ax,
+                color=net_flow_data["net_flow"].apply(
+                    lambda x: colors.as_hex()[0 if x >= 0 else 1]
+                ),
+            )
 
         if self.settings["net_flow_chart_title"]:
             ax.set_title(self.settings["net_flow_chart_title"])
-
         ax.set_xlabel("Period starting")
         ax.set_ylabel("Net flow (departures - arrivals)")
-
-        net_flow_data = chart_data[["net_flow", "positive"]]
-
-        window = self.settings["net_flow_window"]
-        if window:
-            net_flow_data = net_flow_data[-window:]
-
-        net_flow_data["net_flow"].plot.bar(
-            ax=ax,
-            color=net_flow_data["positive"].map({True: "r", False: "b"}),
-        )
-
         labels = [d.strftime("%d/%m/%Y") for d in net_flow_data.index]
         ax.set_xticklabels(labels, rotation=70, size="small")
-
-        set_chart_style()
 
         # Write file
         logger.info("Writing ageing WIP chart to %s", output_file)

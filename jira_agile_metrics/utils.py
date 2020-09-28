@@ -39,14 +39,35 @@ def to_days_since_epoch(d):
     return (d - datetime.date(1970, 1, 1)).days
 
 
-def set_chart_context(context):
-    sns.set_context(context)
+class Chart:
+    _current_palette = None
 
+    @classmethod
+    def set_style(cls, context=None, style=None, palette=None, despine=True):
+        """Defines chart style to use. By default, it is optimized for display
+        and printer, the `despine` value is used to remove the contour.
+        """
+        if context is None:
+            context = "paper"
+        if style is None:
+            style = "darkgrid"
+        if palette is not None and len(palette) == 1:
+            palette = palette[0]
+        cls._current_palette = palette
+        sns.set(context=context, style=style, palette=cls._current_palette)
+        if despine:
+            sns.despine()
 
-def set_chart_style(style="whitegrid", despine=True):
-    sns.set_style(style)
-    if despine:
-        sns.despine()
+    @classmethod
+    def use_palette(cls, palette=None, n_colors=None):
+        """Defines the color palette to use and the number of colors in the
+        palette and return it to use with `with`.
+        """
+        if palette is None:
+            palette = cls._current_palette
+        elif len(palette) == 1:
+            palette = palette[0]
+        return sns.color_palette(palette=palette, n_colors=n_colors)
 
 
 def filter_by_columns(df, output_columns):
@@ -55,6 +76,35 @@ def filter_by_columns(df, output_columns):
     """
     if output_columns:
         return df[[s for s in output_columns if s in df.columns]]
+    return df
+
+
+def filter_by_threshold(df, threshold):
+    """To restrict (and order) the value columns, pass a threshold in percent
+    to filter. All columns under the threshold will be put in `Others` column.
+    """
+    if threshold:
+        total = df.sum(axis=1)
+        threshold_mask = (df * 100.0 / total[1] < threshold).all()
+        df["Others"] = df.loc[:, threshold_mask].sum(axis=1)
+        threshold_mask["Others"] = False
+        return df.loc[:, ~threshold_mask]
+    return df
+
+
+def filter_by_window(df, window):
+    """To restrict to last N rows."""
+    if window:
+        return df[-window:]
+    return df
+
+
+def sort_colums_by_last_row(df, ascending=False):
+    """Reorder columns based on values of last row."""
+    if len(df.index) > 0 and len(df.columns) > 0:
+        return df.sort_values(
+            by=df.last_valid_index(), axis=1, ascending=ascending
+        )
     return df
 
 

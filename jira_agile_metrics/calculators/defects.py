@@ -5,7 +5,14 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 from ..calculator import Calculator
-from ..utils import breakdown_by_month, filter_by_columns, set_chart_style
+from ..utils import (
+    breakdown_by_month,
+    Chart,
+    filter_by_columns,
+    filter_by_threshold,
+    filter_by_window,
+    sort_colums_by_last_row,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -144,146 +151,96 @@ class DefectsCalculator(Calculator):
             )
 
     def write_defects_by_priority_chart(self, chart_data, output_file):
-        window = self.settings["defects_window"]
-        priority_values = self.settings["defects_priority_values"]
-        threshold = self.settings["defects_priority_threshold"]
-
-        breakdown = filter_by_columns(
-            breakdown_by_month(
-                chart_data, "created", "resolved", "key", "priority"
-            ),
-            priority_values,
+        self._write_defects_by_field_chart(
+            chart_data=chart_data,
+            output_file=output_file,
+            field="priority",
+            title=self.settings["defects_by_priority_chart_title"],
+            palette=self.settings["defects_by_priority_chart_palette"],
+            field_values=self.settings["defects_priority_values"],
+            window=self.settings["defects_window"],
+            threshold=self.settings["defects_priority_threshold"],
+            sort=False,
         )
-
-        if window:
-            breakdown = breakdown[-window:]
-
-        if threshold:
-            total = breakdown.sum(axis=1)
-            threshold_mask = (breakdown * 100.0 / total[1] < threshold).all()
-            others = breakdown.loc[:, threshold_mask].sum(axis=1)
-            breakdown = breakdown.loc[:, ~threshold_mask]
-            breakdown["Others"] = others
-
-        if len(breakdown.index) == 0 or len(breakdown.columns) == 0:
-            logger.warning(
-                "Cannot draw defects by priority chart with zero items"
-            )
-            return
-
-        fig, ax = plt.subplots()
-
-        breakdown.plot.bar(ax=ax, stacked=True)
-
-        if self.settings["defects_by_priority_chart_title"]:
-            ax.set_title(self.settings["defects_by_priority_chart_title"])
-
-        ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
-        ax.set_xlabel("Month", labelpad=20)
-        ax.set_ylabel("Number of items", labelpad=10)
-
-        labels = [d.strftime("%b %y") for d in breakdown.index]
-        ax.set_xticklabels(labels, rotation=90, size="small")
-
-        set_chart_style()
-
-        # Write file
-        logger.info("Writing defects by priority chart to %s", output_file)
-        fig.savefig(output_file, bbox_inches="tight", dpi=300)
-        plt.close(fig)
 
     def write_defects_by_type_chart(self, chart_data, output_file):
-        window = self.settings["defects_window"]
-        type_values = self.settings["defects_type_values"]
-        threshold = self.settings["defects_type_threshold"]
-
-        breakdown = filter_by_columns(
-            breakdown_by_month(
-                chart_data, "created", "resolved", "key", "type"
-            ),
-            type_values,
+        self._write_defects_by_field_chart(
+            chart_data=chart_data,
+            output_file=output_file,
+            field="type",
+            title=self.settings["defects_by_type_chart_title"],
+            palette=self.settings["defects_by_type_chart_palette"],
+            field_values=self.settings["defects_type_values"],
+            window=self.settings["defects_window"],
+            threshold=self.settings["defects_type_threshold"],
         )
-
-        if window:
-            breakdown = breakdown[-window:]
-
-        if threshold:
-            total = breakdown.sum(axis=1)
-            threshold_mask = (breakdown * 100.0 / total[1] < threshold).all()
-            others = breakdown.loc[:, threshold_mask].sum(axis=1)
-            breakdown = breakdown.loc[:, ~threshold_mask]
-            breakdown["Others"] = others
-
-        if len(breakdown.index) == 0 or len(breakdown.columns) == 0:
-            logger.warning("Cannot draw defects by type chart with zero items")
-            return
-
-        fig, ax = plt.subplots()
-
-        breakdown.plot.bar(ax=ax, stacked=True)
-
-        if self.settings["defects_by_type_chart_title"]:
-            ax.set_title(self.settings["defects_by_type_chart_title"])
-
-        ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
-        ax.set_xlabel("Month", labelpad=20)
-        ax.set_ylabel("Number of items", labelpad=10)
-
-        labels = [d.strftime("%b %y") for d in breakdown.index]
-        ax.set_xticklabels(labels, rotation=90, size="small")
-
-        set_chart_style()
-
-        # Write file
-        logger.info("Writing defects by type chart to %s", output_file)
-        fig.savefig(output_file, bbox_inches="tight", dpi=300)
-        plt.close(fig)
 
     def write_defects_by_environment_chart(self, chart_data, output_file):
-        window = self.settings["defects_window"]
-        environment_values = self.settings["defects_environment_values"]
-        threshold = self.settings["defects_environment_threshold"]
-
-        breakdown = filter_by_columns(
-            breakdown_by_month(
-                chart_data, "created", "resolved", "key", "environment"
-            ),
-            environment_values,
+        self._write_defects_by_field_chart(
+            chart_data=chart_data,
+            output_file=output_file,
+            field="environment",
+            title=self.settings["defects_by_environment_chart_title"],
+            palette=self.settings["defects_by_environment_chart_palette"],
+            field_values=self.settings["defects_environment_values"],
+            window=self.settings["defects_window"],
+            threshold=self.settings["defects_environment_threshold"],
         )
 
-        if window:
-            breakdown = breakdown[-window:]
+    @staticmethod
+    def _write_defects_by_field_chart(
+        chart_data,
+        output_file,
+        field,
+        title,
+        palette,
+        field_values,
+        window,
+        threshold,
+        sort=True,
+    ):
+        breakdown = filter_by_window(
+            filter_by_columns(
+                breakdown_by_month(
+                    chart_data, "created", "resolved", "key", field
+                ),
+                field_values,
+            ),
+            window,
+        )
+        if sort:
+            breakdown = sort_colums_by_last_row(breakdown)
+        breakdown = filter_by_threshold(breakdown, threshold)
 
-        if threshold:
-            total = breakdown.sum(axis=1)
-            threshold_mask = (breakdown * 100.0 / total[1] < threshold).all()
-            others = breakdown.loc[:, threshold_mask].sum(axis=1)
-            breakdown = breakdown.loc[:, ~threshold_mask]
-            breakdown["Others"] = others
-
-        if len(breakdown.index) == 0 or len(breakdown.columns) == 0:
+        n_columns = len(breakdown.columns)
+        if len(breakdown.index) == 0 or n_columns == 0:
             logger.warning(
-                "Cannot draw defects by environment chart with zero items"
+                "Cannot draw defects by %s chart with zero items", field
             )
             return
 
-        fig, ax = plt.subplots()
+        # Trick to avoid middle value in case of using diverging palette to
+        # increase readability
+        n_columns = n_columns + 1 if n_columns % 2 else n_columns
+        with Chart.use_palette(palette, n_columns):
+            fig, ax = plt.subplots()
+            breakdown.plot.bar(ax=ax, stacked=True)
 
-        breakdown.plot.bar(ax=ax, stacked=True)
-
-        if self.settings["defects_by_environment_chart_title"]:
-            ax.set_title(self.settings["defects_by_environment_chart_title"])
-
-        ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
+        if title:
+            ax.set_title(title)
         ax.set_xlabel("Month", labelpad=20)
         ax.set_ylabel("Number of items", labelpad=10)
-
+        handles, labels = ax.get_legend_handles_labels()
+        ax.legend(
+            reversed(handles),
+            reversed(labels),
+            loc="center left",
+            bbox_to_anchor=(1, 0.5),
+        )
         labels = [d.strftime("%b %y") for d in breakdown.index]
         ax.set_xticklabels(labels, rotation=90, size="small")
 
-        set_chart_style()
-
         # Write file
-        logger.info("Writing defects by environment chart to %s", output_file)
+        logger.info("Writing defects by %s chart to %s", field, output_file)
         fig.savefig(output_file, bbox_inches="tight", dpi=300)
         plt.close(fig)
